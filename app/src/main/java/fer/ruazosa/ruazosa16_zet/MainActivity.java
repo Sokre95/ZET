@@ -65,6 +65,13 @@ public class MainActivity extends AppCompatActivity {
                         getSupportActionBar().setTitle("Tram");
                         item.setChecked(true);
                         break;
+                    case R.id.map_item:
+                        fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                        fragmentTransaction.replace(R.id.main_container, new MapFragment());
+                        fragmentTransaction.commit();
+                        getSupportActionBar().setTitle("Map");
+                        item.setChecked(true);
+                        break;
                     default:
                         break;
                 }
