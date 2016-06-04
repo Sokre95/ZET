@@ -15,7 +15,7 @@ import java.util.List;
 public class TramDnevni extends Fragment {
 
 
-    private List<Linija> linije = new ArrayList<>();
+    private List<Linija> linije;
     private RecyclerView rv;
 
     public TramDnevni() {
@@ -36,20 +36,12 @@ public class TramDnevni extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        initData();
+        linije = ExampleData.getTramDnevni();
         rv = (RecyclerView) view.findViewById(R.id.list);
         LinearLayoutManager llm = new LinearLayoutManager(view.getContext());
         rv.setLayoutManager(llm);
         TrasaAdapter pa = new TrasaAdapter(linije, getContext());
         rv.setAdapter(pa);
-    }
-
-    private void initData() {
-        linije = new ArrayList<>();
-        linije.add(new Linija("11", "DUBEC-ČRNOMEREC"));
-        linije.add(new Linija("12", "DUBRAVA-LJUBLJANICA"));
-        linije.add(new Linija("7", "DUBRAVA-SAVSKI MOST"));
-        linije.add(new Linija("17", "PREČKO-BORONGAJ"));
     }
 
 }

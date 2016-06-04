@@ -11,6 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.lang.reflect.Array;
+
 public class BusFragment extends Fragment {
 
     private TabLayout tabLayout;
@@ -41,12 +43,11 @@ public class BusFragment extends Fragment {
         tabLayout = (TabLayout) view.findViewById(R.id.tabLayout);
         viewPager = (ViewPager) view.findViewById(R.id.viewPager);
 
-        viewPagerAdapter = new ViewPagerAdapter(fragmentActivity.getSupportFragmentManager());
+        viewPagerAdapter = new ViewPagerAdapter(getChildFragmentManager());
         viewPagerAdapter.addFragments(new BusDnevni(), "Dnevni");
         viewPagerAdapter.addFragments(new BusNocni(), "Nocni");
 
         viewPager.setAdapter(viewPagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
-
     }
 }

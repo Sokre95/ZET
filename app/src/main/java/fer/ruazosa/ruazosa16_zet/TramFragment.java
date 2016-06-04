@@ -43,7 +43,7 @@ public class TramFragment extends Fragment {
         tabLayout = (TabLayout) view.findViewById(R.id.tabLayout);
         viewPager = (ViewPager) view.findViewById(R.id.viewPager);
 
-        viewPagerAdapter = new ViewPagerAdapter(fragmentActivity.getSupportFragmentManager());
+        viewPagerAdapter = new ViewPagerAdapter(getChildFragmentManager());
         viewPagerAdapter.addFragments(new TramDnevni(), "Dnevni");
         viewPagerAdapter.addFragments(new TramNocni(), "Nocni");
 

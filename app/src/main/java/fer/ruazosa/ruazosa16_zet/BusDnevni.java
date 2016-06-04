@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,7 +20,7 @@ import java.util.List;
  */
 public class BusDnevni extends Fragment {
 
-    private List<Linija> linije = new ArrayList<>();
+    private List<Linija> linije;
     private RecyclerView rv;
 
     public BusDnevni() {
@@ -36,20 +37,12 @@ public class BusDnevni extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        initData();
+        linije = ExampleData.getDnevniBus();
         rv = (RecyclerView) view.findViewById(R.id.list);
-        GridLayoutManager llm = new GridLayoutManager(view.getContext(), 2);
+        LinearLayoutManager llm = new LinearLayoutManager(view.getContext());
         rv.setLayoutManager(llm);
         TrasaAdapter pa = new TrasaAdapter(linije, getContext());
         rv.setAdapter(pa);
-    }
-
-    private void initData() {
-        linije = new ArrayList<>();
-        linije.add(new Linija("113", "LJUBLJANICA-JARUN"));
-        linije.add(new Linija("215", "TRNAVA-KVATERNIKOV TRG"));
-        linije.add(new Linija("231", "BORONGAJ-DUBEC"));
-        linije.add(new Linija("269", "BORONGAJ-SESVETSKI KRALJEVEC"));
     }
 
 }
