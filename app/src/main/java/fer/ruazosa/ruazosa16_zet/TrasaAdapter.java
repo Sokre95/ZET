@@ -26,7 +26,7 @@ public class TrasaAdapter extends RecyclerView.Adapter<TrasaAdapter.TrasaViewHol
     @Override
     public TrasaViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemLayoutView = LayoutInflater.from(parent.getContext()).inflate(
-                R.layout.card_layout_row, null);
+                R.layout.card_layout_route, null);
         TrasaViewHolder viewHolder = new TrasaViewHolder(itemLayoutView, c);
         return viewHolder;
     }

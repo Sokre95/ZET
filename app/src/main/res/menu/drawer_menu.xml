@@ -19,11 +19,6 @@
             android:title="Tram">
         </item>
 
-        <item
-            android:id="@+id/map_item"
-            android:title="Map">
-        </item>
-
     </group>
 
 </menu>

@@ -74,4 +74,21 @@ public class ExampleData {
         return linije;
     }
 
+    public static List<InfoDisplay> getRouteInfo() {
+        List<InfoDisplay> displays = new ArrayList<>();
+        displays.add(new InfoDisplay("07:33:00", "DUBRAVA", "7"));
+        displays.add(new InfoDisplay("07:33:00", "DUBRAVA", "12"));
+        displays.add(new InfoDisplay("07:38:30", "LJUBIJSKA", "11"));
+        displays.add(new InfoDisplay("07:42:00", "LJUBIJSKA", "4"));
+        displays.add(new InfoDisplay("07:45:00", "DUBRAVA", "4"));
+        return displays;
+    }
+
+    public static List<InfoDisplay> getFavouritesInfo() {
+        List<InfoDisplay> displays = new ArrayList<>();
+        displays.add(new InfoDisplay("09:15:00", "TRNAVA", "215"));
+        displays.add(new InfoDisplay("09:20:00", "KVATERNIKOV TRG", "215"));
+        return displays;
+    }
+
 }

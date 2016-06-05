@@ -20,9 +20,6 @@ public class MainActivity extends AppCompatActivity {
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private FragmentTransaction fragmentTransaction;
     private NavigationView navigationView;
-    private TabLayout tabLayout;
-    private ViewPager viewPager;
-    private ViewPagerAdapter viewPagerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,38 +46,25 @@ public class MainActivity extends AppCompatActivity {
                 new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
+                fragmentTransaction = getSupportFragmentManager().beginTransaction();
                 switch (item.getItemId()) {
                     case R.id.home_item:
                         getSupportActionBar().setTitle("Home");
-                        fragmentTransaction = getSupportFragmentManager().beginTransaction();
                         fragmentTransaction.replace(R.id.main_container, new HomeFragment());
-                        fragmentTransaction.commit();
-                        item.setChecked(true);
                         break;
                     case R.id.bus_item:
                         getSupportActionBar().setTitle("Bus");
-                        fragmentTransaction = getSupportFragmentManager().beginTransaction();
                         fragmentTransaction.replace(R.id.main_container, new BusFragment());
-                        fragmentTransaction.commit();
-                        item.setChecked(true);
                         break;
                     case R.id.tram_item:
                         getSupportActionBar().setTitle("Tram");
-                        fragmentTransaction = getSupportFragmentManager().beginTransaction();
                         fragmentTransaction.replace(R.id.main_container, new TramFragment());
-                        fragmentTransaction.commit();
-                        item.setChecked(true);
-                        break;
-                    case R.id.map_item:
-                        getSupportActionBar().setTitle("Map");
-                        fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                        fragmentTransaction.replace(R.id.main_container, new MapFragment());
-                        fragmentTransaction.commit();
-                        item.setChecked(true);
                         break;
                     default:
                         break;
                 }
+                fragmentTransaction.commit();
+                item.setChecked(true);
                 drawerLayout.closeDrawers();
                 return true;
             }
