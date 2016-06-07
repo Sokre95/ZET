@@ -1,4 +1,4 @@
-package fer.ruazosa.ruazosa16_zet.service;
+package hr.fer.tel.ruazosa.zet.backend.service;
 
 import okhttp3.ResponseBody;
 
@@ -6,7 +6,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.util.Scanner;
 
 import retrofit2.Converter;

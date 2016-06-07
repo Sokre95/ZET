@@ -1,11 +1,8 @@
-package fer.ruazosa.ruazosa16_zet.service;
+package hr.fer.tel.ruazosa.zet.backend.service;
 
 import org.jsoup.nodes.Document;
 
-import javax.print.Doc;
-
 import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 

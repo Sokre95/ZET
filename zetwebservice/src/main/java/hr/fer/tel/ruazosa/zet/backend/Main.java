@@ -1,18 +1,17 @@
-package fer.ruazosa.ruazosa16_zet;
+package hr.fer.tel.ruazosa.zet.backend;
 
-import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
-import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
-import java.util.Scanner;
 
-import fer.ruazosa.ruazosa16_zet.service.DocumentConverter;
-import fer.ruazosa.ruazosa16_zet.service.ZETService;
+import hr.fer.tel.ruazosa.zet.backend.service.DocumentConverter;
+import hr.fer.tel.ruazosa.zet.backend.service.ZETService;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.Converter;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 
 /**
@@ -34,10 +33,16 @@ public class Main {
 
         ZETService service = r.create(ZETService.class);
         Call<Document> call = service.getRoutes(ZETService.TRAM_LINES_DAY_ID);
-        try {
-            System.out.println(call.execute().body().html());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        call.enqueue(new Callback<Document>() {
+            @Override
+            public void onResponse(Call<Document> call, Response<Document> response) {
+                System.out.println(response.body().html());
+            }
+
+            @Override
+            public void onFailure(Call<Document> call, Throwable t) {
+
+            }
+        });
     }
 }
