@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/ruazosa16-zet.iml" filepath="$PROJECT_DIR$/ruazosa16-zet.iml" />
       <module fileurl="file://$PROJECT_DIR$/zetwebservice/zetwebservice.iml" filepath="$PROJECT_DIR$/zetwebservice/zetwebservice.iml" />
+      <module fileurl="file://$PROJECT_DIR$/zetwebservice/zetwebservice.iml" filepath="$PROJECT_DIR$/zetwebservice/zetwebservice.iml" />
     </modules>
   </component>
 </project>
