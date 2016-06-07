@@ -6,7 +6,7 @@ android {
     buildToolsVersion "23.0.3"
 
     defaultConfig {
-        applicationId "fer.ruazosa.ruazosa16_zet"
+        applicationId "fer.ruazosa.fer.ruazosa16_zet"
         minSdkVersion 19
         targetSdkVersion 23
         versionCode 1
