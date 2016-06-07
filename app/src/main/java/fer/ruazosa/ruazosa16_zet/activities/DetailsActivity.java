@@ -1,7 +1,9 @@
-package fer.ruazosa.ruazosa16_zet;
+package fer.ruazosa.ruazosa16_zet.activities;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+
+import fer.ruazosa.ruazosa16_zet.R;
 
 public class DetailsActivity extends AppCompatActivity {
 

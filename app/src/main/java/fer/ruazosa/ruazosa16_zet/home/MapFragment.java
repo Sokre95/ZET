@@ -1,4 +1,4 @@
-package fer.ruazosa.ruazosa16_zet;
+package fer.ruazosa.ruazosa16_zet.home;
 
 
 import android.os.Bundle;
@@ -7,6 +7,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import fer.ruazosa.ruazosa16_zet.R;
 
 public class MapFragment extends Fragment {
 

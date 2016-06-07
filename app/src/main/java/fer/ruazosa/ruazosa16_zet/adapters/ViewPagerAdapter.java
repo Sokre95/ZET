@@ -1,4 +1,4 @@
-package fer.ruazosa.ruazosa16_zet;
+package fer.ruazosa.ruazosa16_zet.adapters;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

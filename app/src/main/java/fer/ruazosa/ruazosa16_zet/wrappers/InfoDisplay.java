@@ -1,4 +1,4 @@
-package fer.ruazosa.ruazosa16_zet;
+package fer.ruazosa.ruazosa16_zet.wrappers;
 
 public class InfoDisplay {
 

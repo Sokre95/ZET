@@ -1,4 +1,5 @@
-package fer.ruazosa.ruazosa16_zet;
+package fer.ruazosa.ruazosa16_zet.home;
+
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,39 +10,39 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class TramDnevni extends Fragment {
+import fer.ruazosa.ruazosa16_zet.adapters.DisplayAdapter;
+import fer.ruazosa.ruazosa16_zet.data.ExampleData;
+import fer.ruazosa.ruazosa16_zet.wrappers.InfoDisplay;
+import fer.ruazosa.ruazosa16_zet.R;
 
 
-    private List<Linija> linije;
+public class CloseFragment extends Fragment {
+
     private RecyclerView rv;
 
-    public TramDnevni() {
+    public CloseFragment() {
+        // Required empty public constructor
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_tram_dnevni, container, false);
+        return inflater.inflate(R.layout.fragment_close, container, false);
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        linije = ExampleData.getTramDnevni();
+
+        List<InfoDisplay> displays = ExampleData.getRouteInfo();
         rv = (RecyclerView) view.findViewById(R.id.list);
         LinearLayoutManager llm = new LinearLayoutManager(view.getContext());
         rv.setLayoutManager(llm);
-        TrasaAdapter pa = new TrasaAdapter(linije, getContext());
-        rv.setAdapter(pa);
+        DisplayAdapter displayAdapter = new DisplayAdapter(displays);
+        rv.setAdapter(displayAdapter);
     }
-
 }

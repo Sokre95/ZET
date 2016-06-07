@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="fer.ruazosa.ruazosa16_zet.BusFragment"
+    tools:context=".bus.BusFragment"
     android:orientation="vertical">
 
     <android.support.design.widget.AppBarLayout

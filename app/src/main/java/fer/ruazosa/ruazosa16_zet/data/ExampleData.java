@@ -1,7 +1,10 @@
-package fer.ruazosa.ruazosa16_zet;
+package fer.ruazosa.ruazosa16_zet.data;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import fer.ruazosa.ruazosa16_zet.wrappers.InfoDisplay;
+import fer.ruazosa.ruazosa16_zet.wrappers.Linija;
 
 /**
  * Klasa koja implementira staticke metode dohvata reprezentativnih podataka.

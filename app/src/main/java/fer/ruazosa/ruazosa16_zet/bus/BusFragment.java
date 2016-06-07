@@ -1,4 +1,4 @@
-package fer.ruazosa.ruazosa16_zet;
+package fer.ruazosa.ruazosa16_zet.bus;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -11,7 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.lang.reflect.Array;
+import fer.ruazosa.ruazosa16_zet.R;
+import fer.ruazosa.ruazosa16_zet.adapters.ViewPagerAdapter;
 
 public class BusFragment extends Fragment {
 

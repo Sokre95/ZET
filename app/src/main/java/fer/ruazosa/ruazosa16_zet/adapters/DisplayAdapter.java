@@ -1,6 +1,5 @@
-package fer.ruazosa.ruazosa16_zet;
+package fer.ruazosa.ruazosa16_zet.adapters;
 
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +7,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import fer.ruazosa.ruazosa16_zet.wrappers.InfoDisplay;
+import fer.ruazosa.ruazosa16_zet.R;
 
 public class DisplayAdapter extends RecyclerView.Adapter<DisplayAdapter.DisplayHolder> {
 
@@ -40,16 +44,14 @@ public class DisplayAdapter extends RecyclerView.Adapter<DisplayAdapter.DisplayH
 
     public static class DisplayHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        public TextView timeView;
-        public TextView stationView;
-        public TextView routeView;
+        @BindView(R.id.vrijeme_dolazak) TextView timeView;
+        @BindView(R.id.naziv_stanice) TextView stationView;
+        @BindView(R.id.naziv_linije) TextView routeView;
 
         public DisplayHolder(View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
-            timeView = (TextView) itemView.findViewById(R.id.vrijeme_dolazak);
-            stationView = (TextView) itemView.findViewById(R.id.naziv_stanice);
-            routeView = (TextView) itemView.findViewById(R.id.naziv_linije);
+            ButterKnife.bind(this, itemView);
         }
 
         @Override

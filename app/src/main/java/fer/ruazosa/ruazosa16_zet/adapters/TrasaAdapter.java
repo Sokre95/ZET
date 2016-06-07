@@ -1,4 +1,4 @@
-package fer.ruazosa.ruazosa16_zet;
+package fer.ruazosa.ruazosa16_zet.adapters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,11 +11,17 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnCheckedChanged;
+import butterknife.OnClick;
+import fer.ruazosa.ruazosa16_zet.activities.DetailsActivity;
+import fer.ruazosa.ruazosa16_zet.wrappers.Linija;
+import fer.ruazosa.ruazosa16_zet.R;
+
 public class TrasaAdapter extends RecyclerView.Adapter<TrasaAdapter.TrasaViewHolder> {
 
     private List<Linija> linije;
-    private TrasaViewHolder tva;
-    private int position;
     private Context c;
 
     public TrasaAdapter(List<Linija> linije, Context c) {
@@ -44,17 +50,16 @@ public class TrasaAdapter extends RecyclerView.Adapter<TrasaAdapter.TrasaViewHol
 
     public static class TrasaViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        public CardView cv;
-        public TextView broj_linije;
-        public TextView naziv_linije;
         private Context c;
+
+        @BindView(R.id.broj_linije) TextView broj_linije;
+        @BindView(R.id.naziv_linije) TextView naziv_linije;
 
         public TrasaViewHolder(View view, Context c) {
             super(view);
-            view.setOnClickListener(this);
-            broj_linije = (TextView) view.findViewById(R.id.broj_linije);
-            naziv_linije = (TextView) view.findViewById(R.id.naziv_linije);
             this.c = c;
+            view.setOnClickListener(this);
+            ButterKnife.bind(this, view);
         }
 
         @Override
