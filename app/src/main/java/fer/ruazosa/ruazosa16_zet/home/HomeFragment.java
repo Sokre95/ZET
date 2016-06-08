@@ -10,15 +10,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import fer.ruazosa.ruazosa16_zet.R;
 import fer.ruazosa.ruazosa16_zet.adapters.ViewPagerAdapter;
 
 
 public class HomeFragment extends Fragment {
 
-    private TabLayout tabLayout;
-    private ViewPager viewPager;
+    @BindView(R.id.tabLayout) TabLayout tabLayout;
+    @BindView(R.id.viewPager) ViewPager viewPager;
     private ViewPagerAdapter viewPagerAdapter;
+
+    public static final String CLOSE_ONES = "Close";
+    public static final String FAVOURITES = "Favourites";
+    public static final String MAP = "Map";
 
     public HomeFragment() {
 
@@ -27,7 +33,6 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_home, container, false);
     }
 
@@ -35,13 +40,12 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        tabLayout = (TabLayout) view.findViewById(R.id.tabLayout);
-        viewPager = (ViewPager) view.findViewById(R.id.viewPager);
+        ButterKnife.bind(this, view);
 
         viewPagerAdapter = new ViewPagerAdapter(getChildFragmentManager());
-        viewPagerAdapter.addFragments(new CloseFragment(), "U BLIZINI");
-        viewPagerAdapter.addFragments(new FavouritesFragment(), "FAVOURITES");
-        viewPagerAdapter.addFragments(new MapFragment(), "MAPA");
+        viewPagerAdapter.addFragments(new CloseFragment(), CLOSE_ONES);
+        viewPagerAdapter.addFragments(new FavouritesFragment(), FAVOURITES);
+        viewPagerAdapter.addFragments(new MapFragment(), MAP);
 
         viewPager.setAdapter(viewPagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
