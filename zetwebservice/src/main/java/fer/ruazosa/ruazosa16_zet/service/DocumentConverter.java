@@ -11,9 +11,6 @@ import java.util.Scanner;
 
 import retrofit2.Converter;
 
-/**
- * Created by zlatan on 6/7/16.
- */
 public class DocumentConverter implements Converter<ResponseBody, Document> {
 
     @Override
