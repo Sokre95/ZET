@@ -67,6 +67,8 @@ public class ZetData {
         for (Element e : scheduleElements) {
             if (e.text().contains(time)) {
                 url = e.attr("href");
+                System.out.println("TU SAM!");
+                System.out.println(url);
                 break;
             }
         }

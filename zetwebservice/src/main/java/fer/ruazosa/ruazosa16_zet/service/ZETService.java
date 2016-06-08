@@ -8,6 +8,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 
 public interface ZETService {
     public static final int TRAM_LINES_DAY_ID = 291;
@@ -35,4 +36,8 @@ public interface ZETService {
 
     @GET("/default.aspx?id="+BASE_LINEVIEW_ID)
     Call<Document> getRouteWithDirection(@Query("route_id") int routeId, @Query("pravac") int direction);
+
+    @GET
+    Call<Document> getSpecificTimeRoute(@Url String url);
+
 }

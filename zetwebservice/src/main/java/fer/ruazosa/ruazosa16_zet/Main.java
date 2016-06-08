@@ -9,6 +9,8 @@ import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Scanner;
 
+import javax.print.Doc;
+
 import fer.ruazosa.ruazosa16_zet.service.DocumentConverter;
 import fer.ruazosa.ruazosa16_zet.service.DocumentParser;
 import fer.ruazosa.ruazosa16_zet.service.ZETService;
@@ -36,54 +38,54 @@ public class Main {
         /*************************/
 
         /**** BUS DAILY ROUTES ****/
-        System.out.println("Dnevne linije autobusa");
-        System.out.println("----------------------");
+        //System.out.println("Dnevne linije autobusa");
+        //System.out.println("----------------------");
 
         ZETService service = r.create(ZETService.class);
         Call<Document> call = service.getRoutes(ZETService.BUS_LINES_DAY_ID);
         try {
             String document = call.execute().body().html();
             List<String> routes = DocumentParser.parseRoutes(document);
-            for(String s : routes) System.out.println(s);
+            //for(String s : routes) System.out.println(s);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         /**** BUS NIGHT ROUTES ****/
-        System.out.println("Nocne linije autobusa");
-        System.out.println("----------------------");
+        //System.out.println("Nocne linije autobusa");
+        //System.out.println("----------------------");
 
         call = service.getRoutes(ZETService.BUS_LINES_NIGHT_ID);
         try {
             String document = call.execute().body().html();
             List<String> routes = DocumentParser.parseRoutes(document);
-            for(String s : routes) System.out.println(s);
+            //for(String s : routes) System.out.println(s);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         /**** TRAM DAILY ROUTES ****/
-        System.out.println("Dnevne linije tramvaja");
-        System.out.println("----------------------");
+        //System.out.println("Dnevne linije tramvaja");
+        //System.out.println("----------------------");
 
         call = service.getRoutes(ZETService.TRAM_LINES_DAY_ID);
         try {
             String document = call.execute().body().html();
             List<String> routes = DocumentParser.parseRoutes(document);
-            for(String s : routes) System.out.println(s);
+            //for(String s : routes) System.out.println(s);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         /**** TRAM NIGHT ROUTES ****/
-        System.out.println("Nocne linije tramvaja");
-        System.out.println("----------------------");
+        //System.out.println("Nocne linije tramvaja");
+        //System.out.println("----------------------");
 
         call = service.getRoutes(ZETService.TRAM_LINES_NIGHT_ID);
         try {
             String document = call.execute().body().html();
             List<String> routes = DocumentParser.parseRoutes(document);
-            for(String s : routes) System.out.println(s);
+            //for(String s : routes) System.out.println(s);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -92,7 +94,20 @@ public class Main {
         try {
             String document = call.execute().body().html();
             List<String> schedule = DocumentParser.parseSchedule(document, 0);
-            for(String s : schedule) System.out.println(s);
+            //for(String s : schedule) System.out.println(s);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        call = service.getRouteWithDirection(2, 0);
+        try {
+            String document = call.execute().body().html();
+            String[] polazak = DocumentParser.parseSchedule(document, 0).get(0).split(" ");
+            String url = DocumentParser.getUrlForScheduleTime(document, 0, polazak[0]);
+            call = service.getSpecificTimeRoute(url);
+            String document1 = call.execute().body().html();
+            List<String> times = DocumentParser.parseRouteWithStationTimes(document1);
+            for(String s : times) System.out.println(s);
         } catch (IOException e) {
             e.printStackTrace();
         }
