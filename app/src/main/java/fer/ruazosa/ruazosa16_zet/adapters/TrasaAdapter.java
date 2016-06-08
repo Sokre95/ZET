@@ -65,6 +65,7 @@ public class TrasaAdapter extends RecyclerView.Adapter<TrasaAdapter.TrasaViewHol
         @Override
         public void onClick(View v) {
             Intent i = new Intent(c, DetailsActivity.class);
+            i.putExtra("LINE_NUMBER", broj_linije.getText());
             this.c.startActivity(i);
         }
     }
