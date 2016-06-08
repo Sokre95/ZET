@@ -11,16 +11,18 @@ import android.view.ViewGroup;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import fer.ruazosa.ruazosa16_zet.data.ExampleData;
-import fer.ruazosa.ruazosa16_zet.wrappers.Linija;
+import fer.ruazosa.ruazosa16_zet.wrappers.Line;
 import fer.ruazosa.ruazosa16_zet.R;
-import fer.ruazosa.ruazosa16_zet.adapters.TrasaAdapter;
+import fer.ruazosa.ruazosa16_zet.adapters.RouteAdapter;
 
 public class TramDnevni extends Fragment {
 
 
-    private List<Linija> linije;
-    private RecyclerView rv;
+    private List<Line> linije;
+    @BindView(R.id.list) RecyclerView recyclerView;
 
     public TramDnevni() {
     }
@@ -33,7 +35,6 @@ public class TramDnevni extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_tram_dnevni, container, false);
     }
 
@@ -41,11 +42,10 @@ public class TramDnevni extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         linije = ExampleData.getTramDnevni();
-        rv = (RecyclerView) view.findViewById(R.id.list);
-        LinearLayoutManager llm = new LinearLayoutManager(view.getContext());
-        rv.setLayoutManager(llm);
-        TrasaAdapter pa = new TrasaAdapter(linije, getContext());
-        rv.setAdapter(pa);
+        ButterKnife.bind(this, view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
+        RouteAdapter pa = new RouteAdapter(linije, getContext());
+        recyclerView.setAdapter(pa);
     }
 
 }

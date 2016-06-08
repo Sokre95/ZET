@@ -15,24 +15,22 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import fer.ruazosa.ruazosa16_zet.data.ExampleData;
-import fer.ruazosa.ruazosa16_zet.wrappers.Linija;
+import fer.ruazosa.ruazosa16_zet.wrappers.Line;
 import fer.ruazosa.ruazosa16_zet.R;
-import fer.ruazosa.ruazosa16_zet.adapters.TrasaAdapter;
+import fer.ruazosa.ruazosa16_zet.adapters.RouteAdapter;
 
 
 public class TramNocni extends Fragment {
 
-    private List<Linija> linije;
+    private List<Line> linije;
     @BindView(R.id.list) RecyclerView rv;
 
     public TramNocni() {
-        // Required empty public constructor
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_tram_nocni, container, false);
     }
 
@@ -41,9 +39,8 @@ public class TramNocni extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         linije = ExampleData.getTramNocni();
         ButterKnife.bind(this, view);
-        LinearLayoutManager llm = new LinearLayoutManager(view.getContext());
-        rv.setLayoutManager(llm);
-        TrasaAdapter pa = new TrasaAdapter(linije, getContext());
+        rv.setLayoutManager(new LinearLayoutManager(view.getContext()));
+        RouteAdapter pa = new RouteAdapter(linije, getContext());
         rv.setAdapter(pa);
     }
 }

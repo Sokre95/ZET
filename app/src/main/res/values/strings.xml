@@ -2,6 +2,8 @@
     <string name="app_name">Zet</string>
     <string name="drawer_open">drawer open</string>
     <string name="drawer_close">drawer close</string>
+    <string name="error_lines">Error while loading lines.</string>
+    <string name="error_lines_retry">Error while loading lines.</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
