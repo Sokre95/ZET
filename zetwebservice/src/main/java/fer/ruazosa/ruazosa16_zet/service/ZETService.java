@@ -2,10 +2,7 @@ package fer.ruazosa.ruazosa16_zet.service;
 
 import org.jsoup.nodes.Document;
 
-import javax.print.Doc;
-
 import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 import retrofit2.http.Url;

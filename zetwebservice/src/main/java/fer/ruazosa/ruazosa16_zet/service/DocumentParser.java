@@ -12,18 +12,16 @@ import javax.swing.JScrollBar;
 
 public class DocumentParser {
 
-    public static List<String> parseRoutes(String document) {
+    public static List<String> parseRoutes(Document document) {
         List<String> routes = new ArrayList<String>();
-        Document document1 = Jsoup.parse(document);
-        Elements tags = document1.getElementsByAttributeValueContaining("href", "route_id=");
+        Elements tags = document.getElementsByAttributeValueContaining("href", "route_id=");
         for(Element e : tags) routes.add(e.text());
         return routes;
     }
 
-    public static List<String> parseSchedule(String document, int direction) {
+    public static List<String> parseSchedule(Document document, int direction) {
         List<String> schedule = new ArrayList<>();
-        Document document1 = Jsoup.parse(document);
-        Elements scheduleElements = document1.getElementsByAttributeValueContaining("href", "direction_id=" + direction);
+        Elements scheduleElements = document.getElementsByAttributeValueContaining("href", "direction_id=" + direction);
         for (Element e : scheduleElements) {
             Element rowElement = e.parent().parent();
             schedule.add(rowElement.text());
@@ -31,10 +29,9 @@ public class DocumentParser {
         return schedule;
     }
 
-    public static String getUrlForScheduleTime(String document, int direction, String time) {
+    public static String getUrlForScheduleTime(Document document, int direction, String time) {
         String url = "";
-        Document document1 = Jsoup.parse(document);
-        Elements scheduleElements = document1.getElementsByAttributeValueContaining("href", "direction_id=" + direction);
+        Elements scheduleElements = document.getElementsByAttributeValueContaining("href", "direction_id=" + direction);
         for(Element e : scheduleElements) {
             if(e.text().contains(time)) {
                 url = e.attr("href");
@@ -44,10 +41,9 @@ public class DocumentParser {
         return url;
     }
 
-    public static List<String> parseRouteWithStationTimes(String document) {
+    public static List<String> parseRouteWithStationTimes(Document document) {
         List<String> stationsTimes = new ArrayList<String>();
-        Document document1 = Jsoup.parse(document);
-        Elements pageContent = document1.getElementsByClass("pageContent");
+        Elements pageContent = document.getElementsByClass("pageContent");
         Element orderedList = pageContent.get(0);
         Elements listItems = orderedList.getElementsByTag("li");
         for (Element item : listItems) {
