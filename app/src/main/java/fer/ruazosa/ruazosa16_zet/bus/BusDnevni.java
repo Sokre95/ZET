@@ -25,10 +25,11 @@ import fer.ruazosa.ruazosa16_zet.data.ExampleData;
 import fer.ruazosa.ruazosa16_zet.wrappers.Line;
 import fer.ruazosa.ruazosa16_zet.R;
 
-public class BusDnevni extends MvpLceFragment<SwipeRefreshLayout, List<String>, LineView, LinePresenter>
+public class BusDnevni extends MvpLceFragment<SwipeRefreshLayout,
+        List<fer.ruazosa.ruazosa16_zet.service.Line>, LineView, LinePresenter>
         implements LineView, SwipeRefreshLayout.OnRefreshListener {
 
-    private List<Line> linije;
+    private List<fer.ruazosa.ruazosa16_zet.service.Line> linije;
     @BindView(R.id.list) RecyclerView recyclerView;
     RouteAdapter routeAdapter;
 
@@ -44,13 +45,12 @@ public class BusDnevni extends MvpLceFragment<SwipeRefreshLayout, List<String>, 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        //linije = ExampleData.getDnevniBus();
         ButterKnife.bind(this, view);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         routeAdapter = new RouteAdapter(getContext());
         recyclerView.setAdapter(routeAdapter);
         contentView.setOnRefreshListener(this);
-        //loadData(false);
+        loadData(false);
     }
 
     @Override
@@ -61,10 +61,11 @@ public class BusDnevni extends MvpLceFragment<SwipeRefreshLayout, List<String>, 
     @Override
     public void loadData(boolean pullToRefresh) {
         presenter.loadLines(pullToRefresh);
+        showContent();
     }
 
     @Override
-    public void setData(List<String> data) {
+    public void setData(List<fer.ruazosa.ruazosa16_zet.service.Line> data) {
         routeAdapter.setLines(data);
         routeAdapter.notifyDataSetChanged();
     }

@@ -42,7 +42,7 @@ public class Main {
         Call<Document> call = service.getRoutes(ZETService.BUS_LINES_DAY_ID);
         try {
             Document document = call.execute().body();
-            List<String> routes = DocumentParser.parseRoutes(document);
+            //List<String> routes = DocumentParser.parseRoutes(document);
             //for(String s : routes) System.out.println(s);
         } catch (IOException e) {
             e.printStackTrace();
@@ -55,7 +55,7 @@ public class Main {
         call = service.getRoutes(ZETService.BUS_LINES_NIGHT_ID);
         try {
             Document document = call.execute().body();
-            List<String> routes = DocumentParser.parseRoutes(document);
+            //List<String> routes = DocumentParser.parseRoutes(document);
             //for(String s : routes) System.out.println(s);
         } catch (IOException e) {
             e.printStackTrace();
@@ -68,7 +68,7 @@ public class Main {
         call = service.getRoutes(ZETService.TRAM_LINES_DAY_ID);
         try {
             Document document = call.execute().body();
-            List<String> routes = DocumentParser.parseRoutes(document);
+            //List<String> routes = DocumentParser.parseRoutes(document);
             //for(String s : routes) System.out.println(s);
         } catch (IOException e) {
             e.printStackTrace();
@@ -81,7 +81,7 @@ public class Main {
         call = service.getRoutes(ZETService.TRAM_LINES_NIGHT_ID);
         try {
             Document document = call.execute().body();
-            List<String> routes = DocumentParser.parseRoutes(document);
+            //List<String> routes = DocumentParser.parseRoutes(document);
             //for(String s : routes) System.out.println(s);
         } catch (IOException e) {
             e.printStackTrace();

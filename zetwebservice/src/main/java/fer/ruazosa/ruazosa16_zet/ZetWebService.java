@@ -9,6 +9,7 @@ import java.util.List;
 
 import fer.ruazosa.ruazosa16_zet.service.DocumentConverter;
 import fer.ruazosa.ruazosa16_zet.service.DocumentParser;
+import fer.ruazosa.ruazosa16_zet.service.Line;
 import fer.ruazosa.ruazosa16_zet.service.ZETService;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -44,37 +45,37 @@ public class ZetWebService {
         return instance;
     }
 
-    public Observable<List<String>> getDailyTramRoutes() throws IOException {
+    public Observable<List<Line>> getDailyTramRoutes() throws IOException {
         //291 is id for daily tram lines
-        Observable<List<String>> dailyTramRoutes = getRoutes(ZETService.TRAM_LINES_DAY_ID);
+        Observable<List<Line>> dailyTramRoutes = getRoutes(ZETService.TRAM_LINES_DAY_ID);
         return dailyTramRoutes;
     }
 
-    public Observable<List<String>> getNightlyTramRoutes() throws IOException {
-        Observable<List<String>> nightlyTramRoutes = getRoutes(ZETService.TRAM_LINES_NIGHT_ID);
+    public Observable<List<Line>> getNightlyTramRoutes() throws IOException {
+        Observable<List<Line>> nightlyTramRoutes = getRoutes(ZETService.TRAM_LINES_NIGHT_ID);
         return nightlyTramRoutes;
     }
 
-    public Observable<List<String>> getDailyBusRoutes() throws IOException {
-        Observable<List<String>> dailyBusRoutes = getRoutes(ZETService.BUS_LINES_DAY_ID);
+    public Observable<List<Line>> getDailyBusRoutes() throws IOException {
+        Observable<List<Line>> dailyBusRoutes = getRoutes(ZETService.BUS_LINES_DAY_ID);
         return dailyBusRoutes;
     }
 
-    public Observable<List<String>> getNightlyBusRoutes() throws IOException {
-        Observable<List<String>> nightlyBusRoutes = getRoutes(ZETService.BUS_LINES_NIGHT_ID);
+    public Observable<List<Line>> getNightlyBusRoutes() throws IOException {
+        Observable<List<Line>> nightlyBusRoutes = getRoutes(ZETService.BUS_LINES_NIGHT_ID);
         return nightlyBusRoutes;
     }
 
-    private Observable<List<String>> getRoutes(final int routesType) {
+    private Observable<List<Line>> getRoutes(final int routesType) {
 
-        return Observable.defer(new Func0<Observable<List<String>>>() {
+        return Observable.defer(new Func0<Observable<List<Line>>>() {
             @Override
-            public Observable<List<String>> call() {
+            public Observable<List<Line>> call() {
                 Call<Document> call = service.getRoutes(routesType);
                 Document doc = null;
                 try {
                     doc = call.execute().body();
-                    List<String> routes = DocumentParser.parseRoutes(doc);
+                    List<Line> routes = DocumentParser.parseRoutes(doc);
                     return Observable.just(routes);
                 } catch (IOException e) {
                     return null;

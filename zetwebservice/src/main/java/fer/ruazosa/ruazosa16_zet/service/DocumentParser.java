@@ -12,10 +12,13 @@ import javax.swing.JScrollBar;
 
 public class DocumentParser {
 
-    public static List<String> parseRoutes(Document document) {
-        List<String> routes = new ArrayList<String>();
+    public static List<Line> parseRoutes(Document document) {
+        List<Line> routes = new ArrayList<Line>();
         Elements tags = document.getElementsByAttributeValueContaining("href", "route_id=");
-        for(Element e : tags) routes.add(e.text());
+        for(Element e : tags) {
+            String[] route = e.text().split(" ", 2);
+            routes.add(new Line(route[0], route[1]));
+        }
         return routes;
     }
 
