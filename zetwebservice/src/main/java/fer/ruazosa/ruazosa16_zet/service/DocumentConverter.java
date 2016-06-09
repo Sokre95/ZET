@@ -6,7 +6,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.util.Scanner;
 
 import retrofit2.Converter;
