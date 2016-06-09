@@ -41,7 +41,7 @@ public class Main {
         ZETService service = r.create(ZETService.class);
         Call<Document> call = service.getRoutes(ZETService.BUS_LINES_DAY_ID);
         try {
-            String document = call.execute().body().html();
+            Document document = call.execute().body();
             List<String> routes = DocumentParser.parseRoutes(document);
             //for(String s : routes) System.out.println(s);
         } catch (IOException e) {
@@ -54,7 +54,7 @@ public class Main {
 
         call = service.getRoutes(ZETService.BUS_LINES_NIGHT_ID);
         try {
-            String document = call.execute().body().html();
+            Document document = call.execute().body();
             List<String> routes = DocumentParser.parseRoutes(document);
             //for(String s : routes) System.out.println(s);
         } catch (IOException e) {
@@ -67,7 +67,7 @@ public class Main {
 
         call = service.getRoutes(ZETService.TRAM_LINES_DAY_ID);
         try {
-            String document = call.execute().body().html();
+            Document document = call.execute().body();
             List<String> routes = DocumentParser.parseRoutes(document);
             //for(String s : routes) System.out.println(s);
         } catch (IOException e) {
@@ -80,7 +80,7 @@ public class Main {
 
         call = service.getRoutes(ZETService.TRAM_LINES_NIGHT_ID);
         try {
-            String document = call.execute().body().html();
+            Document document = call.execute().body();
             List<String> routes = DocumentParser.parseRoutes(document);
             //for(String s : routes) System.out.println(s);
         } catch (IOException e) {
@@ -89,7 +89,7 @@ public class Main {
 
         call = service.getRouteWithDirection(2, 0);
         try {
-            String document = call.execute().body().html();
+            Document document = call.execute().body();
             List<String> schedule = DocumentParser.parseSchedule(document, 0);
             //for(String s : schedule) System.out.println(s);
         } catch (IOException e) {
@@ -98,11 +98,11 @@ public class Main {
 
         call = service.getRouteWithDirection(2, 0);
         try {
-            String document = call.execute().body().html();
+            Document document = call.execute().body();
             String[] polazak = DocumentParser.parseSchedule(document, 0).get(0).split(" ");
             String url = DocumentParser.getUrlForScheduleTime(document, 0, polazak[0]);
             call = service.getSpecificTimeRoute(url);
-            String document1 = call.execute().body().html();
+            Document document1 = call.execute().body();
             List<String> times = DocumentParser.parseRouteWithStationTimes(document1);
             for(String s : times) System.out.println(s);
         } catch (IOException e) {
