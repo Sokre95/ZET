@@ -7,9 +7,6 @@ import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 import java.util.List;
-import java.util.Scanner;
-
-import javax.print.Doc;
 
 import fer.ruazosa.ruazosa16_zet.service.DocumentConverter;
 import fer.ruazosa.ruazosa16_zet.service.DocumentParser;

@@ -39,5 +39,4 @@ public interface ZETService {
 
     @GET
     Call<Document> getSpecificTimeRoute(@Url String url);
-
 }
