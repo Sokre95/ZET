@@ -1,4 +1,4 @@
-package fer.ruazosa.ruazosa16_zet.service;
+package fer.ruazosa.ruazosa16_zet.model;
 
 public class Line {
 

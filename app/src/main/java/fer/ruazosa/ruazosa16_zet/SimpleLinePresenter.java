@@ -1,17 +1,12 @@
 package fer.ruazosa.ruazosa16_zet;
 
-import android.database.Observable;
-import android.util.Log;
-import android.widget.ListView;
-
 import com.hannesdorfmann.mosby.mvp.MvpBasePresenter;
 
 import java.io.IOException;
 import java.util.List;
 
-import fer.ruazosa.ruazosa16_zet.service.Line;
+import fer.ruazosa.ruazosa16_zet.model.Line;
 import rx.Subscriber;
-import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;

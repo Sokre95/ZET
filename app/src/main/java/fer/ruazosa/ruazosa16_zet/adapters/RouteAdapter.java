@@ -14,19 +14,18 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import fer.ruazosa.ruazosa16_zet.activities.DetailsActivity;
-import fer.ruazosa.ruazosa16_zet.wrappers.Line;
 import fer.ruazosa.ruazosa16_zet.R;
 
 public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.TrasaViewHolder> {
 
-    private List<fer.ruazosa.ruazosa16_zet.service.Line> lines = new ArrayList<>();
+    private List<fer.ruazosa.ruazosa16_zet.model.Line> lines = new ArrayList<>();
     private Context c;
 
     public RouteAdapter(Context c) {
         this.c = c;
     }
 
-    public RouteAdapter(List<fer.ruazosa.ruazosa16_zet.service.Line> lines, Context c) {
+    public RouteAdapter(List<fer.ruazosa.ruazosa16_zet.model.Line> lines, Context c) {
         this.lines = lines;
         this.c = c;
     }
@@ -45,7 +44,7 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.TrasaViewHol
         holder.naziv_linije.setText(lines.get(position).getLineName());
     }
 
-    public void setLines(List<fer.ruazosa.ruazosa16_zet.service.Line> lines) {
+    public void setLines(List<fer.ruazosa.ruazosa16_zet.model.Line> lines) {
         this.lines = lines;
     }
 

@@ -9,7 +9,7 @@ import java.util.List;
 
 import fer.ruazosa.ruazosa16_zet.service.DocumentConverter;
 import fer.ruazosa.ruazosa16_zet.service.DocumentParser;
-import fer.ruazosa.ruazosa16_zet.service.Line;
+import fer.ruazosa.ruazosa16_zet.model.Line;
 import fer.ruazosa.ruazosa16_zet.service.ZETService;
 import okhttp3.ResponseBody;
 import retrofit2.Call;

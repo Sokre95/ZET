@@ -1,6 +1,5 @@
 package fer.ruazosa.ruazosa16_zet.service;
 
-import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -8,7 +7,7 @@ import org.jsoup.select.Elements;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JScrollBar;
+import fer.ruazosa.ruazosa16_zet.model.Line;
 
 public class DocumentParser {
 
@@ -16,7 +15,10 @@ public class DocumentParser {
         List<Line> routes = new ArrayList<Line>();
         Elements tags = document.getElementsByAttributeValueContaining("href", "route_id=");
         for(Element e : tags) {
-            String[] route = e.text().split(" ", 2);
+            String tagText = e.text();
+            tagText = tagText.replaceAll("&"+"nbsp;", " ");
+            tagText = tagText.replaceAll(String.valueOf((char) 160), " ");
+            String[] route = tagText.split(" +", 2);
             routes.add(new Line(route[0], route[1]));
         }
         return routes;

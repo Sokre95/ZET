@@ -21,15 +21,13 @@ import fer.ruazosa.ruazosa16_zet.LineView;
 import fer.ruazosa.ruazosa16_zet.LinesErrorMessage;
 import fer.ruazosa.ruazosa16_zet.SimpleLinePresenter;
 import fer.ruazosa.ruazosa16_zet.adapters.RouteAdapter;
-import fer.ruazosa.ruazosa16_zet.data.ExampleData;
-import fer.ruazosa.ruazosa16_zet.wrappers.Line;
 import fer.ruazosa.ruazosa16_zet.R;
 
 public class BusDnevni extends MvpLceFragment<SwipeRefreshLayout,
-        List<fer.ruazosa.ruazosa16_zet.service.Line>, LineView, LinePresenter>
+        List<fer.ruazosa.ruazosa16_zet.model.Line>, LineView, LinePresenter>
         implements LineView, SwipeRefreshLayout.OnRefreshListener {
 
-    private List<fer.ruazosa.ruazosa16_zet.service.Line> linije;
+    private List<fer.ruazosa.ruazosa16_zet.model.Line> linije;
     @BindView(R.id.list) RecyclerView recyclerView;
     RouteAdapter routeAdapter;
 
@@ -65,7 +63,7 @@ public class BusDnevni extends MvpLceFragment<SwipeRefreshLayout,
     }
 
     @Override
-    public void setData(List<fer.ruazosa.ruazosa16_zet.service.Line> data) {
+    public void setData(List<fer.ruazosa.ruazosa16_zet.model.Line> data) {
         routeAdapter.setLines(data);
         routeAdapter.notifyDataSetChanged();
     }
