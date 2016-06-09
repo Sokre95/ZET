@@ -41,7 +41,7 @@ public class BusNocni extends Fragment {
         linije = ExampleData.getBusNocni();
         ButterKnife.bind(this, view);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
-        routeAdapter = new RouteAdapter(linije, getContext());
+        routeAdapter = new RouteAdapter(getContext());
         recyclerView.setAdapter(routeAdapter);
     }
 }

@@ -40,7 +40,7 @@ public class TramNocni extends Fragment {
         linije = ExampleData.getTramNocni();
         ButterKnife.bind(this, view);
         rv.setLayoutManager(new LinearLayoutManager(view.getContext()));
-        RouteAdapter pa = new RouteAdapter(linije, getContext());
+        RouteAdapter pa = new RouteAdapter(getContext());
         rv.setAdapter(pa);
     }
 }

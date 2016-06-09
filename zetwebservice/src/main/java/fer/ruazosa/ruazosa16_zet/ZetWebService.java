@@ -15,6 +15,7 @@ import retrofit2.Call;
 import retrofit2.Converter;
 import retrofit2.Retrofit;
 import rx.Observable;
+import rx.functions.Func0;
 
 public class ZetWebService {
 
@@ -64,12 +65,23 @@ public class ZetWebService {
         return nightlyBusRoutes;
     }
 
-    private Observable<List<String>> getRoutes(int routesType) throws IOException {
-        Call<Document> call = service.getRoutes(routesType);
-        Document doc = call.execute().body();
-        List<String> routes = DocumentParser.parseRoutes(doc);
-        Observable<List<String>> observable = Observable.just(routes);
-        return observable;
+    private Observable<List<String>> getRoutes(final int routesType) {
+
+        return Observable.defer(new Func0<Observable<List<String>>>() {
+            @Override
+            public Observable<List<String>> call() {
+                Call<Document> call = service.getRoutes(routesType);
+                Document doc = null;
+                try {
+                    doc = call.execute().body();
+                    List<String> routes = DocumentParser.parseRoutes(doc);
+                    return Observable.just(routes);
+                } catch (IOException e) {
+                    return null;
+                }
+
+            }
+        });
     }
 
 }

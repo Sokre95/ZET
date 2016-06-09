@@ -44,7 +44,7 @@ public class TramDnevni extends Fragment {
         linije = ExampleData.getTramDnevni();
         ButterKnife.bind(this, view);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
-        RouteAdapter pa = new RouteAdapter(linije, getContext());
+        RouteAdapter pa = new RouteAdapter(getContext());
         recyclerView.setAdapter(pa);
     }
 

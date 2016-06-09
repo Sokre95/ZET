@@ -6,5 +6,6 @@ import java.util.List;
 
 import fer.ruazosa.ruazosa16_zet.wrappers.Line;
 
-public interface LineView extends MvpLceView<List<Line>> {
+public interface LineView extends MvpLceView<List<String>> {
+    void setData(List<String> data);
 }
