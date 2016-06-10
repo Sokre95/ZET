@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fer.ruazosa.ruazosa16_zet.wrappers.InfoDisplay;
-import fer.ruazosa.ruazosa16_zet.wrappers.Line;
 
 /**
  * Klasa koja implementira staticke metode dohvata reprezentativnih podataka.

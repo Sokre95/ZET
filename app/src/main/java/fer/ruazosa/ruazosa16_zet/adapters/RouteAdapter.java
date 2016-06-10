@@ -15,6 +15,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import fer.ruazosa.ruazosa16_zet.activities.DetailsActivity;
 import fer.ruazosa.ruazosa16_zet.R;
+import fer.ruazosa.ruazosa16_zet.model.Line;
 
 public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.TrasaViewHolder> {
 
