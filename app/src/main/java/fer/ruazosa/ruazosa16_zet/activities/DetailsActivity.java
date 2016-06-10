@@ -14,9 +14,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -32,7 +35,11 @@ public class DetailsActivity extends AppCompatActivity {
 
 
     Spinner spinner;
+    String lineNumber;
+    ListView lv;
     SimpleDateFormat df = new SimpleDateFormat("dd-MM-yy");
+    SimpleDateFormat argDf = new SimpleDateFormat("yyyyMMdd");
+
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -46,7 +53,7 @@ public class DetailsActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         Intent i = getIntent();
-        String lineNumber = i.getStringExtra("LINE_NUMBER");
+        lineNumber = i.getStringExtra("LINE_NUMBER");
 
         getSupportActionBar().setTitle(lineNumber);
 
@@ -74,20 +81,59 @@ public class DetailsActivity extends AppCompatActivity {
             Calendar c = Calendar.getInstance();
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                c.add(Calendar.DAY_OF_YEAR,position);
-                String formattedDate = df.format(c.getTime());
-                Toast.makeText(getBaseContext(), (CharSequence) parent.getItemAtPosition(position)+" selected", Toast.LENGTH_LONG);
-                //   updateUI(formattedDate);
+
+                updateUI();
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                String formattedDate = df.format(c.getTime());
-                Toast.makeText(getBaseContext(), (CharSequence) parent.getItemAtPosition(0)+ " selected", Toast.LENGTH_LONG);
-                //  updateUI(formattedDate);
+                updateUI();
             }
         });
 
         return true;
+    }
+
+    private void updateUI() {
+        int index = spinner.getSelectedItemPosition();
+        Calendar c = Calendar.getInstance();
+        c.add(Calendar.DAY_OF_YEAR,index);
+        String date = argDf.format(c.getTime());
+        int route = Integer.parseInt(lineNumber);
+
+//        TextView tableRow = (TextView) findViewById(R.id.polazak);
+//        tableRow.setText(index+" " + date+ " " + route);
+
+        List<String> schedule = new ArrayList<>();
+        schedule.add("PRVdasdasdassI");
+        schedule.add("DRUGI");
+
+        //String[] array = new String[] {"PRVI", "DRUGI"};
+        lv = (ListView) findViewById(R.id.my_list_view);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+                this, android.R.layout.simple_list_item_1, schedule
+        );
+        lv.setAdapter(adapter);
+
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                getRouteDetails(position);
+
+            }
+        });
+
+    }
+
+    private void getRouteDetails(int position) {
+//        TextView tableRow = (TextView) findViewById(R.id.polazak);
+//        tableRow.setText("Trazim detalje");
+//
+//
+//        tableRow.setText((String)lv.getItemAtPosition(position));
+
+        Intent i = new Intent(this, RouteDetailsActivity.class );
+        i.putExtra("ROUTE_DETAILS", (String)lv.getItemAtPosition(position));
+        startActivity(i);
     }
 }

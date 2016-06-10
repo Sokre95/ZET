@@ -16,20 +16,10 @@
             layout="@layout/toolbar_layout">
         </include>
 
-        <TableLayout
+        <ListView
+            android:id="@+id/my_list_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/prikaz_polazaka">
-
-            <TableRow>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Sample"
-                    android:id="@+id/polazak" />
-            </TableRow>
-
-        </TableLayout>
+            android:layout_height="wrap_content"/>
 
     </LinearLayout>
 
