@@ -6,6 +6,7 @@ import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 import retrofit2.http.Url;
+import rx.Observable;
 
 public interface ZETService {
     public static final int TRAM_LINES_DAY_ID = 291;
@@ -19,21 +20,21 @@ public interface ZETService {
     public static final String ENDPOINT = "http://www.zet.hr/";
 
     @GET("/default.aspx")
-    Call<Document> getRoutes(@Query("id") int id);
+    Observable<Document> getRoutes(@Query("id") int id);
 
     @GET("/default.aspx?id="+BASE_LINEVIEW_ID)
-    Call<Document> getRouteDefault(@Query("route_id") int routeId);
+    Observable<Document> getRouteDefault(@Query("route_id") int routeId);
 
     @GET("/default.aspx?id="+BASE_LINEVIEW_ID)
-    Call<Document> getRouteForDateWithDirection(@Query("route_id") int routeId, @Query("datum") String date,
+    Observable<Document> getRouteForDateWithDirection(@Query("route_id") int routeId, @Query("datum") String date,
                                                 @Query("pravac") int direction);
 
     @GET("/default.aspx?id="+BASE_TRIPVIEW_ID)
-    Call<Document> getTrip(@Query("route_id") int routeId, @Query("trip_id") String trip_id, @Query("direction") int direction);
+    Observable<Document> getTrip(@Query("route_id") int routeId, @Query("trip_id") String trip_id, @Query("direction") int direction);
 
     @GET("/default.aspx?id="+BASE_LINEVIEW_ID)
-    Call<Document> getRouteWithDirection(@Query("route_id") int routeId, @Query("pravac") int direction);
+    Observable<Document> getRouteWithDirection(@Query("route_id") int routeId, @Query("pravac") int direction);
 
     @GET
-    Call<Document> getSpecificTimeRoute(@Url String url);
+    Observable<Document> getSpecificTimeRoute(@Url String url);
 }

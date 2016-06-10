@@ -1,24 +1,8 @@
 package fer.ruazosa.ruazosa16_zet;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-
-import java.io.IOException;
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Type;
-import java.util.List;
-
-import fer.ruazosa.ruazosa16_zet.service.DocumentConverter;
-import fer.ruazosa.ruazosa16_zet.service.DocumentParser;
-import fer.ruazosa.ruazosa16_zet.service.ZETService;
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Converter;
-import retrofit2.Retrofit;
-
 public class Main {
-    public static void main(String[]args){
-
+    public static void main(String[] args) {
+/*
         Retrofit r = new Retrofit.Builder()
                 .baseUrl(ZETService.ENDPOINT)
                 .addConverterFactory(new Converter.Factory() {
@@ -30,11 +14,11 @@ public class Main {
                 })
                 .build();
 
-        /*************************/
-        /**** GET ZET ROUTES *****/
-        /*************************/
+        /*************************
+        /**** GET ZET ROUTES *****
+        /*************************
 
-        /**** BUS DAILY ROUTES ****/
+        /**** BUS DAILY ROUTES ****
         //System.out.println("Dnevne linije autobusa");
         //System.out.println("----------------------");
 
@@ -48,7 +32,7 @@ public class Main {
             e.printStackTrace();
         }
 
-        /**** BUS NIGHT ROUTES ****/
+        /**** BUS NIGHT ROUTES ****
         //System.out.println("Nocne linije autobusa");
         //System.out.println("----------------------");
 
@@ -61,7 +45,7 @@ public class Main {
             e.printStackTrace();
         }
 
-        /**** TRAM DAILY ROUTES ****/
+        /**** TRAM DAILY ROUTES ****
         //System.out.println("Dnevne linije tramvaja");
         //System.out.println("----------------------");
 
@@ -74,7 +58,7 @@ public class Main {
             e.printStackTrace();
         }
 
-        /**** TRAM NIGHT ROUTES ****/
+        /**** TRAM NIGHT ROUTES ****
         //System.out.println("Nocne linije tramvaja");
         //System.out.println("----------------------");
 
@@ -108,6 +92,6 @@ public class Main {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+*/
     }
 }

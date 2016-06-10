@@ -17,10 +17,8 @@ public class DocumentConverter implements Converter<ResponseBody, Document> {
         Scanner scanner = null;
         try {
             scanner = new Scanner( value.byteStream() ).useDelimiter( "\\A" );
-
             String html = scanner.hasNext() ? scanner.next() : "";
             value.byteStream().close();
-
             return Jsoup.parse(html);
         } catch ( IOException e ) {
             e.printStackTrace();
