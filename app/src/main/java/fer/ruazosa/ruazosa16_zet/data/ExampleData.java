@@ -3,6 +3,7 @@ package fer.ruazosa.ruazosa16_zet.data;
 import java.util.ArrayList;
 import java.util.List;
 
+import fer.ruazosa.ruazosa16_zet.model.Line;
 import fer.ruazosa.ruazosa16_zet.wrappers.InfoDisplay;
 
 /**

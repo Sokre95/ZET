@@ -18,4 +18,22 @@ public class Line {
         return lineName;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Line line = (Line) o;
+
+        if (!lineNumber.equals(line.lineNumber)) return false;
+        return lineName.equals(line.lineName);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = lineNumber.hashCode();
+        result = 31 * result + lineName.hashCode();
+        return result;
+    }
 }
