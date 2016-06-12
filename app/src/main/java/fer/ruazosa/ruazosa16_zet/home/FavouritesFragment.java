@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import fer.ruazosa.ruazosa16_zet.adapters.DisplayAdapter;
 import fer.ruazosa.ruazosa16_zet.data.ExampleData;
 import fer.ruazosa.ruazosa16_zet.wrappers.InfoDisplay;
@@ -19,17 +21,15 @@ import fer.ruazosa.ruazosa16_zet.R;
 
 public class FavouritesFragment extends Fragment {
 
-    private RecyclerView rv;
+    @BindView(R.id.list) RecyclerView recyclerView;
 
     public FavouritesFragment() {
-        // Required empty public constructor
     }
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_favourites, container, false);
     }
 
@@ -37,10 +37,9 @@ public class FavouritesFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         List<InfoDisplay> displays = ExampleData.getFavouritesInfo();
-        rv = (RecyclerView) view.findViewById(R.id.list);
-        LinearLayoutManager llm = new LinearLayoutManager(view.getContext());
-        rv.setLayoutManager(llm);
+        ButterKnife.bind(this, view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         DisplayAdapter displayAdapter = new DisplayAdapter(displays);
-        rv.setAdapter(displayAdapter);
+        recyclerView.setAdapter(displayAdapter);
     }
 }

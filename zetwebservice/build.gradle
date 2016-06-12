@@ -6,4 +6,8 @@ dependencies {
     compile 'com.squareup.retrofit2:retrofit:2.0.2'
     compile 'com.squareup.okhttp:okhttp:2.2.0'
     compile 'com.squareup.okhttp:okhttp-urlconnection:2.0.0'
+    compile 'io.reactivex:rxjava:1.1.5'
+    compile 'com.squareup.retrofit2:adapter-rxjava:2.0.2'
+    sourceCompatibility = 1.7
+    targetCompatibility = 1.7
 }

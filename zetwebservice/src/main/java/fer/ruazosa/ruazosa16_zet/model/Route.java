@@ -1,4 +1,4 @@
-package hr.fer.tel.ruazosa.zet.backend.model;
+package fer.ruazosa.ruazosa16_zet.model;
 
 import java.util.List;
 

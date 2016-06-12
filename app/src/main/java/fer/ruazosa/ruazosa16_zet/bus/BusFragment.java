@@ -11,15 +11,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import fer.ruazosa.ruazosa16_zet.R;
 import fer.ruazosa.ruazosa16_zet.adapters.ViewPagerAdapter;
 
 public class BusFragment extends Fragment {
 
-    private TabLayout tabLayout;
-    private ViewPager viewPager;
+    @BindView(R.id.tabLayout) TabLayout tabLayout;
+    @BindView(R.id.viewPager) ViewPager viewPager;
     private ViewPagerAdapter viewPagerAdapter;
-    private FragmentActivity fragmentActivity;
+
+    public static final String DAILY_BUS = "Daily bus";
+    public static final String NIGHT_BUS = "Night bus";
 
     public BusFragment() {
     }
@@ -27,26 +31,23 @@ public class BusFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        fragmentActivity = (FragmentActivity) context;
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_bus, container, false);
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        tabLayout = (TabLayout) view.findViewById(R.id.tabLayout);
-        viewPager = (ViewPager) view.findViewById(R.id.viewPager);
+
+        ButterKnife.bind(this, view);
 
         viewPagerAdapter = new ViewPagerAdapter(getChildFragmentManager());
-        viewPagerAdapter.addFragments(new BusDnevni(), "Dnevni");
-        viewPagerAdapter.addFragments(new BusNocni(), "Nocni");
+        viewPagerAdapter.addFragments(new BusDnevni(), DAILY_BUS);
+        viewPagerAdapter.addFragments(new BusNocni(), NIGHT_BUS);
 
         viewPager.setAdapter(viewPagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
