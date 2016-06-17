@@ -12,8 +12,8 @@ import fer.ruazosa.ruazosa16_zet.model.Trip;
 
 public class DocumentParser {
 
-    public static List<Line> parseRoutes(Document document) {
-        List<Line> routes = new ArrayList<Line>();
+    public static ArrayList<Line> parseRoutes(Document document) {
+        ArrayList<Line> routes = new ArrayList<Line>();
         Elements tags = document.getElementsByAttributeValueContaining("href", "route_id=");
         for (Element e : tags) {
             String tagText = e.text();
@@ -25,8 +25,8 @@ public class DocumentParser {
         return routes;
     }
 
-    public static List<Trip> parseSchedule(Document document, int direction) {
-        List<Trip> schedule = new ArrayList<>();
+    public static ArrayList<Trip> parseSchedule(Document document, int direction) {
+        ArrayList<Trip> schedule = new ArrayList<>();
         Elements scheduleElements = document.getElementsByAttributeValueContaining("href", "direction_id=" + direction);
         for (Element e : scheduleElements) {
             // primjer elementa: tr><td><a href='...'>06:15:00</a></td><td>Kaptol</td><td>&nbsp;</td><td>Britanski trg</td></tr>
@@ -50,8 +50,8 @@ public class DocumentParser {
         return tripId;
     }
 
-    public static List<String> parseRouteWithStationTimes(Document document) {
-        List<String> stationsTimes = new ArrayList<String>();
+    public static ArrayList<String> parseRouteWithStationTimes(Document document) {
+        ArrayList<String> stationsTimes = new ArrayList<String>();
         Elements pageContent = document.getElementsByClass("pageContent");
         Element orderedList = pageContent.get(0);
         Elements listItems = orderedList.getElementsByTag("li");
@@ -61,8 +61,8 @@ public class DocumentParser {
         return stationsTimes;
     }
 
-    public static List<String> parseRouteScheduleDates(Document document) {
-        List<String> dates = new ArrayList<String>();
+    public static ArrayList<String> parseRouteScheduleDates(Document document) {
+        ArrayList<String> dates = new ArrayList<String>();
         Elements pageContent = document.getElementsByClass("pageContent");
         Element pageContentDiv = pageContent.get(0);
         Elements datesOptionTags = pageContentDiv.getElementsByTag("option");

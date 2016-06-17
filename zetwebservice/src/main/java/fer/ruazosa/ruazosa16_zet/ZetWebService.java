@@ -5,6 +5,7 @@ import org.jsoup.nodes.Document;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 
 import fer.ruazosa.ruazosa16_zet.model.Line;
@@ -51,34 +52,34 @@ public class ZetWebService {
         return instance;
     }
 
-    public Observable<List<Line>> getDailyTramRoutes() throws IOException {
-        Observable<List<Line>> dailyTramRoutes = getRoutes(ZETService.TRAM_LINES_DAY_ID);
+    public Observable<ArrayList<Line>> getDailyTramRoutes() throws IOException {
+        Observable<ArrayList<Line>> dailyTramRoutes = getRoutes(ZETService.TRAM_LINES_DAY_ID);
         return dailyTramRoutes;
     }
 
-    public Observable<List<Line>> getNightlyTramRoutes() throws IOException {
-        Observable<List<Line>> nightlyTramRoutes = getRoutes(ZETService.TRAM_LINES_NIGHT_ID);
+    public Observable<ArrayList<Line>> getNightlyTramRoutes() throws IOException {
+        Observable<ArrayList<Line>> nightlyTramRoutes = getRoutes(ZETService.TRAM_LINES_NIGHT_ID);
         return nightlyTramRoutes;
     }
 
-    public Observable<List<Line>> getDailyBusRoutes() throws IOException {
-        Observable<List<Line>> dailyBusRoutes = getRoutes(ZETService.BUS_LINES_DAY_ID);
+    public Observable<ArrayList<Line>> getDailyBusRoutes() throws IOException {
+        Observable<ArrayList<Line>> dailyBusRoutes = getRoutes(ZETService.BUS_LINES_DAY_ID);
         return dailyBusRoutes;
     }
 
-    public Observable<List<Line>> getNightlyBusRoutes() throws IOException {
-        Observable<List<Line>> nightlyBusRoutes = getRoutes(ZETService.BUS_LINES_NIGHT_ID);
+    public Observable<ArrayList<Line>> getNightlyBusRoutes() throws IOException {
+        Observable<ArrayList<Line>> nightlyBusRoutes = getRoutes(ZETService.BUS_LINES_NIGHT_ID);
         return nightlyBusRoutes;
     }
 
-    private Observable<List<Line>> getRoutes(final int routesType) {
-        return Observable.defer(new Func0<Observable<List<Line>>>() {
+    private Observable<ArrayList<Line>> getRoutes(final int routesType) {
+        return Observable.defer(new Func0<Observable<ArrayList<Line>>>() {
             @Override
-            public Observable<List<Line>> call() {
+            public Observable<ArrayList<Line>> call() {
                 Observable<Document> doc = service.getRoutes(routesType);
-                Observable<List<Line>> lines = doc.map(new Func1<Document, List<Line>>() {
+                Observable<ArrayList<Line>> lines = doc.map(new Func1<Document, ArrayList<Line>>() {
                     @Override
-                    public List<Line> call(Document document) {
+                    public ArrayList<Line> call(Document document) {
                         return DocumentParser.parseRoutes(document);
                     }
                 });
@@ -91,14 +92,14 @@ public class ZetWebService {
      * @param routeId        unique route id
      * @param routeDirection number which may be 0 or 1
      */
-    public Observable<List<Trip>> getRouteSchedule(final int routeId, final int routeDirection) {
-        return Observable.defer(new Func0<Observable<List<Trip>>>() {
+    public Observable<ArrayList<Trip>> getRouteSchedule(final int routeId, final int routeDirection) {
+        return Observable.defer(new Func0<Observable<ArrayList<Trip>>>() {
             @Override
-            public Observable<List<Trip>> call() {
+            public Observable<ArrayList<Trip>> call() {
                 Observable<Document> doc = service.getRoutes(routeId);
-                Observable<List<Trip>> trips = doc.map(new Func1<Document, List<Trip>>() {
+                Observable<ArrayList<Trip>> trips = doc.map(new Func1<Document, ArrayList<Trip>>() {
                     @Override
-                    public List<Trip> call(Document document) {
+                    public ArrayList<Trip> call(Document document) {
                         return DocumentParser.parseSchedule(document, routeDirection);
                     }
                 });
@@ -112,14 +113,14 @@ public class ZetWebService {
      * @param routeDirection number which may be 0 or 1
      * @param date           date String in yyyymmdd format
      */
-    public Observable<List<Trip>> getRouteScheduleByDate(final int routeId, final int routeDirection, final String date) throws IOException {
-        return Observable.defer(new Func0<Observable<List<Trip>>>() {
+    public Observable<ArrayList<Trip>> getRouteScheduleByDate(final int routeId, final int routeDirection, final String date) throws IOException {
+        return Observable.defer(new Func0<Observable<ArrayList<Trip>>>() {
             @Override
-            public Observable<List<Trip>> call() {
+            public Observable<ArrayList<Trip>> call() {
                 final Observable<Document> doc = service.getRouteScheduleForDate(routeId, date);
-                Observable<List<Trip>> trips = doc.map(new Func1<Document, List<Trip>>() {
+                Observable<ArrayList<Trip>> trips = doc.map(new Func1<Document, ArrayList<Trip>>() {
                     @Override
-                    public List<Trip> call(Document document) {
+                    public ArrayList<Trip> call(Document document) {
                         return DocumentParser.parseSchedule(document, routeDirection);
                     }
                 });
@@ -133,10 +134,10 @@ public class ZetWebService {
      * @param tripDirection number which may be 0 or 1
      * @param tripTime      time string in hh:mm:ss format
      */
-    public Observable<List<String>> getTripStationsTimes(final int routeId, final int tripDirection, final String tripTime) throws IOException {
-        Observable<List<String>> stationTimes = service.getRouteSchedule(routeId).map(new Func1<Document, List<String>>() {
+    public Observable<ArrayList<String>> getTripStationsTimes(final int routeId, final int tripDirection, final String tripTime) throws IOException {
+        Observable<ArrayList<String>> stationTimes = service.getRouteSchedule(routeId).map(new Func1<Document, ArrayList<String>>() {
             @Override
-            public List<String> call(Document document) {
+            public ArrayList<String> call(Document document) {
                 String tripId = DocumentParser.getTripIdForScheduleAndTime(document, tripDirection, tripTime);
                 if (tripId == null) {
                     return null;
@@ -153,10 +154,10 @@ public class ZetWebService {
         return stationTimes;
     }
 
-    public Observable<List<String>> getAvailableDatesForRouteSchedules(final int routeId) {
-        Observable<List<String>> routeDates = service.getRouteSchedule(routeId).map(new Func1<Document, List<String>>() {
+    public Observable<ArrayList<String>> getAvailableDatesForRouteSchedules(final int routeId) {
+        Observable<ArrayList<String>> routeDates = service.getRouteSchedule(routeId).map(new Func1<Document, ArrayList<String>>() {
             @Override
-            public List<String> call(Document document) {
+            public ArrayList<String> call(Document document) {
                 return DocumentParser.parseRouteScheduleDates(document);
             }
         });

@@ -19,14 +19,14 @@ import fer.ruazosa.ruazosa16_zet.model.Line;
 
 public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.TrasaViewHolder> {
 
-    private List<fer.ruazosa.ruazosa16_zet.model.Line> lines = new ArrayList<>();
+    private ArrayList<Line> lines = new ArrayList<>();
     private Context c;
 
     public RouteAdapter(Context c) {
         this.c = c;
     }
 
-    public RouteAdapter(List<fer.ruazosa.ruazosa16_zet.model.Line> lines, Context c) {
+    public RouteAdapter(ArrayList<Line> lines, Context c) {
         this.lines = lines;
         this.c = c;
     }
@@ -45,8 +45,12 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.TrasaViewHol
         holder.naziv_linije.setText(lines.get(position).getLineName());
     }
 
-    public void setLines(List<fer.ruazosa.ruazosa16_zet.model.Line> lines) {
+    public void setLines(ArrayList<Line> lines) {
         this.lines = lines;
+    }
+
+    public ArrayList<Line> getLines() {
+        return this.lines;
     }
 
     @Override

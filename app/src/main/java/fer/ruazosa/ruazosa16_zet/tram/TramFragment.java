@@ -13,10 +13,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import fer.ruazosa.ruazosa16_zet.R;
 import fer.ruazosa.ruazosa16_zet.adapters.ViewPagerAdapter;
+import fer.ruazosa.ruazosa16_zet.bus.BusDnevni;
+import fer.ruazosa.ruazosa16_zet.bus.BusNocni;
+import fer.ruazosa.ruazosa16_zet.model.Line;
 
 public class TramFragment extends Fragment {
 
@@ -24,8 +29,10 @@ public class TramFragment extends Fragment {
     @BindView(R.id.viewPager) ViewPager viewPager;
     private ViewPagerAdapter viewPagerAdapter;
 
-    public static final String DNEVNI = "Dnevni";
-    public static final String NOCNI = "Nocni";
+    public static final String DAILY_TRAM = "Daily tram";
+    public static final String NIGHT_TRAM = "Night tram";
+    public static final String DAILY_TRAM_DATA = "Daily tram data";
+    public static final String NIGHT_TRAM_DATA = "Night tram data";
 
     public TramFragment() {
     }
@@ -38,6 +45,7 @@ public class TramFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        setRetainInstance(true);
         return inflater.inflate(R.layout.fragment_tram, container, false);
     }
 
@@ -46,12 +54,38 @@ public class TramFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         ButterKnife.bind(this, view);
-
         viewPagerAdapter = new ViewPagerAdapter(getChildFragmentManager());
-        viewPagerAdapter.addFragments(new TramDnevni(), DNEVNI);
-        viewPagerAdapter.addFragments(new TramNocni(), NOCNI);
+
+        if(savedInstanceState != null) {
+            ArrayList<Line> dailyTramData = (ArrayList<Line>)
+                    savedInstanceState.getSerializable(DAILY_TRAM_DATA);
+            ArrayList<Line> nightTramData = (ArrayList<Line>)
+                    savedInstanceState.getSerializable(NIGHT_TRAM_DATA);
+            Bundle daily = new Bundle();
+            Bundle night = new Bundle();
+            daily.putSerializable("DATA", dailyTramData);
+            night.putSerializable("DATA", nightTramData);
+            TramDnevni tramDnevni = new TramDnevni();
+            TramNocni tramNocni = new TramNocni();
+            tramDnevni.setArguments(daily);
+            tramNocni.setArguments(night);
+            viewPagerAdapter.addFragments(tramDnevni, DAILY_TRAM);
+            viewPagerAdapter.addFragments(tramNocni, NIGHT_TRAM);
+        } else {
+            viewPagerAdapter.addFragments(new TramDnevni(), DAILY_TRAM);
+            viewPagerAdapter.addFragments(new TramNocni(), NIGHT_TRAM);
+        }
 
         viewPager.setAdapter(viewPagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        TramDnevni tramDnevni = (TramDnevni) viewPagerAdapter.getItem(0);
+        TramNocni tramNocni = (TramNocni) viewPagerAdapter.getItem(1);
+        outState.putSerializable(DAILY_TRAM_DATA, tramDnevni.getData());
+        outState.putSerializable(NIGHT_TRAM_DATA, tramNocni.getData());
     }
 }

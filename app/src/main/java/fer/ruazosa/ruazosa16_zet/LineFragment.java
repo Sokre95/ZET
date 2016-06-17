@@ -10,7 +10,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.hannesdorfmann.mosby.mvp.lce.MvpLceFragment;
+import com.hannesdorfmann.mosby.mvp.viewstate.lce.LceViewState;
+import com.hannesdorfmann.mosby.mvp.viewstate.lce.MvpLceViewStateFragment;
+import com.hannesdorfmann.mosby.mvp.viewstate.lce.data.SerializeableLceViewState;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -20,20 +24,26 @@ import fer.ruazosa.ruazosa16_zet.model.Line;
 import fer.ruazosa.ruazosa16_zet.presenters.MvpLceRxPresenter;
 
 public abstract class LineFragment extends MvpLceFragment<SwipeRefreshLayout,
-        List<Line>, LineView, MvpLceRxPresenter<LineView, List<Line>>>
+        ArrayList<Line>, LineView, MvpLceRxPresenter<LineView, ArrayList<Line>>>
         implements LineView, SwipeRefreshLayout.OnRefreshListener {
 
     @BindView(R.id.list)
     RecyclerView recyclerView;
-    RouteAdapter routeAdapter;
+    protected RouteAdapter routeAdapter;
+
+    ArrayList<Line> data = null;
+    protected boolean rotated = false;
 
     public LineFragment() {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_bus_dnevni, container, false);
+    public void setArguments(Bundle args) {
+        super.setArguments(args);
+        if(args != null) {
+            data = (ArrayList<Line>)args.getSerializable("DATA");
+            rotated = true;
+        }
     }
 
     @Override
@@ -44,12 +54,12 @@ public abstract class LineFragment extends MvpLceFragment<SwipeRefreshLayout,
         routeAdapter = new RouteAdapter(getContext());
         recyclerView.setAdapter(routeAdapter);
         contentView.setOnRefreshListener(this);
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        loadData(false);
+        if(data != null) {
+            setData(data);
+            showContent();
+        } else {
+            loadData(false);
+        }
     }
 
     @Override
@@ -61,7 +71,7 @@ public abstract class LineFragment extends MvpLceFragment<SwipeRefreshLayout,
     public abstract void loadData(boolean pullToRefresh);
 
     @Override
-    public void setData(List<Line> data) {
+    public void setData(ArrayList<Line> data) {
         routeAdapter.setLines(data);
         routeAdapter.notifyDataSetChanged();
     }
@@ -84,6 +94,10 @@ public abstract class LineFragment extends MvpLceFragment<SwipeRefreshLayout,
     public void showError(Throwable e, boolean pullToRefresh) {
         super.showError(e, pullToRefresh);
         contentView.setRefreshing(false);
+    }
+
+    public ArrayList<Line> getData() {
+        return routeAdapter.getLines();
     }
 
 }

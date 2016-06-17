@@ -3,6 +3,7 @@ package fer.ruazosa.ruazosa16_zet.adapters;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 
 import java.util.ArrayList;
 

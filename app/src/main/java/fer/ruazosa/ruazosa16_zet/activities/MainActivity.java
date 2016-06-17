@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private FragmentTransaction fragmentTransaction;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -46,18 +46,13 @@ public class MainActivity extends AppCompatActivity {
 
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
 
-        fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.add(R.id.main_container, new HomeFragment(), HOME_FRAGMENT);
-        fragmentTransaction.commit();
-
         if(savedInstanceState != null) {
             getSupportActionBar().setTitle(savedInstanceState.getCharSequence("title"));
-            Fragment currentFragment = getSupportFragmentManager().getFragment(savedInstanceState, "fragment");
-            fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.main_container, currentFragment);
-            fragmentTransaction.commit();
         } else {
             getSupportActionBar().setTitle("Home");
+            fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.add(R.id.main_container, new HomeFragment(), HOME_FRAGMENT);
+            fragmentTransaction.commit();
         }
 
         navigationView.setNavigationItemSelectedListener(
@@ -101,13 +96,6 @@ public class MainActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
         CharSequence title = getSupportActionBar().getTitle();
         outState.putCharSequence("title", title);
-        Fragment currentFragment = getSupportFragmentManager().findFragmentByTag(HOME_FRAGMENT);
-        if(currentFragment == null) {
-            currentFragment = getSupportFragmentManager().findFragmentByTag(BUS_FRAGMENT);
-            if(currentFragment == null) {
-                currentFragment = getSupportFragmentManager().findFragmentByTag(TRAM_FRAGMENT);
-            }
-        }
-        getSupportFragmentManager().putFragment(outState, "fragment", currentFragment);
     }
+
 }
