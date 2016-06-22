@@ -96,7 +96,7 @@ public class ZetWebService {
         return Observable.defer(new Func0<Observable<ArrayList<Trip>>>() {
             @Override
             public Observable<ArrayList<Trip>> call() {
-                Observable<Document> doc = service.getRoutes(routeId);
+                Observable<Document> doc = service.getRouteSchedule(routeId);
                 Observable<ArrayList<Trip>> trips = doc.map(new Func1<Document, ArrayList<Trip>>() {
                     @Override
                     public ArrayList<Trip> call(Document document) {
