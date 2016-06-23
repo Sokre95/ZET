@@ -1,8 +1,9 @@
 package fer.ruazosa.ruazosa16_zet.model;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Line {
+public class Line implements Serializable {
 
     private String lineNumber;
     private String lineName;
@@ -52,5 +53,10 @@ public class Line {
         int result = lineNumber.hashCode();
         result = 31 * result + lineName.hashCode();
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return lineNumber + "-" + lineName;
     }
 }

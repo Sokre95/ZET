@@ -9,12 +9,13 @@
     card_view:cardUseCompatPadding="true">
 
     <RelativeLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         android:padding="16dp">
 
         <TextView
-            android:id="@+id/broj_linije"
+            android:id="@+id/departure_time"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
@@ -27,14 +28,14 @@
             android:id="@+id/separator1"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_below="@id/broj_linije"
+            android:layout_below="@id/departure_time"
             android:background="@color/dividerColor" />
 
         <TextView
-            android:id="@+id/naziv_linije"
+            android:id="@+id/starting_point_and_destination"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/separator1"
+            android:layout_below="@+id/departure_time"
             android:layout_centerInParent="true"
             android:gravity="start"
             android:textColor="@color/trasaNameColor"

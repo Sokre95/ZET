@@ -10,19 +10,27 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity
+            android:name=".activities.MainActivity"
+            android:configChanges="orientation">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-    <activity android:name=".activities.MainActivity"
-        android:configChanges="orientation">
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".activities.DetailsActivity" />
+        <activity android:name=".activities.RouteDetailsActivity" />
+        <activity android:name=".activities.SearchActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
 
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
-    </activity>
-    <activity android:name=".activities.DetailsActivity">
-    </activity>
-    <activity android:name=".activities.RouteDetailsActivity">
-    </activity>
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+        </activity>
+        <activity android:name=".activities.MapActivity"></activity>
     </application>
 
 </manifest>

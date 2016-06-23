@@ -57,6 +57,7 @@ public abstract class LineFragment extends MvpLceFragment<SwipeRefreshLayout,
         if(data != null) {
             setData(data);
             showContent();
+            rotated = false;
         } else {
             loadData(false);
         }
