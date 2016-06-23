@@ -35,7 +35,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripHolder> {
     @Override
     public TripHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemLayoutView = LayoutInflater.from(parent.getContext()).inflate(
-                R.layout.trip_layout, null);
+                R.layout.card_layout_trip, null);
         TripHolder viewHolder = new TripHolder(itemLayoutView, c);
         return viewHolder;
     }
@@ -43,8 +43,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripHolder> {
     @Override
     public void onBindViewHolder(TripHolder holder, int position) {
         holder.departureTime.setText(trips.get(position).getDepartureTime());
-        //holder.startingPoint.setText(trips.get(position).getStartingPoint());
-        //holder.departureTime.setText(trips.get(position).getDestionation());
+        holder.startingPointAndDestionation.setText(trips.get(position).getStartingPoint() + " - " + trips.get(position).getDestionation());
     }
 
     @Override
@@ -58,10 +57,9 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripHolder> {
 
         @BindView(R.id.departure_time)
         TextView departureTime;
-        @BindView(R.id.starting_point)
-        TextView startingPoint;
-        @BindView(R.id.destination)
-        TextView destination;
+        @BindView(R.id.starting_point_and_destination)
+        TextView startingPointAndDestionation;
+
 
         public TripHolder(View view, Context c) {
             super(view);
