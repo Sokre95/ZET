@@ -2,6 +2,7 @@ package fer.ruazosa.ruazosa16_zet.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -75,7 +76,11 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.TrasaViewHol
         @Override
         public void onClick(View v) {
             Intent i = new Intent(c, DetailsActivity.class);
-            i.putExtra("LINE_NUMBER", broj_linije.getText());
+            //i.putExtra("LINE_NUMBER", broj_linije.getText());
+            Bundle bundle = new Bundle();
+            bundle.putString("LINE NAME", (String)naziv_linije.getText());
+            bundle.putString("LINE NUMBER", (String)broj_linije.getText());
+            i.putExtra("DATA", bundle);
             this.c.startActivity(i);
         }
     }

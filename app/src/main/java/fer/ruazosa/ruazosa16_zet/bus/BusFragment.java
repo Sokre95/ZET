@@ -1,14 +1,20 @@
 package fer.ruazosa.ruazosa16_zet.bus;
 
+import android.app.SearchManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -17,6 +23,7 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import fer.ruazosa.ruazosa16_zet.R;
+import fer.ruazosa.ruazosa16_zet.activities.SearchActivity;
 import fer.ruazosa.ruazosa16_zet.adapters.ViewPagerAdapter;
 import fer.ruazosa.ruazosa16_zet.model.Line;
 
@@ -43,6 +50,7 @@ public class BusFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         setRetainInstance(true);
+        setHasOptionsMenu(true);
         return inflater.inflate(R.layout.fragment_bus, container, false);
     }
 
@@ -85,4 +93,5 @@ public class BusFragment extends Fragment {
         outState.putSerializable(DAILY_BUS_DATA, busDnevni.getData());
         outState.putSerializable(NIGHT_BUS_DATA, busNocni.getData());
     }
+
 }
