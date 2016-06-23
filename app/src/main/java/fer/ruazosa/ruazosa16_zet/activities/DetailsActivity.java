@@ -86,6 +86,21 @@ public class DetailsActivity extends MvpLceActivity<SwipeRefreshLayout, ArrayLis
         loadData(false);
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.map_button :
+                Intent i = new Intent(this, MapActivity.class);
+                startActivity(i);
+                break;
+            case R.id.favorites_button :
+                break;
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     @NonNull
     @Override
     public MvpLceRxPresenter<TripView, ArrayList<Trip>> createPresenter() {

@@ -15,19 +15,22 @@
             android:configChanges="orientation">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.DetailsActivity"></activity>
-        <activity android:name=".activities.RouteDetailsActivity"></activity>
+        <activity android:name=".activities.DetailsActivity" />
+        <activity android:name=".activities.RouteDetailsActivity" />
         <activity android:name=".activities.SearchActivity">
             <intent-filter>
-                <action android:name="android.intent.action.SEARCH"/>
+                <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
+
             <meta-data
                 android:name="android.app.searchable"
-                android:resource="@xml/searchable"></meta-data>
+                android:resource="@xml/searchable" />
         </activity>
+        <activity android:name=".activities.MapActivity"></activity>
     </application>
 
 </manifest>
