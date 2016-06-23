@@ -73,7 +73,7 @@ public class DetailsActivity extends MvpLceActivity<SwipeRefreshLayout, ArrayLis
 
         Intent i = getIntent();
         Bundle bundle = i.getBundleExtra("DATA");
-        lineNumber = bundle.getString("LINE_NUMBER");
+        lineNumber = bundle.getString("LINE NUMBER");
         lineName = bundle.getString("LINE NAME");
 
         getSupportActionBar().setTitle(lineNumber);
@@ -141,15 +141,15 @@ public class DetailsActivity extends MvpLceActivity<SwipeRefreshLayout, ArrayLis
             //c.add(Calendar.DAY_OF_YEAR,1);
         //}
 
-        String[] splitted = lineName.split("-");
-        ArrayList<String> routes = new ArrayList<>();
-        routes.add(splitted[0]);
-        routes.add(splitted[1]);
+        //String[] splitted = lineName.split("-");
+        //ArrayList<String> routes = new ArrayList<>();
+        //routes.add(splitted[0]);
+        //routes.add(splitted[1]);
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.my_spinner_dropdown_item, routes);
+        //ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.my_spinner_dropdown_item, routes);
 
         getMenuInflater().inflate(R.menu.activity_details_menu, menu);
-        MenuItem item = menu.findItem(R.id.spinner);
+        /*MenuItem item = menu.findItem(R.id.spinner);
         spinner = (Spinner) MenuItemCompat.getActionView(item);
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -164,7 +164,7 @@ public class DetailsActivity extends MvpLceActivity<SwipeRefreshLayout, ArrayLis
             public void onNothingSelected(AdapterView<?> parent) {
                 //updateUI();
             }
-        });
+        });*/
 
         return true;
     }
@@ -198,7 +198,7 @@ public class DetailsActivity extends MvpLceActivity<SwipeRefreshLayout, ArrayLis
             }
         });
 
-    }*/
+    }/*
 
     /*private void getRouteDetails(int position) {
 //        TextView tableRow = (TextView) findViewById(R.id.polazak);
