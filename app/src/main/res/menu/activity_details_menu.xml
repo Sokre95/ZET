@@ -18,7 +18,7 @@
     <item
         android:id="@+id/favorites_button"
         android:title="Favorites"
-        android:icon="@drawable/ic_favorites"
+        android:icon="@drawable/ic_favorites_unchecked"
         app:showAsAction="ifRoom">
     </item>
 

@@ -38,13 +38,13 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import fer.ruazosa.ruazosa16_zet.LineView;
 import fer.ruazosa.ruazosa16_zet.R;
+import fer.ruazosa.ruazosa16_zet.TripView;
 import fer.ruazosa.ruazosa16_zet.ZetWebService;
 import fer.ruazosa.ruazosa16_zet.adapters.TripAdapter;
 import fer.ruazosa.ruazosa16_zet.model.Line;
 import fer.ruazosa.ruazosa16_zet.model.Trip;
 import fer.ruazosa.ruazosa16_zet.presenters.MvpLceRxPresenter;
 import fer.ruazosa.ruazosa16_zet.presenters.TripPresenter;
-import fer.ruazosa.ruazosa16_zet.wrappers.TripView;
 
 public class DetailsActivity extends MvpLceActivity<SwipeRefreshLayout, ArrayList<Trip>,
         TripView, MvpLceRxPresenter<TripView, ArrayList<Trip>>>
@@ -76,14 +76,12 @@ public class DetailsActivity extends MvpLceActivity<SwipeRefreshLayout, ArrayLis
         lineNumber = bundle.getString("LINE NUMBER");
         lineName = bundle.getString("LINE NAME");
 
-        getSupportActionBar().setTitle(lineNumber);
+        getSupportActionBar().setTitle(lineNumber + " " + lineName);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         tripAdapter = new TripAdapter(this);
         recyclerView.setAdapter(tripAdapter);
         contentView.setOnRefreshListener(this);
-
-        loadData(false);
     }
 
     @Override

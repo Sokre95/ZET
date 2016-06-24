@@ -15,8 +15,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import fer.ruazosa.ruazosa16_zet.adapters.DisplayAdapter;
-import fer.ruazosa.ruazosa16_zet.data.ExampleData;
-import fer.ruazosa.ruazosa16_zet.wrappers.InfoDisplay;
 import fer.ruazosa.ruazosa16_zet.R;
 
 
@@ -38,10 +36,10 @@ public class CloseFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        List<InfoDisplay> displays = ExampleData.getRouteInfo();
-        ButterKnife.bind(this, view);
-        recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
-        DisplayAdapter displayAdapter = new DisplayAdapter(displays);
-        recyclerView.setAdapter(displayAdapter);
+        //List<InfoDisplay> displays = ExampleData.getRouteInfo();
+        //ButterKnife.bind(this, view);
+        //recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
+        //DisplayAdapter displayAdapter = new DisplayAdapter(displays);
+        //recyclerView.setAdapter(displayAdapter);
     }
 }

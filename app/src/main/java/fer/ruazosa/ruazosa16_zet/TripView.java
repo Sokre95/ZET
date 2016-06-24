@@ -1,4 +1,4 @@
-package fer.ruazosa.ruazosa16_zet.wrappers;
+package fer.ruazosa.ruazosa16_zet;
 
 import com.hannesdorfmann.mosby.mvp.lce.MvpLceView;
 
