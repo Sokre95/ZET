@@ -17,13 +17,26 @@ public class Test {
                 public void call(ArrayList<Line> trips) {
                     for(Line t : trips) {
                         System.out.println(t.toString());
+                        try{
+                            ZetWebService.getInstance().getRouteSchedule(t.getId(), 0).subscribe(new Action1<ArrayList<Trip>>() {
+                                @Override
+                                public void call(ArrayList<Trip> trips) {
+                                    for(Trip t: trips){
+                                        System.out.println("\t"+t);
+                                    }
+                                }
+                            });
+                            Thread.sleep(1500);
+                        } catch(Exception e){
+                            e.printStackTrace();
+                        }
                     }
                 }
             });
         } catch (IOException e) {
             e.printStackTrace();
         }
-        //while(true);
+        while(true);
     }
 
 }

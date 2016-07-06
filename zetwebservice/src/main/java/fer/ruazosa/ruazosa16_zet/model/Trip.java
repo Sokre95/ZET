@@ -1,30 +1,50 @@
 package fer.ruazosa.ruazosa16_zet.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import fer.ruazosa.ruazosa16_zet.ZetWebService;
 
 public class Trip implements Serializable {
+    private String id;
+    private List<StationTimePair> timeTable = new ArrayList<>();
+    private Station startingPoint;
+    private Station destination;
+    private Date departureTime;
+    private int direction;
 
-    String departureTime;
-    String startingPoint;
-    String destionation;
-
-    public Trip(String departureTime, String startingPoint, String destionation) {
-        this.departureTime = departureTime;
+    public Trip(String id, Date departureTime, Station startingPoint, Station destination) {
+        this.id = id;
         this.startingPoint = startingPoint;
-        this.destionation = destionation;
+        this.destination = destination;
+        this.departureTime = departureTime;
     }
 
-    public String getDepartureTime() {
-
+    public int getDirection() {
+        return direction;
+    }
+    public void setDirection(int direction) {
+        this.direction = direction;
+    }
+    public Date getDepartureTime() {
         return departureTime;
     }
-
-    public String getStartingPoint() {
+    public String getId() {
+        return id;
+    }
+    public Station getStartingPoint() {
         return startingPoint;
     }
-
-    public String getDestionation() {
-        return destionation;
+    public Station getDestination() {
+        return destination;
+    }
+    public List<StationTimePair> getTimeTable() {
+        return timeTable;
+    }
+    public void setTimeTable(List<StationTimePair> timeTable) {
+        this.timeTable = timeTable;
     }
 
     @Override
@@ -34,17 +54,46 @@ public class Trip implements Serializable {
 
         Trip trip = (Trip) o;
 
-        if (!departureTime.equals(trip.departureTime)) return false;
-        if (!startingPoint.equals(trip.startingPoint)) return false;
-        return destionation.equals(trip.destionation);
-
+        if (!departureTime.equals(trip.getDepartureTime())) return false;
+        if (!startingPoint.equals(trip.getStartingPoint())) return false;
+        return destination.equals(trip.getDestination());
     }
 
     @Override
     public int hashCode() {
-        int result = departureTime.hashCode();
-        result = 31 * result + startingPoint.hashCode();
-        result = 31 * result + destionation.hashCode();
-        return result;
+        return id.hashCode();
     }
+
+    @Override
+    public String toString() {
+        return ZetWebService.DATE_FORMAT.format(departureTime) +" " + startingPoint + " " + destination;
+    }
+
+
+    public static class StationTimePair{
+        private Station s;
+        private Date time;
+
+        public StationTimePair(Station s, Date time){
+            this.s = s;
+            this.time = time;
+        }
+        public StationTimePair(){
+
+        }
+        public Station getS() {
+            return s;
+        }
+        public void setS(Station s) {
+            this.s = s;
+        }
+        public Date getTime() {
+            return time;
+        }
+        public void setTime(Date time) {
+            this.time = time;
+        }
+    }
+
+
 }

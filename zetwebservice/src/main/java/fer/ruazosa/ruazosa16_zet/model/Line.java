@@ -5,22 +5,22 @@ import java.util.List;
 
 public class Line implements Serializable {
 
-    private String lineNumber;
-    private String lineName;
+    private int id;
+    private String name;
 
     private List<Station> stations;
-    private List<ShortTrip> trips;
+    private List<Trip> trips;
 
-    public Line(String lineNumber, String lineName) {
-        this.lineNumber = lineNumber;
-        this.lineName = lineName;
+    public Line(int lineNumber, String lineName) {
+        this.id = lineNumber;
+        this.name = lineName;
     }
 
-    public String getLineNumber() {
-        return lineNumber;
+    public int getId() {
+        return id;
     }
-    public String getLineName() {
-        return lineName;
+    public String getName() {
+        return name;
     }
 
     public List<Station> getStations() {
@@ -29,10 +29,10 @@ public class Line implements Serializable {
     public void setStations(List<Station> stations) {
         this.stations = stations;
     }
-    public List<ShortTrip> getTrips() {
+    public List<Trip> getTrips() {
         return trips;
     }
-    public void setTrips(List<ShortTrip> trips) {
+    public void setTrips(List<Trip> trips) {
         this.trips = trips;
     }
 
@@ -43,20 +43,20 @@ public class Line implements Serializable {
 
         Line line = (Line) o;
 
-        if (!lineNumber.equals(line.lineNumber)) return false;
-        return lineName.equals(line.lineName);
+        if (id==line.getId()) return false;
+        return name.equals(line.name);
 
     }
 
     @Override
     public int hashCode() {
-        int result = lineNumber.hashCode();
-        result = 31 * result + lineName.hashCode();
+        int result = id;
+        result = 31 * result + name.hashCode();
         return result;
     }
 
     @Override
     public String toString() {
-        return lineNumber + "-" + lineName;
+        return id + "-" + name;
     }
 }

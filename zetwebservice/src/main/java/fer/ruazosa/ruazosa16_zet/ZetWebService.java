@@ -5,6 +5,7 @@ import org.jsoup.nodes.Document;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +25,8 @@ import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 public class ZetWebService {
+
+    public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("HH:mm:ss");
 
     private static ZetWebService instance;
     private ZETService service;
