@@ -24,6 +24,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.hannesdorfmann.mosby.mvp.lce.MvpLceActivity;
+import com.hannesdorfmann.mosby.mvp.viewstate.lce.LceViewState;
+import com.hannesdorfmann.mosby.mvp.viewstate.lce.MvpLceViewStateActivity;
+import com.hannesdorfmann.mosby.mvp.viewstate.lce.data.SerializeableLceViewState;
 
 import java.io.IOException;
 import java.lang.reflect.Array;
@@ -46,12 +49,13 @@ import fer.ruazosa.ruazosa16_zet.model.Trip;
 import fer.ruazosa.ruazosa16_zet.presenters.MvpLceRxPresenter;
 import fer.ruazosa.ruazosa16_zet.presenters.TripPresenter;
 
-public class DetailsActivity extends MvpLceActivity<SwipeRefreshLayout, ArrayList<Trip>,
+public class DetailsActivity extends MvpLceViewStateActivity<SwipeRefreshLayout, ArrayList<Trip>,
         TripView, MvpLceRxPresenter<TripView, ArrayList<Trip>>>
         implements TripView, SwipeRefreshLayout.OnRefreshListener {
 
     private Spinner spinner;
     private String lineNumber;
+    private int routeDirection = 0;
     //ListView lv;
     //SimpleDateFormat df = new SimpleDateFormat("dd-MM-yy");
     //SimpleDateFormat argDf = new SimpleDateFormat("yyyyMMdd");
@@ -60,8 +64,14 @@ public class DetailsActivity extends MvpLceActivity<SwipeRefreshLayout, ArrayLis
     Toolbar toolbar;
     @BindView(R.id.list)
     RecyclerView recyclerView;
+    @BindView(R.id.direction_name)
+    TextView directionName;
     protected TripAdapter tripAdapter;
     private String lineName;
+
+    private String smjer1;
+    private String smjer2;
+    private String trenutniSmjer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +85,14 @@ public class DetailsActivity extends MvpLceActivity<SwipeRefreshLayout, ArrayLis
         Bundle bundle = i.getBundleExtra("DATA");
         lineNumber = bundle.getString("LINE NUMBER");
         lineName = bundle.getString("LINE NAME");
+
+        String[] splitted = lineName.split("-");
+        smjer1 = splitted[0].trim();
+        smjer2 = splitted[1].trim();
+
+        trenutniSmjer = smjer2;
+
+        directionName.setText("Smjer : " + trenutniSmjer);
 
         getSupportActionBar().setTitle(lineNumber + " " + lineName);
 
@@ -93,10 +111,23 @@ public class DetailsActivity extends MvpLceActivity<SwipeRefreshLayout, ArrayLis
                 break;
             case R.id.favorites_button :
                 break;
+            case R.id.direction_button :
+                changeDirection();
+                break;
             default:
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void changeDirection() {
+        if (routeDirection == 0) routeDirection = 1;
+        else routeDirection = 0;
+        if(trenutniSmjer.equals(smjer1)) trenutniSmjer = smjer2;
+        else trenutniSmjer = smjer1;
+        loadData(false);
+        directionName.setText("Smjer : " + trenutniSmjer);
+        tripAdapter.notifyDataSetChanged();
     }
 
     @NonNull
@@ -119,9 +150,8 @@ public class DetailsActivity extends MvpLceActivity<SwipeRefreshLayout, ArrayLis
     @Override
     public void loadData(boolean pullToRefresh) {
         int i = Integer.valueOf(lineNumber);
-        System.out.println("");
         presenter.subscribe(ZetWebService.getInstance().
-                getRouteSchedule(i, 0), pullToRefresh);
+                getRouteSchedule(i, routeDirection), pullToRefresh);
     }
 
     @Override
@@ -139,6 +169,17 @@ public class DetailsActivity extends MvpLceActivity<SwipeRefreshLayout, ArrayLis
     public void showError(Throwable e, boolean pullToRefresh) {
         super.showError(e, pullToRefresh);
         contentView.setRefreshing(false);
+    }
+
+    @Override
+    public LceViewState<ArrayList<Trip>, TripView> createViewState() {
+        setRetainInstance(true);
+        return new SerializeableLceViewState<ArrayList<Trip>, TripView>();
+    }
+
+    @Override
+    public ArrayList<Trip> getData() {
+        return tripAdapter.getTrips();
     }
 
     @Override

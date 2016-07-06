@@ -12,14 +12,21 @@
         android:id="@+id/map_button"
         android:title="Map"
         android:icon="@drawable/ic_map"
-        app:showAsAction="ifRoom">
+        app:showAsAction="always">
     </item>
 
     <item
         android:id="@+id/favorites_button"
         android:title="Favorites"
         android:icon="@drawable/ic_favorites_unchecked"
-        app:showAsAction="ifRoom">
+        app:showAsAction="always">
+    </item>
+
+    <item
+        android:id="@+id/direction_button"
+        android:title="Direction"
+        android:icon="@drawable/ic_direction"
+        app:showAsAction="always">
     </item>
 
 </menu>
