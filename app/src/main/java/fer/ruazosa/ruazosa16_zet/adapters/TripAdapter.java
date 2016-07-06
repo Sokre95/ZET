@@ -60,9 +60,9 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripHolder> {
 
     @Override
     public void onBindViewHolder(TripHolder holder, int position) {
-        holder.startingPoint.setText(trips.get(position).getStartingPoint());
-        holder.destination.setText(trips.get(position).getDestionation());
-        holder.departureTime.setText(trips.get(position).getDepartureTime());
+        holder.startingPoint.setText(trips.get(position).getStartingPoint().getName());
+        holder.destination.setText(trips.get(position).getDestination().getName());
+        holder.departureTime.setText(trips.get(position).getDepartureTime().toString());
     }
 
     @Override
