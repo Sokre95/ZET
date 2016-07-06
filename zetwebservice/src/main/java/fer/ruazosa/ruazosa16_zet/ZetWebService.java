@@ -5,11 +5,14 @@ import org.jsoup.nodes.Document;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import fer.ruazosa.ruazosa16_zet.model.Line;
+import fer.ruazosa.ruazosa16_zet.model.Station;
 import fer.ruazosa.ruazosa16_zet.model.Trip;
 import fer.ruazosa.ruazosa16_zet.service.DocumentConverter;
 import fer.ruazosa.ruazosa16_zet.service.DocumentParser;
@@ -26,7 +29,7 @@ import rx.schedulers.Schedulers;
 
 public class ZetWebService {
 
-    public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("HH:mm:ss");
+    public static final DateFormat DATE_FORMAT = new SimpleDateFormat("HH:mm:ss");
 
     private static ZetWebService instance;
     private ZETService service;
@@ -103,7 +106,7 @@ public class ZetWebService {
                 Observable<ArrayList<Trip>> trips = doc.map(new Func1<Document, ArrayList<Trip>>() {
                     @Override
                     public ArrayList<Trip> call(Document document) {
-                        return DocumentParser.parseSchedule(document, routeDirection);
+                        return DocumentParser.parseSchedule(routeId, document, routeDirection);
                     }
                 });
                 return trips;
@@ -125,7 +128,7 @@ public class ZetWebService {
                 Observable<ArrayList<Trip>> trips = doc.map(new Func1<Document, ArrayList<Trip>>() {
                     @Override
                     public ArrayList<Trip> call(Document document) {
-                        return DocumentParser.parseSchedule(document, routeDirection);
+                        return DocumentParser.parseSchedule(routeId, document, routeDirection);
                     }
                 });
                 return trips;
@@ -167,5 +170,28 @@ public class ZetWebService {
             }
         });
         return routeDates;
+    }
+
+
+    //NEW METHODS
+    public Observable<Line> loadLine(final Line l){
+        if(l.getTrips() == null || l.getTrips().size() != 0){
+            return Observable.empty();
+        }
+        Observable<Line> observeLine = service.getRouteSchedule(l.getId()).map(new Func1<Document, Line>() {
+            @Override
+            public Line call(Document document) {
+                l.setTrips(DocumentParser.parseSchedule(l.getId(), document, 0));
+                l.getTrips().addAll(DocumentParser.parseSchedule(l.getId(), document, 1));
+                l.setStations(DocumentParser.parseStations(document));
+                return l;
+            }
+        });
+        return observeLine;
+    }
+
+    public Observable<Trip> loadTrip(final Trip t){
+        //TODO
+        return null;
     }
 }

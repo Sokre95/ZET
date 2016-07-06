@@ -62,7 +62,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripHolder> {
     public void onBindViewHolder(TripHolder holder, int position) {
         holder.startingPoint.setText(trips.get(position).getStartingPoint().getName());
         holder.destination.setText(trips.get(position).getDestination().getName());
-        holder.departureTime.setText(trips.get(position).getDepartureTime().toString());
+        holder.departureTime.setText(trips.get(position).departureTimeAsString());
     }
 
     @Override
