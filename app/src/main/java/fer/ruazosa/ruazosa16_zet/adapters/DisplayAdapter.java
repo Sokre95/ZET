@@ -10,15 +10,13 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import fer.ruazosa.ruazosa16_zet.wrappers.InfoDisplay;
 import fer.ruazosa.ruazosa16_zet.R;
 
 public class DisplayAdapter extends RecyclerView.Adapter<DisplayAdapter.DisplayHolder> {
 
-    List<InfoDisplay> displays;
+    //List<InfoDisplay> displays;
 
-    public DisplayAdapter(List<InfoDisplay> displays) {
-        this.displays = displays;
+    public DisplayAdapter() {
     }
 
 
@@ -32,14 +30,11 @@ public class DisplayAdapter extends RecyclerView.Adapter<DisplayAdapter.DisplayH
 
     @Override
     public void onBindViewHolder(DisplayHolder holder, int position) {
-        holder.timeView.setText(displays.get(position).getTime());
-        holder.stationView.setText(displays.get(position).getStation());
-        holder.routeView.setText(displays.get(position).getRouteName());
     }
 
     @Override
     public int getItemCount() {
-        return displays.size();
+        return 0;
     }
 
     public static class DisplayHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
