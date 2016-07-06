@@ -1,24 +1,25 @@
 package fer.ruazosa.ruazosa16_zet.adapters;
 
-import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import fer.ruazosa.ruazosa16_zet.R;
 
-public class RouteDetailsAdapter extends RecyclerView.Adapter<RouteDetailsAdapter.RouteDetailsHolder> {
+public class RouteDetailsAdapter extends
+        RecyclerView.Adapter<RouteDetailsAdapter.RouteDetailsHolder> {
 
     private ArrayList<String> details = new ArrayList<>();
+
+    public RouteDetailsAdapter() {
+
+    }
 
     public RouteDetailsAdapter(ArrayList<String> details) {
         this.details = details;
@@ -27,7 +28,7 @@ public class RouteDetailsAdapter extends RecyclerView.Adapter<RouteDetailsAdapte
     @Override
     public RouteDetailsHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemLayoutView = LayoutInflater.from(parent.getContext()).inflate(
-                R.layout.card_layout_trip, parent, false);
+                R.layout.card_layout_route_details, parent, false);
         RouteDetailsHolder viewHolder = new RouteDetailsHolder(itemLayoutView);
         return viewHolder;
     }
@@ -52,14 +53,12 @@ public class RouteDetailsAdapter extends RecyclerView.Adapter<RouteDetailsAdapte
 
     public static class RouteDetailsHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.starting_point)
+        @BindView(R.id.details)
         TextView text;
 
         public RouteDetailsHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
-        }
-
-    }
+        }    }
 
 }
