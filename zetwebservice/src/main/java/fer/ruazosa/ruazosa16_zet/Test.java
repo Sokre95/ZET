@@ -22,13 +22,13 @@ public class Test {
                                 @Override
                                 public void call(ArrayList<Trip> trips) {
                                     for(Trip t: trips){
-                                        System.out.println("\t"+t);
+                                        System.out.println(t);
                                     }
                                 }
                             });
                             Thread.sleep(1500);
                         } catch(Exception e){
-                            e.printStackTrace();
+                            e.printStackTrace();;
                         }
                     }
                 }
@@ -36,7 +36,7 @@ public class Test {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        while(true);
+        //while(true);
     }
 
 }

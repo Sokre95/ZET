@@ -2,31 +2,35 @@ package fer.ruazosa.ruazosa16_zet.model;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
 
 public class Line implements Serializable {
 
     private int id;
     private String name;
 
-    private List<Station> stations;
+    private Set<Station> stations;
     private List<Trip> trips;
 
-    public Line(int lineNumber, String lineName) {
+    public Line(int lineNumber) {
         this.id = lineNumber;
-        this.name = lineName;
     }
 
     public int getId() {
         return id;
     }
+
+    public void setName(String name) {
+        this.name = name;
+    }
     public String getName() {
         return name;
     }
 
-    public List<Station> getStations() {
+    public Set<Station> getStations() {
         return stations;
     }
-    public void setStations(List<Station> stations) {
+    public void setStations(Set<Station> stations) {
         this.stations = stations;
     }
     public List<Trip> getTrips() {
