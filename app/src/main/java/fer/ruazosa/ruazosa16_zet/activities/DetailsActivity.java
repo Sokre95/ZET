@@ -56,9 +56,6 @@ public class DetailsActivity extends MvpLceViewStateActivity<SwipeRefreshLayout,
     private Spinner spinner;
     private String lineNumber;
     private int routeDirection = 0;
-    //ListView lv;
-    //SimpleDateFormat df = new SimpleDateFormat("dd-MM-yy");
-    //SimpleDateFormat argDf = new SimpleDateFormat("yyyyMMdd");
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -94,12 +91,15 @@ public class DetailsActivity extends MvpLceViewStateActivity<SwipeRefreshLayout,
 
         directionName.setText("Smjer : " + trenutniSmjer);
 
-        getSupportActionBar().setTitle(lineNumber + " " + lineName);
+        getSupportActionBar().setTitle(lineNumber);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        tripAdapter = new TripAdapter(this);
+        tripAdapter = new TripAdapter(this, lineNumber, routeDirection);
         recyclerView.setAdapter(tripAdapter);
         contentView.setOnRefreshListener(this);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
     }
 
     @Override
@@ -113,6 +113,9 @@ public class DetailsActivity extends MvpLceViewStateActivity<SwipeRefreshLayout,
                 break;
             case R.id.direction_button :
                 changeDirection();
+                break;
+            case android.R.id.home :
+                finish();
                 break;
             default:
                 break;
@@ -184,85 +187,7 @@ public class DetailsActivity extends MvpLceViewStateActivity<SwipeRefreshLayout,
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
-        //ArrayList<String> dates = new ArrayList<String>();
-        //Calendar c = Calendar.getInstance();
-        //dates.add("Danas");
-        //dates.add("Sutra");
-        //c.add(Calendar.DAY_OF_YEAR,2);
-        //for(int i =0; i<5;i++) {
-            //String formattedDate = df.format(c.getTime());
-            //dates.add(formattedDate);
-            //c.add(Calendar.DAY_OF_YEAR,1);
-        //}
-
-        //String[] splitted = lineName.split("-");
-        //ArrayList<String> routes = new ArrayList<>();
-        //routes.add(splitted[0]);
-        //routes.add(splitted[1]);
-
-        //ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.my_spinner_dropdown_item, routes);
-
         getMenuInflater().inflate(R.menu.activity_details_menu, menu);
-        /*MenuItem item = menu.findItem(R.id.spinner);
-        spinner = (Spinner) MenuItemCompat.getActionView(item);
-        spinner.setAdapter(adapter);
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            Calendar c = Calendar.getInstance();
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-                //updateUI();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                //updateUI();
-            }
-        });*/
-
         return true;
     }
-
-    /*private void updateUI() {
-        int index = spinner.getSelectedItemPosition();
-        Calendar c = Calendar.getInstance();
-        c.add(Calendar.DAY_OF_YEAR,index);
-        String date = argDf.format(c.getTime());
-        int route = Integer.parseInt(lineNumber);
-
-//        TextView tableRow = (TextView) findViewById(R.id.polazak);
-//        tableRow.setText(index+" " + date+ " " + route);
-
-        List<String> schedule = new ArrayList<>();
-        schedule.add("PRVdasdasdassI");
-        schedule.add("DRUGI");
-
-        //String[] array = new String[] {"PRVI", "DRUGI"};
-        lv = (ListView) findViewById(R.id.my_list_view);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-                this, android.R.layout.simple_list_item_1, schedule
-        );
-        lv.setAdapter(adapter);
-
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                getRouteDetails(position);
-
-            }
-        });
-
-    }/*
-
-    /*private void getRouteDetails(int position) {
-//        TextView tableRow = (TextView) findViewById(R.id.polazak);
-//        tableRow.setText("Trazim detalje");
-//
-//
-//        tableRow.setText((String)lv.getItemAtPosition(position));
-
-        Intent i = new Intent(this, RouteDetailsActivity.class );
-        i.putExtra("ROUTE_DETAILS", (String)lv.getItemAtPosition(position));
-        startActivity(i);
-    }*/
 }

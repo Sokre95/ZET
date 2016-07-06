@@ -1,11 +1,9 @@
 package fer.ruazosa.ruazosa16_zet.model;
 
-import java.util.List;
+import java.io.Serializable;
 
-/**
- * Created by zlatan on 6/7/16.
- */
-public class Trip{
+public class Trip implements Serializable {
+
     String departureTime;
     String startingPoint;
     String destionation;

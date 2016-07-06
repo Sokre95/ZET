@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import fer.ruazosa.ruazosa16_zet.R;
+import fer.ruazosa.ruazosa16_zet.activities.RouteDetailsActivity;
 import fer.ruazosa.ruazosa16_zet.model.Trip;
 
 public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripHolder> {
@@ -30,6 +31,12 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripHolder> {
 
     public TripAdapter(Context c) {
         this.c = c;
+    }
+
+    public TripAdapter(Context c, String lineNumber, int direction) {
+        this.c = c;
+        this.lineNumber = lineNumber;
+        this.direction = direction;
     }
 
     public TripAdapter(ArrayList<Trip> trips, Context c, String lineNumber, int direction) {
@@ -96,8 +103,9 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripHolder> {
             bundle.putString(LINE_NUMBER, lineNumber);
             bundle.putInt(DIRECTION, direction);
 
-            Intent i =  new Intent();
-
+            Intent i =  new Intent(c, RouteDetailsActivity.class);
+            i.putExtra("DATA", bundle);
+            this.c.startActivity(i);
         }
     }
 
