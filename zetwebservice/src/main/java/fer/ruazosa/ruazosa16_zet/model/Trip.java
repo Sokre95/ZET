@@ -69,7 +69,6 @@ public class Trip implements Serializable {
         return ZetWebService.DATE_FORMAT.format(departureTime) +" " + startingPoint + " " + destination;
     }
 
-
     public static class StationTimePair{
         private Station s;
         private Date time;
