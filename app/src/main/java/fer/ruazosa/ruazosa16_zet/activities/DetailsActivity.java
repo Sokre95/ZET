@@ -1,18 +1,29 @@
 package fer.ruazosa.ruazosa16_zet.activities;
 
+import android.content.ClipData;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.Icon;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.graphics.drawable.VectorDrawableCompat;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.menu.ActionMenuItem;
+import android.support.v7.view.menu.ActionMenuItemView;
+import android.support.v7.view.menu.MenuView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -53,6 +64,7 @@ public class DetailsActivity extends MvpLceViewStateActivity<SwipeRefreshLayout,
         TripView, MvpLceRxPresenter<TripView, ArrayList<Trip>>>
         implements TripView, SwipeRefreshLayout.OnRefreshListener {
 
+    private static final String FAVOURITES = "FAVOURITES";
     private Spinner spinner;
     private String lineNumber;
     private int routeDirection = 0;
@@ -69,6 +81,7 @@ public class DetailsActivity extends MvpLceViewStateActivity<SwipeRefreshLayout,
     private String smjer1;
     private String smjer2;
     private String trenutniSmjer;
+    ActionMenuItemView favbutton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,9 +110,9 @@ public class DetailsActivity extends MvpLceViewStateActivity<SwipeRefreshLayout,
         tripAdapter = new TripAdapter(this, lineNumber, routeDirection);
         recyclerView.setAdapter(tripAdapter);
         contentView.setOnRefreshListener(this);
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+
     }
 
     @Override
@@ -110,6 +123,7 @@ public class DetailsActivity extends MvpLceViewStateActivity<SwipeRefreshLayout,
                 startActivity(i);
                 break;
             case R.id.favorites_button :
+                toggleAddRemoveFavourite();
                 break;
             case R.id.direction_button :
                 changeDirection();
@@ -121,6 +135,26 @@ public class DetailsActivity extends MvpLceViewStateActivity<SwipeRefreshLayout,
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void toggleAddRemoveFavourite() {
+        SharedPreferences appPref = getSharedPreferences(FAVOURITES, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = appPref.edit();
+        ActionMenuItemView favbutton = (ActionMenuItemView) findViewById(R.id.favorites_button);
+        if (appPref.contains(lineNumber)){
+            //remove from favourites
+            editor.remove(lineNumber);
+            //TODO make favourite button unchacked
+            favbutton.setIcon(getResources().getDrawable(R.drawable.ic_favorites_unchecked));
+            Toast.makeText(getApplicationContext(), "Removed from favourites", Toast.LENGTH_SHORT).show();
+        }
+        else{
+            //add to favourites
+            editor.putString(lineNumber,lineName);
+            favbutton.setIcon(getResources().getDrawable(R.drawable.ic_favorites));
+            Toast.makeText(getApplicationContext(), "Added to favourites", Toast.LENGTH_SHORT).show();
+        }
+        editor.commit();
     }
 
     private void changeDirection() {
