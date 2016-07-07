@@ -7,22 +7,19 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/departure_time"
-        android:textSize="20sp"
-        android:padding="5sp"/>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:id="@+id/starting_point"
-        android:textSize="20sp"
-        android:padding="5sp"/>
+        android:textSize="20sp" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/destination"
-        android:textSize="20sp"
-        android:padding="5sp"/>
+        android:textSize="20sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/departure_time"
+        android:textSize="20sp" />
 
 </GridLayout>

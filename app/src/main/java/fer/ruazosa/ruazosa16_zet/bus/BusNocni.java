@@ -13,10 +13,14 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.hannesdorfmann.mosby.mvp.viewstate.lce.LceViewState;
+import com.hannesdorfmann.mosby.mvp.viewstate.lce.data.RetainingLceViewState;
+
 import java.io.IOException;
 import java.util.ArrayList;
 
 import fer.ruazosa.ruazosa16_zet.LineFragment;
+import fer.ruazosa.ruazosa16_zet.LineView;
 import fer.ruazosa.ruazosa16_zet.R;
 import fer.ruazosa.ruazosa16_zet.activities.SearchActivity;
 import fer.ruazosa.ruazosa16_zet.model.Line;
@@ -25,8 +29,6 @@ import fer.ruazosa.ruazosa16_zet.presenters.NightBusPresenter;
 import fer.ruazosa.ruazosa16_zet.ZetWebService;
 
 public class BusNocni extends LineFragment {
-
-    private SearchView searchView;
 
     public BusNocni() {
     }
@@ -38,29 +40,12 @@ public class BusNocni extends LineFragment {
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.options_menu, menu);
-        SearchManager searchManager =
-                (SearchManager) ((AppCompatActivity)getActivity()).getSystemService(Context.SEARCH_SERVICE);
-        searchView = (SearchView) menu.findItem(R.id.search).getActionView();
-        searchView.setSearchableInfo(
-                searchManager.getSearchableInfo(((AppCompatActivity)getActivity()).getComponentName()));
-
-        setQueryHandler();
-    }
-
-    @Override
     public void loadData(boolean pullToRefresh) {
-        if(rotated) {
-            rotated = false;
+        try {
+            presenter.subscribe(ZetWebService.getInstance().getNightlyBusRoutes(), pullToRefresh);
+        } catch (IOException e) {
+            e.printStackTrace();
             return;
-        } else {
-            try {
-                presenter.subscribe(ZetWebService.getInstance().getNightlyBusRoutes(), pullToRefresh);
-            } catch (IOException e) {
-                e.printStackTrace();
-                return;
-            }
         }
     }
 
@@ -69,11 +54,17 @@ public class BusNocni extends LineFragment {
         return new NightBusPresenter();
     }
 
-    private void setQueryHandler() {
+    @Override
+    protected void setQueryHandler() {
         SearchView.OnQueryTextListener queryTextListener = new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 Intent intent = new Intent(getContext(), SearchActivity.class);
+                intent.setAction(Intent.ACTION_SEARCH);
+                Bundle bundle = new Bundle();
+                bundle.putString("QUERY", query);
+                bundle.putSerializable("DATA", routeAdapter.getLines());
+                intent.putExtra("Bundle", bundle);
                 startActivity(intent);
                 return true;
             }

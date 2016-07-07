@@ -1,22 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="fer.ruazosa.ruazosa16_zet.activities.RouteDetailsActivity"
-    android:orientation="vertical">
+    tools:context="fer.ruazosa.ruazosa16_zet.activities.RouteDetailsActivity">
 
-
-    <include
-        android:layout_height="wrap_content"
+    <LinearLayout
         android:layout_width="match_parent"
-        layout="@layout/toolbar_layout">
-    </include>
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <ListView
-        android:id="@+id/my_list_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        <include
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            layout="@layout/toolbar_layout">
+        </include>
 
+        <ProgressBar
+            android:id="@+id/loadingView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:indeterminate="true"
+            />
 
-</LinearLayout>
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/contentView">
+
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/list">
+            </android.support.v7.widget.RecyclerView>
+
+            <TextView
+                android:id="@+id/errorView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

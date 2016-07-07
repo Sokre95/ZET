@@ -1,41 +1,43 @@
 package fer.ruazosa.ruazosa16_zet.activities;
 
-import android.app.SearchManager;
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.Fragment;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.NotificationCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import fer.ruazosa.ruazosa16_zet.R;
-import fer.ruazosa.ruazosa16_zet.bus.BusFragment;
-import fer.ruazosa.ruazosa16_zet.home.HomeFragment;
-import fer.ruazosa.ruazosa16_zet.tram.TramFragment;
+import fer.ruazosa.ruazosa16_zet.adapters.ViewPagerAdapter;
+import fer.ruazosa.ruazosa16_zet.bus.BusDnevni;
+import fer.ruazosa.ruazosa16_zet.bus.BusNocni;
+import fer.ruazosa.ruazosa16_zet.home.CloseFragment;
+import fer.ruazosa.ruazosa16_zet.home.FavouritesFragment;
+import fer.ruazosa.ruazosa16_zet.home.MapFragment;
+import fer.ruazosa.ruazosa16_zet.tram.TramDnevni;
+import fer.ruazosa.ruazosa16_zet.tram.TramNocni;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static final String HOME_FRAGMENT = "home";
-    public static final String BUS_FRAGMENT = "bus";
-    public static final String TRAM_FRAGMENT = "tram";
+    public static final int HOME = 0;
+    public static final int BUS = 1;
+    public static final int TRAM = 2;
+
+    private int instance;
 
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.drawer_layout) DrawerLayout drawerLayout;
     @BindView(R.id.navigation_view) NavigationView navigationView;
+    @BindView(R.id.tabLayout) TabLayout tabLayout;
+    @BindView(R.id.viewPager) ViewPager viewPager;
+    private ViewPagerAdapter viewPagerAdapter;
 
     ActionBarDrawerToggle actionBarDrawerToggle;
     private FragmentTransaction fragmentTransaction;
@@ -55,41 +57,82 @@ public class MainActivity extends AppCompatActivity {
 
         if(savedInstanceState != null) {
             getSupportActionBar().setTitle(savedInstanceState.getCharSequence("title"));
-        } else {
             getSupportActionBar().setTitle("Home");
-            fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.add(R.id.main_container, new HomeFragment(), HOME_FRAGMENT);
-            fragmentTransaction.commit();
+            instance = savedInstanceState.getInt("STATE");
+            switch (instance) {
+                case HOME :
+                    setHomeView();
+                    break;
+                case BUS :
+                    setBusView();
+                    break;
+                case TRAM :
+                    setTramView();
+                    break;
+                default:
+                    break;
+            }
+        } else {
+            setHomeView();
         }
 
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
-                fragmentTransaction = getSupportFragmentManager().beginTransaction();
                 switch (item.getItemId()) {
                     case R.id.home_item:
                         getSupportActionBar().setTitle("Home");
-                        fragmentTransaction.replace(R.id.main_container, new HomeFragment(), HOME_FRAGMENT);
+                        setHomeView();
                         break;
                     case R.id.bus_item:
                         getSupportActionBar().setTitle("Bus");
-                        fragmentTransaction.replace(R.id.main_container, new BusFragment(), BUS_FRAGMENT);
+                        setBusView();
                         break;
                     case R.id.tram_item:
                         getSupportActionBar().setTitle("Tram");
-                        fragmentTransaction.replace(R.id.main_container, new TramFragment(), TRAM_FRAGMENT);
+                        setTramView();
                         break;
                     default:
                         break;
                 }
-                fragmentTransaction.commit();
                 item.setChecked(true);
                 drawerLayout.closeDrawers();
                 return true;
             }
         });
 
+    }
+
+    private void setHomeView() {
+        getSupportActionBar().setTitle("Home");
+        viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
+        viewPagerAdapter.addFragments(new CloseFragment(), "CLOSE");
+        viewPagerAdapter.addFragments(new FavouritesFragment(), "FAVORITES");
+        viewPagerAdapter.addFragments(new MapFragment(), "MAP");
+        viewPager.setAdapter(viewPagerAdapter);
+        tabLayout.setupWithViewPager(viewPager);
+        instance = HOME;
+    }
+
+    private void setBusView() {
+        getSupportActionBar().setTitle("Bus");
+        viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
+        viewPagerAdapter.addFragments(new BusDnevni(), "DAILY BUS");
+        viewPagerAdapter.addFragments(new BusNocni(), "NIGHT BUS");
+        viewPager.setAdapter(viewPagerAdapter);
+        tabLayout.setupWithViewPager(viewPager);
+        instance = BUS;
+    }
+
+    private void setTramView() {
+        getSupportActionBar().setTitle("Tram");
+        viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
+        viewPagerAdapter.addFragments(new TramDnevni(), "DAILY TRAM");
+        viewPagerAdapter.addFragments(new TramNocni(), "NIGHT TRAM");
+        viewPager.setAdapter(viewPagerAdapter);
+        tabLayout.setupWithViewPager(viewPager);
+        instance = TRAM;
     }
 
     @Override
@@ -103,6 +146,7 @@ public class MainActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
         CharSequence title = getSupportActionBar().getTitle();
         outState.putCharSequence("title", title);
+        outState.putInt("STATE", instance);
     }
 
 }

@@ -20,7 +20,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".activities.DetailsActivity" />
-        <activity android:name=".activities.RouteDetailsActivity" />
         <activity android:name=".activities.SearchActivity">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
@@ -30,7 +29,8 @@
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
-        <activity android:name=".activities.MapActivity"></activity>
+        <activity android:name=".activities.MapActivity" />
+        <activity android:name=".activities.RouteDetailsActivity"></activity>
     </application>
 
 </manifest>

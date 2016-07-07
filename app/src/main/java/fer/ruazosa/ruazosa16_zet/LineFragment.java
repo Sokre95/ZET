@@ -1,11 +1,17 @@
 package fer.ruazosa.ruazosa16_zet;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -23,27 +29,36 @@ import fer.ruazosa.ruazosa16_zet.adapters.RouteAdapter;
 import fer.ruazosa.ruazosa16_zet.model.Line;
 import fer.ruazosa.ruazosa16_zet.presenters.MvpLceRxPresenter;
 
-public abstract class LineFragment extends MvpLceFragment<SwipeRefreshLayout,
+public abstract class LineFragment extends MvpLceViewStateFragment<SwipeRefreshLayout,
         ArrayList<Line>, LineView, MvpLceRxPresenter<LineView, ArrayList<Line>>>
         implements LineView, SwipeRefreshLayout.OnRefreshListener {
+
+    protected SearchView searchView;
 
     @BindView(R.id.list)
     RecyclerView recyclerView;
     protected RouteAdapter routeAdapter;
 
-    ArrayList<Line> data = null;
-    protected boolean rotated = false;
-
     public LineFragment() {
     }
 
     @Override
-    public void setArguments(Bundle args) {
-        super.setArguments(args);
-        if(args != null) {
-            data = (ArrayList<Line>)args.getSerializable("DATA");
-            rotated = true;
-        }
+    public LceViewState<ArrayList<Line>, LineView> createViewState() {
+        setRetainInstance(true);
+        setHasOptionsMenu(true);
+        return new SerializeableLceViewState<ArrayList<Line>, LineView>();
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.options_menu, menu);
+        SearchManager searchManager =
+                (SearchManager) ((AppCompatActivity)getActivity()).getSystemService(Context.SEARCH_SERVICE);
+        searchView = (SearchView) menu.findItem(R.id.search).getActionView();
+        searchView.setSearchableInfo(
+                searchManager.getSearchableInfo(((AppCompatActivity)getActivity()).getComponentName()));
+
+        setQueryHandler();
     }
 
     @Override
@@ -54,13 +69,6 @@ public abstract class LineFragment extends MvpLceFragment<SwipeRefreshLayout,
         routeAdapter = new RouteAdapter(getContext());
         recyclerView.setAdapter(routeAdapter);
         contentView.setOnRefreshListener(this);
-        if(data != null) {
-            setData(data);
-            showContent();
-            rotated = false;
-        } else {
-            loadData(false);
-        }
     }
 
     @Override
@@ -97,8 +105,11 @@ public abstract class LineFragment extends MvpLceFragment<SwipeRefreshLayout,
         contentView.setRefreshing(false);
     }
 
+    @Override
     public ArrayList<Line> getData() {
         return routeAdapter.getLines();
     }
+
+    protected abstract void setQueryHandler();
 
 }

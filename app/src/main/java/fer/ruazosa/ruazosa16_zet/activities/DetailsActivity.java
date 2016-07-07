@@ -1,18 +1,29 @@
 package fer.ruazosa.ruazosa16_zet.activities;
 
+import android.content.ClipData;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.Icon;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.graphics.drawable.VectorDrawableCompat;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.menu.ActionMenuItem;
+import android.support.v7.view.menu.ActionMenuItemView;
+import android.support.v7.view.menu.MenuView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,6 +35,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.hannesdorfmann.mosby.mvp.lce.MvpLceActivity;
+import com.hannesdorfmann.mosby.mvp.viewstate.lce.LceViewState;
+import com.hannesdorfmann.mosby.mvp.viewstate.lce.MvpLceViewStateActivity;
+import com.hannesdorfmann.mosby.mvp.viewstate.lce.data.SerializeableLceViewState;
 
 import java.io.IOException;
 import java.lang.reflect.Array;
@@ -38,30 +52,36 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import fer.ruazosa.ruazosa16_zet.LineView;
 import fer.ruazosa.ruazosa16_zet.R;
+import fer.ruazosa.ruazosa16_zet.TripView;
 import fer.ruazosa.ruazosa16_zet.ZetWebService;
 import fer.ruazosa.ruazosa16_zet.adapters.TripAdapter;
 import fer.ruazosa.ruazosa16_zet.model.Line;
 import fer.ruazosa.ruazosa16_zet.model.Trip;
 import fer.ruazosa.ruazosa16_zet.presenters.MvpLceRxPresenter;
 import fer.ruazosa.ruazosa16_zet.presenters.TripPresenter;
-import fer.ruazosa.ruazosa16_zet.wrappers.TripView;
 
-public class DetailsActivity extends MvpLceActivity<SwipeRefreshLayout, ArrayList<Trip>,
+public class DetailsActivity extends MvpLceViewStateActivity<SwipeRefreshLayout, ArrayList<Trip>,
         TripView, MvpLceRxPresenter<TripView, ArrayList<Trip>>>
         implements TripView, SwipeRefreshLayout.OnRefreshListener {
 
+    private static final String FAVOURITES = "FAVOURITES";
     private Spinner spinner;
     private String lineNumber;
-    //ListView lv;
-    //SimpleDateFormat df = new SimpleDateFormat("dd-MM-yy");
-    //SimpleDateFormat argDf = new SimpleDateFormat("yyyyMMdd");
+    private int routeDirection = 0;
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.list)
     RecyclerView recyclerView;
+    @BindView(R.id.direction_name)
+    TextView directionName;
     protected TripAdapter tripAdapter;
     private String lineName;
+
+    private String smjer1;
+    private String smjer2;
+    private String trenutniSmjer;
+    ActionMenuItemView favbutton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,14 +96,23 @@ public class DetailsActivity extends MvpLceActivity<SwipeRefreshLayout, ArrayLis
         lineNumber = bundle.getString("LINE NUMBER");
         lineName = bundle.getString("LINE NAME");
 
+        String[] splitted = lineName.split("-");
+        smjer1 = splitted[0].trim();
+        smjer2 = splitted[1].trim();
+
+        trenutniSmjer = smjer2;
+
+        directionName.setText("Smjer : " + trenutniSmjer);
+
         getSupportActionBar().setTitle(lineNumber);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        tripAdapter = new TripAdapter(this);
+        tripAdapter = new TripAdapter(this, lineNumber, routeDirection);
         recyclerView.setAdapter(tripAdapter);
         contentView.setOnRefreshListener(this);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        loadData(false);
     }
 
     @Override
@@ -94,11 +123,48 @@ public class DetailsActivity extends MvpLceActivity<SwipeRefreshLayout, ArrayLis
                 startActivity(i);
                 break;
             case R.id.favorites_button :
+                toggleAddRemoveFavourite();
+                break;
+            case R.id.direction_button :
+                changeDirection();
+                break;
+            case android.R.id.home :
+                finish();
                 break;
             default:
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void toggleAddRemoveFavourite() {
+        SharedPreferences appPref = getSharedPreferences(FAVOURITES, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = appPref.edit();
+        ActionMenuItemView favbutton = (ActionMenuItemView) findViewById(R.id.favorites_button);
+        if (appPref.contains(lineNumber)){
+            //remove from favourites
+            editor.remove(lineNumber);
+            //TODO make favourite button unchacked
+            favbutton.setIcon(getResources().getDrawable(R.drawable.ic_favorites_unchecked));
+            Toast.makeText(getApplicationContext(), "Removed from favourites", Toast.LENGTH_SHORT).show();
+        }
+        else{
+            //add to favourites
+            editor.putString(lineNumber,lineName);
+            favbutton.setIcon(getResources().getDrawable(R.drawable.ic_favorites));
+            Toast.makeText(getApplicationContext(), "Added to favourites", Toast.LENGTH_SHORT).show();
+        }
+        editor.commit();
+    }
+
+    private void changeDirection() {
+        if (routeDirection == 0) routeDirection = 1;
+        else routeDirection = 0;
+        if(trenutniSmjer.equals(smjer1)) trenutniSmjer = smjer2;
+        else trenutniSmjer = smjer1;
+        loadData(false);
+        directionName.setText("Smjer : " + trenutniSmjer);
+        tripAdapter.notifyDataSetChanged();
     }
 
     @NonNull
@@ -121,9 +187,8 @@ public class DetailsActivity extends MvpLceActivity<SwipeRefreshLayout, ArrayLis
     @Override
     public void loadData(boolean pullToRefresh) {
         int i = Integer.valueOf(lineNumber);
-        System.out.println("");
         presenter.subscribe(ZetWebService.getInstance().
-                getRouteSchedule(i, 0), pullToRefresh);
+                getRouteSchedule(i, routeDirection), pullToRefresh);
     }
 
     @Override
@@ -144,86 +209,19 @@ public class DetailsActivity extends MvpLceActivity<SwipeRefreshLayout, ArrayLis
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        //ArrayList<String> dates = new ArrayList<String>();
-        //Calendar c = Calendar.getInstance();
-        //dates.add("Danas");
-        //dates.add("Sutra");
-        //c.add(Calendar.DAY_OF_YEAR,2);
-        //for(int i =0; i<5;i++) {
-            //String formattedDate = df.format(c.getTime());
-            //dates.add(formattedDate);
-            //c.add(Calendar.DAY_OF_YEAR,1);
-        //}
-
-        //String[] splitted = lineName.split("-");
-        //ArrayList<String> routes = new ArrayList<>();
-        //routes.add(splitted[0]);
-        //routes.add(splitted[1]);
-
-        //ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.my_spinner_dropdown_item, routes);
-
-        getMenuInflater().inflate(R.menu.activity_details_menu, menu);
-        /*MenuItem item = menu.findItem(R.id.spinner);
-        spinner = (Spinner) MenuItemCompat.getActionView(item);
-        spinner.setAdapter(adapter);
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            Calendar c = Calendar.getInstance();
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-                //updateUI();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                //updateUI();
-            }
-        });*/
-
-        return true;
+    public LceViewState<ArrayList<Trip>, TripView> createViewState() {
+        setRetainInstance(true);
+        return new SerializeableLceViewState<ArrayList<Trip>, TripView>();
     }
 
-    /*private void updateUI() {
-        int index = spinner.getSelectedItemPosition();
-        Calendar c = Calendar.getInstance();
-        c.add(Calendar.DAY_OF_YEAR,index);
-        String date = argDf.format(c.getTime());
-        int route = Integer.parseInt(lineNumber);
+    @Override
+    public ArrayList<Trip> getData() {
+        return tripAdapter.getTrips();
+    }
 
-//        TextView tableRow = (TextView) findViewById(R.id.polazak);
-//        tableRow.setText(index+" " + date+ " " + route);
-
-        List<String> schedule = new ArrayList<>();
-        schedule.add("PRVdasdasdassI");
-        schedule.add("DRUGI");
-
-        //String[] array = new String[] {"PRVI", "DRUGI"};
-        lv = (ListView) findViewById(R.id.my_list_view);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-                this, android.R.layout.simple_list_item_1, schedule
-        );
-        lv.setAdapter(adapter);
-
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                getRouteDetails(position);
-
-            }
-        });
-
-    }/*
-
-    /*private void getRouteDetails(int position) {
-//        TextView tableRow = (TextView) findViewById(R.id.polazak);
-//        tableRow.setText("Trazim detalje");
-//
-//
-//        tableRow.setText((String)lv.getItemAtPosition(position));
-
-        Intent i = new Intent(this, RouteDetailsActivity.class );
-        i.putExtra("ROUTE_DETAILS", (String)lv.getItemAtPosition(position));
-        startActivity(i);
-    }*/
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.activity_details_menu, menu);
+        return true;
+    }
 }

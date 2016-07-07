@@ -5,7 +5,6 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
@@ -31,8 +30,6 @@ import fer.ruazosa.ruazosa16_zet.ZetWebService;
 
 public class BusDnevni extends LineFragment {
 
-    private SearchView searchView;
-
     public BusDnevni() {
     }
 
@@ -56,15 +53,10 @@ public class BusDnevni extends LineFragment {
 
     @Override
     public void loadData(boolean pullToRefresh) {
-        if(rotated) {
-            rotated = false;
-            return;
-        } else {
-            try {
-                presenter.subscribe(ZetWebService.getInstance().getDailyBusRoutes(), pullToRefresh);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        try {
+            presenter.subscribe(ZetWebService.getInstance().getDailyBusRoutes(), pullToRefresh);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -73,7 +65,8 @@ public class BusDnevni extends LineFragment {
         return new DailyBusPresenter();
     }
 
-    private void setQueryHandler() {
+    @Override
+    protected void setQueryHandler() {
         SearchView.OnQueryTextListener queryTextListener = new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {

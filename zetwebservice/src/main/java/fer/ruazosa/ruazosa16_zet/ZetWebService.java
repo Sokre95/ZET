@@ -113,7 +113,8 @@ public class ZetWebService {
      * @param routeDirection number which may be 0 or 1
      * @param date           date String in yyyymmdd format
      */
-    public Observable<ArrayList<Trip>> getRouteScheduleByDate(final int routeId, final int routeDirection, final String date) throws IOException {
+    public Observable<ArrayList<Trip>> getRouteScheduleByDate
+    (final int routeId, final int routeDirection, final String date) throws IOException {
         return Observable.defer(new Func0<Observable<ArrayList<Trip>>>() {
             @Override
             public Observable<ArrayList<Trip>> call() {
@@ -134,7 +135,8 @@ public class ZetWebService {
      * @param tripDirection number which may be 0 or 1
      * @param tripTime      time string in hh:mm:ss format
      */
-    public Observable<ArrayList<String>> getTripStationsTimes(final int routeId, final int tripDirection, final String tripTime) throws IOException {
+    public Observable<ArrayList<String>> getTripStationsTimes
+    (final int routeId, final int tripDirection, final String tripTime) throws IOException {
         Observable<ArrayList<String>> stationTimes = service.getRouteSchedule(routeId).map(new Func1<Document, ArrayList<String>>() {
             @Override
             public ArrayList<String> call(Document document) {
