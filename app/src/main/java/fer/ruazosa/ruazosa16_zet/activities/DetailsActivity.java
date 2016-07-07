@@ -222,6 +222,9 @@ public class DetailsActivity extends MvpLceViewStateActivity<SwipeRefreshLayout,
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
         getMenuInflater().inflate(R.menu.activity_details_menu, menu);
+        if (getSharedPreferences(FAVOURITES,Context.MODE_PRIVATE).contains(lineNumber)){
+            menu.findItem(R.id.favorites_button).setIcon(R.drawable.ic_favorites);
+        }
         return true;
     }
 }
