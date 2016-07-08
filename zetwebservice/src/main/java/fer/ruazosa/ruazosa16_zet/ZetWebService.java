@@ -5,10 +5,14 @@ import org.jsoup.nodes.Document;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import fer.ruazosa.ruazosa16_zet.model.Line;
+import fer.ruazosa.ruazosa16_zet.model.Station;
 import fer.ruazosa.ruazosa16_zet.model.Trip;
 import fer.ruazosa.ruazosa16_zet.service.DocumentConverter;
 import fer.ruazosa.ruazosa16_zet.service.DocumentParser;
@@ -24,6 +28,8 @@ import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 public class ZetWebService {
+
+    public static final DateFormat DATE_FORMAT = new SimpleDateFormat("HH:mm:ss");
 
     private static ZetWebService instance;
     private ZETService service;
@@ -89,18 +95,18 @@ public class ZetWebService {
     }
 
     /**
-     * @param routeId        unique route id
+     * @param l              parent line
      * @param routeDirection number which may be 0 or 1
      */
-    public Observable<ArrayList<Trip>> getRouteSchedule(final int routeId, final int routeDirection) {
+    public Observable<ArrayList<Trip>> getRouteSchedule(final Line l, final int routeDirection) {
         return Observable.defer(new Func0<Observable<ArrayList<Trip>>>() {
             @Override
             public Observable<ArrayList<Trip>> call() {
-                Observable<Document> doc = service.getRouteSchedule(routeId);
+                Observable<Document> doc = service.getRouteSchedule(l.getId());
                 Observable<ArrayList<Trip>> trips = doc.map(new Func1<Document, ArrayList<Trip>>() {
                     @Override
                     public ArrayList<Trip> call(Document document) {
-                        return DocumentParser.parseSchedule(document, routeDirection);
+                        return DocumentParser.parseSchedule(l, document, routeDirection);
                     }
                 });
                 return trips;
@@ -109,20 +115,20 @@ public class ZetWebService {
     }
 
     /**
-     * @param routeId        unique route id
+     * @param l              parent line
      * @param routeDirection number which may be 0 or 1
      * @param date           date String in yyyymmdd format
      */
     public Observable<ArrayList<Trip>> getRouteScheduleByDate
-    (final int routeId, final int routeDirection, final String date) throws IOException {
+    (final Line l, final int routeDirection, final String date) throws IOException {
         return Observable.defer(new Func0<Observable<ArrayList<Trip>>>() {
             @Override
             public Observable<ArrayList<Trip>> call() {
-                final Observable<Document> doc = service.getRouteScheduleForDate(routeId, date);
+                final Observable<Document> doc = service.getRouteScheduleForDate(l.getId(), date);
                 Observable<ArrayList<Trip>> trips = doc.map(new Func1<Document, ArrayList<Trip>>() {
                     @Override
                     public ArrayList<Trip> call(Document document) {
-                        return DocumentParser.parseSchedule(document, routeDirection);
+                        return DocumentParser.parseSchedule(l, document, routeDirection);
                     }
                 });
                 return trips;
@@ -164,5 +170,38 @@ public class ZetWebService {
             }
         });
         return routeDates;
+    }
+
+
+    //NEW METHODS
+    public Observable<Line> loadLine(final Line l){
+        if(l.getTrips() == null || l.getTrips().size() != 0){
+            return Observable.empty();
+        }
+        Observable<Line> observeLine = service.getRouteSchedule(l.getId()).map(new Func1<Document, Line>() {
+            @Override
+            public Line call(Document document) {
+                l.setTrips(DocumentParser.parseSchedule(l, document, 0));
+                l.getTrips().addAll(DocumentParser.parseSchedule(l, document, 1));
+                l.setStations(DocumentParser.parseStations(document));
+                return l;
+            }
+        });
+        return observeLine;
+    }
+
+    public Observable<Trip> loadTrip(final Trip t){
+        if(t.getTimeTable() != null && t.getTimeTable().size() > 0){
+            return Observable.empty();
+        }
+        Observable<Trip> observeTrip = service.getTripObs(t.getLine().getId(), t.getId(), t.getDirection())
+                .map(new Func1<Document, Trip>() {
+            @Override
+            public Trip call(Document document) {
+                t.setTimeTable(DocumentParser.timesAtStation(t, document));
+                return t;
+            }
+        });
+        return observeTrip;
     }
 }

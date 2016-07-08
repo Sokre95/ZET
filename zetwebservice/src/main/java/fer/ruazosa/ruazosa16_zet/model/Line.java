@@ -2,37 +2,41 @@ package fer.ruazosa.ruazosa16_zet.model;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
 
 public class Line implements Serializable {
 
-    private String lineNumber;
-    private String lineName;
+    private int id;
+    private String name;
 
-    private List<Station> stations;
-    private List<ShortTrip> trips;
+    private Set<Station> stations;
+    private List<Trip> trips;
 
-    public Line(String lineNumber, String lineName) {
-        this.lineNumber = lineNumber;
-        this.lineName = lineName;
+    public Line(int lineNumber) {
+        this.id = lineNumber;
     }
 
-    public String getLineNumber() {
-        return lineNumber;
-    }
-    public String getLineName() {
-        return lineName;
+    public int getId() {
+        return id;
     }
 
-    public List<Station> getStations() {
+    public void setName(String name) {
+        this.name = name;
+    }
+    public String getName() {
+        return name;
+    }
+
+    public Set<Station> getStations() {
         return stations;
     }
-    public void setStations(List<Station> stations) {
+    public void setStations(Set<Station> stations) {
         this.stations = stations;
     }
-    public List<ShortTrip> getTrips() {
+    public List<Trip> getTrips() {
         return trips;
     }
-    public void setTrips(List<ShortTrip> trips) {
+    public void setTrips(List<Trip> trips) {
         this.trips = trips;
     }
 
@@ -43,20 +47,20 @@ public class Line implements Serializable {
 
         Line line = (Line) o;
 
-        if (!lineNumber.equals(line.lineNumber)) return false;
-        return lineName.equals(line.lineName);
+        if (id==line.getId()) return false;
+        return name.equals(line.name);
 
     }
 
     @Override
     public int hashCode() {
-        int result = lineNumber.hashCode();
-        result = 31 * result + lineName.hashCode();
+        int result = id;
+        result = 31 * result + name.hashCode();
         return result;
     }
 
     @Override
     public String toString() {
-        return lineNumber + "-" + lineName;
+        return id + "-" + name;
     }
 }

@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -42,8 +41,8 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.TrasaViewHol
 
     @Override
     public void onBindViewHolder(TrasaViewHolder holder, int position) {
-        holder.broj_linije.setText(lines.get(position).getLineNumber());
-        holder.naziv_linije.setText(lines.get(position).getLineName());
+        holder.broj_linije.setText(lines.get(position).getId());
+        holder.naziv_linije.setText(lines.get(position).getName());
     }
 
     public void setLines(ArrayList<Line> lines) {

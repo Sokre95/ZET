@@ -9,7 +9,7 @@ public class Route {
     private int routeId;
     private String routeName;
     private List<Station> stations;
-    private List<ShortTrip> trips;
+    private List<Trip> trips;
 
     public int getRouteId() {
         return routeId;
@@ -23,10 +23,10 @@ public class Route {
     public void setRouteName(String routeName) {
         this.routeName = routeName;
     }
-    public List<ShortTrip> getTrips() {
+    public List<Trip> getTrips() {
         return trips;
     }
-    public void setTrips(List<ShortTrip> trips) {
+    public void setTrips(List<Trip> trips) {
         this.trips = trips;
     }
     public List<Station> getStations() {
