@@ -95,18 +95,18 @@ public class ZetWebService {
     }
 
     /**
-     * @param routeId        unique route id
+     * @param l              parent line
      * @param routeDirection number which may be 0 or 1
      */
-    public Observable<ArrayList<Trip>> getRouteSchedule(final int routeId, final int routeDirection) {
+    public Observable<ArrayList<Trip>> getRouteSchedule(final Line l, final int routeDirection) {
         return Observable.defer(new Func0<Observable<ArrayList<Trip>>>() {
             @Override
             public Observable<ArrayList<Trip>> call() {
-                Observable<Document> doc = service.getRouteSchedule(routeId);
+                Observable<Document> doc = service.getRouteSchedule(l.getId());
                 Observable<ArrayList<Trip>> trips = doc.map(new Func1<Document, ArrayList<Trip>>() {
                     @Override
                     public ArrayList<Trip> call(Document document) {
-                        return DocumentParser.parseSchedule(routeId, document, routeDirection);
+                        return DocumentParser.parseSchedule(l, document, routeDirection);
                     }
                 });
                 return trips;
@@ -115,20 +115,20 @@ public class ZetWebService {
     }
 
     /**
-     * @param routeId        unique route id
+     * @param l              parent line
      * @param routeDirection number which may be 0 or 1
      * @param date           date String in yyyymmdd format
      */
     public Observable<ArrayList<Trip>> getRouteScheduleByDate
-    (final int routeId, final int routeDirection, final String date) throws IOException {
+    (final Line l, final int routeDirection, final String date) throws IOException {
         return Observable.defer(new Func0<Observable<ArrayList<Trip>>>() {
             @Override
             public Observable<ArrayList<Trip>> call() {
-                final Observable<Document> doc = service.getRouteScheduleForDate(routeId, date);
+                final Observable<Document> doc = service.getRouteScheduleForDate(l.getId(), date);
                 Observable<ArrayList<Trip>> trips = doc.map(new Func1<Document, ArrayList<Trip>>() {
                     @Override
                     public ArrayList<Trip> call(Document document) {
-                        return DocumentParser.parseSchedule(routeId, document, routeDirection);
+                        return DocumentParser.parseSchedule(l, document, routeDirection);
                     }
                 });
                 return trips;
@@ -181,8 +181,8 @@ public class ZetWebService {
         Observable<Line> observeLine = service.getRouteSchedule(l.getId()).map(new Func1<Document, Line>() {
             @Override
             public Line call(Document document) {
-                l.setTrips(DocumentParser.parseSchedule(l.getId(), document, 0));
-                l.getTrips().addAll(DocumentParser.parseSchedule(l.getId(), document, 1));
+                l.setTrips(DocumentParser.parseSchedule(l, document, 0));
+                l.getTrips().addAll(DocumentParser.parseSchedule(l, document, 1));
                 l.setStations(DocumentParser.parseStations(document));
                 return l;
             }
@@ -191,14 +191,17 @@ public class ZetWebService {
     }
 
     public Observable<Trip> loadTrip(final Trip t){
-        Observable<Trip> observeTrip = service.getTripObs(t.getRouteId(), t.getId(), t.getDirection())
+        if(t.getTimeTable() != null && t.getTimeTable().size() > 0){
+            return Observable.empty();
+        }
+        Observable<Trip> observeTrip = service.getTripObs(t.getLine().getId(), t.getId(), t.getDirection())
                 .map(new Func1<Document, Trip>() {
             @Override
             public Trip call(Document document) {
-                t.setTimeTable(DocumentParser.timesAtStation(document));
-                return null;
+                t.setTimeTable(DocumentParser.timesAtStation(t, document));
+                return t;
             }
         });
-        return null;
+        return observeTrip;
     }
 }

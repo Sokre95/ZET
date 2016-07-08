@@ -10,7 +10,7 @@ import fer.ruazosa.ruazosa16_zet.ZetWebService;
 import jdk.nashorn.internal.runtime.ParserException;
 
 public class Trip implements Serializable {
-    private int routeId;
+    private Line line;
     private String id;
     private int direction;
 
@@ -19,14 +19,14 @@ public class Trip implements Serializable {
     private Station destination;
     private Date departureTime;
 
-    public Trip(int routeId,String id, int direction) {
-        this.routeId = routeId;
+    public Trip(Line line,String id, int direction) {
+        this.line = line;
         this.id = id;
         this.direction = direction;
     }
 
-    public int getRouteId() {
-        return routeId;
+    public Line getLine() {
+        return line;
     }
     public int getDirection() {
         return direction;

@@ -187,8 +187,10 @@ public class DetailsActivity extends MvpLceViewStateActivity<SwipeRefreshLayout,
     @Override
     public void loadData(boolean pullToRefresh) {
         int i = Integer.valueOf(lineNumber);
+        Line l = new Line(i);
+        l.setName(lineName);
         presenter.subscribe(ZetWebService.getInstance().
-                getRouteSchedule(i, routeDirection), pullToRefresh);
+                getRouteSchedule(l, routeDirection), pullToRefresh);
     }
 
     @Override
