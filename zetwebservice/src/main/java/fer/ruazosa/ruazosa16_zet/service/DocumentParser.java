@@ -11,6 +11,8 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import fer.ruazosa.ruazosa16_zet.ZetWebService;
 import fer.ruazosa.ruazosa16_zet.model.Line;
@@ -120,8 +122,20 @@ public class DocumentParser {
         return res;
     }
 
+    //https://maps.googleapis.com/maps/api/staticmap?path=color:0x0000ff|weight:3|45.797137,15.938396|45.797679,15.944011|...|45.790977,16.036917&markers=size:tiny|45.789193,16.034803&s...
     public static Set<Station> parseStations(Document document){
-        //TODO Parse stations using coordinates (might need Google's reverse geocoding).
-        return new HashSet<>();
+        String coordinatesLink = document.getElementsByClass("leftMenu").get(1).attr("src");
+        Set<Station> res = new HashSet<>();
+
+        Matcher m = Pattern.compile("\\|(\\d+\\.\\d+),(\\d+\\.\\d+)").matcher(coordinatesLink);
+        while(m.find()){
+            String[] c = m.group().substring(1).split(",");
+            Station s = new Station("");
+            s.setLatitude(Double.parseDouble(c[0]));
+            s.setLongitude(Double.parseDouble(c[1]));
+
+            res.add(s);
+        }
+        return res;
     }
 }
