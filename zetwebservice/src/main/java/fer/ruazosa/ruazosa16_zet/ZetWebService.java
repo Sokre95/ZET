@@ -191,7 +191,14 @@ public class ZetWebService {
     }
 
     public Observable<Trip> loadTrip(final Trip t){
-        //TODO
+        Observable<Trip> observeTrip = service.getTripObs(t.getRouteId(), t.getId(), t.getDirection())
+                .map(new Func1<Document, Trip>() {
+            @Override
+            public Trip call(Document document) {
+                t.setTimeTable(DocumentParser.timesAtStation(document));
+                return null;
+            }
+        });
         return null;
     }
 }

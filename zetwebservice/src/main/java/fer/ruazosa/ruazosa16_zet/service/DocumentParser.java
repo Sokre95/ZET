@@ -95,6 +95,22 @@ public class DocumentParser {
         return dates;
     }
 
+    public static ArrayList<Trip.StationTimePair> timesAtStation(Document document) {
+        ArrayList<Trip.StationTimePair> res = new ArrayList<>();
+        Element pageContentDiv = document.getElementsByClass("pageContent").get(0);
+        for(Element timeAtStation: pageContentDiv.getAllElements()){
+            String[] data = timeAtStation.text().split(" - ");
+            try {
+                Date d = ZetWebService.DATE_FORMAT.parse(data[0]);
+                Station s = new Station(data[1]);
+                res.add(new Trip.StationTimePair(s, d));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+        return res;
+    }
+
     public static Set<Station> parseStations(Document document){
         //TODO Parse stations using coordinates (might need Google's reverse geocoding).
         return new HashSet<>();
