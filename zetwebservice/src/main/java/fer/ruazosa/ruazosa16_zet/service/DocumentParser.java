@@ -34,7 +34,7 @@ public class DocumentParser {
         return routes;
     }
 
-    public static ArrayList<Trip> parseSchedule(int routeId,Document document, int direction) {
+    public static ArrayList<Trip> parseSchedule(Line l,Document document, int direction) {
         ArrayList<Trip> schedule = new ArrayList<>();
         Elements scheduleElements = document.getElementsByAttributeValueContaining("href", "direction_id=" + direction);
         for (Element e : scheduleElements) {
@@ -43,7 +43,7 @@ public class DocumentParser {
             Elements tableRowElementData = tableRowElement.children(); // tu imamo sve <td>..</td> tagove unutar jednog tr taga
 
             String id = tableRowElementData.get(0).child(0).attr("href").split("&")[3].split("=")[1];
-            Trip t = new Trip(routeId, id, direction);
+            Trip t = new Trip(l, id, direction);
 
             t.setDepartureTimeWithString(tableRowElementData.get(0).text());
             t.setStartingPoint(new Station(tableRowElementData.get(1).text()));
@@ -95,7 +95,7 @@ public class DocumentParser {
         return dates;
     }
 
-    public static ArrayList<Trip.StationTimePair> timesAtStation(Document document) {
+    public static ArrayList<Trip.StationTimePair> timesAtStation(Trip t, Document document) {
         ArrayList<Trip.StationTimePair> res = new ArrayList<>();
         Element pageContentDiv = document.getElementsByClass("pageContent").get(0);
         for(Element timeAtStation: pageContentDiv.getAllElements()){
@@ -103,6 +103,15 @@ public class DocumentParser {
             try {
                 Date d = ZetWebService.DATE_FORMAT.parse(data[0]);
                 Station s = new Station(data[1]);
+                for(Station stat: t.getLine().getStations()){
+                    if(stat.equals(s)){
+                        //Replace station containing name and no coordinates with the station containing
+                        //both name and coordinates.
+                        s = stat;
+                        break;
+                    }
+                }
+
                 res.add(new Trip.StationTimePair(s, d));
             } catch (ParseException e) {
                 e.printStackTrace();

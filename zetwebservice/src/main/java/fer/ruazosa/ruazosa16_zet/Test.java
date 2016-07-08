@@ -18,7 +18,7 @@ public class Test {
                     for(Line t : trips) {
                         System.out.println(t.toString());
                         try{
-                            ZetWebService.getInstance().getRouteSchedule(t.getId(), 0).subscribe(new Action1<ArrayList<Trip>>() {
+                            ZetWebService.getInstance().getRouteSchedule(t, 0).subscribe(new Action1<ArrayList<Trip>>() {
                                 @Override
                                 public void call(ArrayList<Trip> trips) {
                                     for(Trip t: trips){
