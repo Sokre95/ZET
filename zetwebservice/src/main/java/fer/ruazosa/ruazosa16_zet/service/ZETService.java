@@ -32,4 +32,8 @@ public interface ZETService {
 
     @GET("/default.aspx?id=" + BASE_LINEVIEW_ID)
     Observable<Document> loadLine(@Query("route_id") int routeId);
+
+    @GET("/default.aspx?id=" + BASE_TRIPVIEW_ID)
+    Observable<Document> getTripObs(@Query("route_id") int routeId, @Query("trip_id") String trip_id, @Query("direction") int direction);
+
 }
