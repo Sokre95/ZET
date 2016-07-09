@@ -100,8 +100,8 @@ public class DocumentParser {
 
     public static ArrayList<Trip.StationTimePair> timesAtStation(Trip t, Document document) {
         ArrayList<Trip.StationTimePair> res = new ArrayList<>();
-        Element pageContentDiv = document.getElementsByClass("pageContent").get(0).children().get(0);
-        for(Element timeAtStation: pageContentDiv.children()){
+        Element pageContentDiv = document.getElementsByClass("pageContent").get(0);
+        for(Element timeAtStation: pageContentDiv.getAllElements()){
             String[] data = timeAtStation.text().split(" - ");
             try {
                 Date d = ZetWebService.DATE_FORMAT.parse(data[0]);
@@ -111,7 +111,6 @@ public class DocumentParser {
                         //Replace station containing name and no coordinates with the station containing
                         //both name and coordinates.
                         s = stat;
-                        System.out.println("This happened.");
                         break;
                     }
                 }
