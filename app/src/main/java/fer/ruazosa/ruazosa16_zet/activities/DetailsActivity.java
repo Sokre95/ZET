@@ -116,6 +116,12 @@ public class DetailsActivity extends MvpLceViewStateActivity<SwipeRefreshLayout,
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.activity_details_menu, menu);
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.map_button :
@@ -141,14 +147,13 @@ public class DetailsActivity extends MvpLceViewStateActivity<SwipeRefreshLayout,
         SharedPreferences appPref = getSharedPreferences(FAVOURITES, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = appPref.edit();
         ActionMenuItemView favbutton = (ActionMenuItemView) findViewById(R.id.favorites_button);
-        if (appPref.contains(lineNumber)){
+        if (appPref.contains(lineNumber)) {
             //remove from favourites
             editor.remove(lineNumber);
             //TODO make favourite button unchacked
             favbutton.setIcon(getResources().getDrawable(R.drawable.ic_favorites_unchecked));
             Toast.makeText(getApplicationContext(), "Removed from favourites", Toast.LENGTH_SHORT).show();
-        }
-        else{
+        } else {
             //add to favourites
             editor.putString(lineNumber,lineName);
             favbutton.setIcon(getResources().getDrawable(R.drawable.ic_favorites));
@@ -219,9 +224,4 @@ public class DetailsActivity extends MvpLceViewStateActivity<SwipeRefreshLayout,
         return tripAdapter.getTrips();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        getMenuInflater().inflate(R.menu.activity_details_menu, menu);
-        return true;
-    }
 }
