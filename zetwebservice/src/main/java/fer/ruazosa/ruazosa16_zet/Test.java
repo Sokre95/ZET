@@ -14,16 +14,21 @@ public class Test {
             ZetWebService.getInstance().getDailyBusRoutes().subscribe(new Action1<ArrayList<Line>>() {
 
                 @Override
-                public void call(ArrayList<Line> trips) {
-                    for(Line t : trips) {
-                        System.out.println(t.toString());
+                public void call(ArrayList<Line> lines) {
+                    for(Line l : lines) {
+                        System.out.println(l.toString());
                         try{
-                            ZetWebService.getInstance().getRouteSchedule(t, 0).subscribe(new Action1<ArrayList<Trip>>() {
+                            ZetWebService.getInstance().loadLine(l).subscribe(new Action1<Line>(){
+
                                 @Override
-                                public void call(ArrayList<Trip> trips) {
-                                    for(Trip t: trips){
-                                        System.out.println(t);
-                                    }
+                                public void call(Line line) {
+                                    ZetWebService.getInstance().loadTrip(line.getTrips().get(0))
+                                            .subscribe(new Action1<Trip>() {
+                                                @Override
+                                                public void call(Trip trip) {
+                                                    System.out.println(trip.getTimeTable());
+                                                }
+                                            });
                                 }
                             });
                             Thread.sleep(1500);
@@ -36,7 +41,7 @@ public class Test {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        //while(true);
+        while(true);
     }
 
 }

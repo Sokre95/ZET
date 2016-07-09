@@ -15,6 +15,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import fer.ruazosa.ruazosa16_zet.ZetWebService;
+import fer.ruazosa.ruazosa16_zet.googlemapsmodel.PlacesService;
 import fer.ruazosa.ruazosa16_zet.model.Line;
 import fer.ruazosa.ruazosa16_zet.model.Station;
 import fer.ruazosa.ruazosa16_zet.model.Trip;
@@ -44,7 +45,7 @@ public class DocumentParser {
             Element tableRowElement = e.parent().parent(); //  tu je <tr>..</tr> uhvacen
             Elements tableRowElementData = tableRowElement.children(); // tu imamo sve <td>..</td> tagove unutar jednog tr taga
 
-            String id = tableRowElementData.get(0).child(0).attr("href").split("&")[3].split("=")[1];
+            String id = tableRowElementData.get(0).child(0).attr("href").split("trip_id=")[1].split("&")[0];
             Trip t = new Trip(l, id, direction);
 
             t.setDepartureTimeWithString(tableRowElementData.get(0).text());
@@ -99,8 +100,8 @@ public class DocumentParser {
 
     public static ArrayList<Trip.StationTimePair> timesAtStation(Trip t, Document document) {
         ArrayList<Trip.StationTimePair> res = new ArrayList<>();
-        Element pageContentDiv = document.getElementsByClass("pageContent").get(0);
-        for(Element timeAtStation: pageContentDiv.getAllElements()){
+        Element pageContentDiv = document.getElementsByClass("pageContent").get(0).children().get(0);
+        for(Element timeAtStation: pageContentDiv.children()){
             String[] data = timeAtStation.text().split(" - ");
             try {
                 Date d = ZetWebService.DATE_FORMAT.parse(data[0]);
@@ -110,6 +111,7 @@ public class DocumentParser {
                         //Replace station containing name and no coordinates with the station containing
                         //both name and coordinates.
                         s = stat;
+                        System.out.println("This happened.");
                         break;
                     }
                 }
@@ -122,19 +124,16 @@ public class DocumentParser {
         return res;
     }
 
-    //https://maps.googleapis.com/maps/api/staticmap?path=color:0x0000ff|weight:3|45.797137,15.938396|45.797679,15.944011|...|45.790977,16.036917&markers=size:tiny|45.789193,16.034803&s...
     public static Set<Station> parseStations(Document document){
-        String coordinatesLink = document.getElementsByClass("leftMenu").get(1).attr("src");
+        String coordinatesLink = document.getElementsByClass("leftMenu").get(0).children().get(1).attr("src");
         Set<Station> res = new HashSet<>();
 
         Matcher m = Pattern.compile("\\|(\\d+\\.\\d+),(\\d+\\.\\d+)").matcher(coordinatesLink);
+        PlacesService places = PlacesService.getInstance();
         while(m.find()){
             String[] c = m.group().substring(1).split(",");
-            Station s = new Station("");
-            s.setLatitude(Double.parseDouble(c[0]));
-            s.setLongitude(Double.parseDouble(c[1]));
-
-            res.add(s);
+            places.addStationWithCoordinates
+                    (Double.parseDouble(c[0]), Double.parseDouble(c[1]), res);
         }
         return res;
     }

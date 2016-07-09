@@ -183,7 +183,7 @@ public class ZetWebService {
             public Line call(Document document) {
                 l.setTrips(DocumentParser.parseSchedule(l, document, 0));
                 l.getTrips().addAll(DocumentParser.parseSchedule(l, document, 1));
-                l.setStations(DocumentParser.parseStations(document));
+                //l.setStations(DocumentParser.parseStations(document));
                 return l;
             }
         });

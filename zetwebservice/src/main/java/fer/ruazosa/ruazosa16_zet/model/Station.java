@@ -32,7 +32,7 @@ public class Station implements Serializable {
 
     @Override
     public String toString() {
-        return name;
+        return name + " " + latitude + " " + longitude;
     }
 
     @Override
