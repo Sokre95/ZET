@@ -2,6 +2,8 @@ package fer.ruazosa.ruazosa16_zet;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
 import fer.ruazosa.ruazosa16_zet.model.Line;
 import fer.ruazosa.ruazosa16_zet.model.Trip;
@@ -11,34 +13,28 @@ public class Test {
 
     public static void main(String[] args) {
         try {
-            ZetWebService.getInstance().getDailyBusRoutes().subscribe(new Action1<ArrayList<Line>>() {
-
+            final Scanner in = new Scanner(System.in);
+            ZetWebService.getInstance().getDailyTramRoutes().subscribe(new Action1<ArrayList<Line>>() {
                 @Override
                 public void call(ArrayList<Line> lines) {
-                    for(Line l : lines) {
-                        System.out.println(l.toString());
-                        try{
-                            ZetWebService.getInstance().loadLine(l).subscribe(new Action1<Line>(){
-
-                                @Override
-                                public void call(Line line) {
-                                    ZetWebService.getInstance().loadTrip(line.getTrips().get(0))
-                                            .subscribe(new Action1<Trip>() {
-                                                @Override
-                                                public void call(Trip trip) {
-                                                    System.out.println(trip.getTimeTable());
-                                                }
-                                            });
-                                }
-                            });
-                            Thread.sleep(1500);
-                        } catch(Exception e){
-                            e.printStackTrace();;
-                        }
+                    for(int i=1; i<=lines.size(); i++){
+                        System.out.println(i + ". " + lines.get(i-1));
                     }
+                    System.out.println("Enter the number of the line you wish to open.");
+                    int index = in.nextInt()-1;
+                    System.out.println("Opening trips for line " + lines.get(index) + "...");
+
+                    ZetWebService.getInstance().loadLine(lines.get(index)).subscribe(new Action1<Line>() {
+                        @Override
+                        public void call(Line line) {
+                            for(int i=1; i<=line.getTrips().size(); i++){
+                                System.out.println(i + ". " + line.getTrips().get(i-1));
+                            }
+                        }
+                    });
                 }
             });
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         while(true);
