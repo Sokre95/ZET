@@ -20,7 +20,6 @@ import fer.ruazosa.ruazosa16_zet.bus.BusDnevni;
 import fer.ruazosa.ruazosa16_zet.bus.BusNocni;
 import fer.ruazosa.ruazosa16_zet.home.CloseFragment;
 import fer.ruazosa.ruazosa16_zet.home.FavouritesFragment;
-import fer.ruazosa.ruazosa16_zet.home.MapFragment;
 import fer.ruazosa.ruazosa16_zet.tram.TramDnevni;
 import fer.ruazosa.ruazosa16_zet.tram.TramNocni;
 
@@ -109,7 +108,6 @@ public class MainActivity extends AppCompatActivity {
         viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         viewPagerAdapter.addFragments(new CloseFragment(), "CLOSE");
         viewPagerAdapter.addFragments(new FavouritesFragment(), "FAVORITES");
-        viewPagerAdapter.addFragments(new MapFragment(), "MAP");
         viewPager.setAdapter(viewPagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
         instance = HOME;
