@@ -4,7 +4,9 @@ import org.jsoup.nodes.Document;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import fer.ruazosa.ruazosa16_zet.model.Station;
@@ -15,7 +17,9 @@ import retrofit2.Converter;
 import retrofit2.GsonConverterFactory;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import rx.Observable;
 import rx.functions.Action1;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -58,5 +62,36 @@ public class PlacesService {
                 } catch(IndexOutOfBoundsException ex){}
             }
         });
+    }
+
+    private Func1<Location, List<Station>> locationToStationMapper(){
+        return new Func1<Location, List<Station>>() {
+            @Override
+            public List<Station> call(Location location) {
+                List<Station> list = new ArrayList<>();
+                for(Result r: location.getResults()){
+                    Station s = new Station(r.getName());
+                    s.setLatitude(r.getGeometry().getLocation().getLat());
+                    s.setLongitude(r.getGeometry().getLocation().getLng());
+                    list.add(s);
+                }
+                return list;
+            }
+        };
+    }
+
+    public Observable<List<Station>> findNearestStations(double lat, double lon){
+        Observable<List<Station>> observable = service.reverseGeocodeCoordinates(lat+","+lon).map(locationToStationMapper());
+        return observable;
+    }
+
+    public Observable<List<Station>> findNearestBusStations(double lat, double lon){
+        Observable<List<Station>> obs = service.findNearestBusStations(lat+","+lon).map(locationToStationMapper());
+        return obs;
+    }
+
+    public Observable<List<Station>> findNearestLightRailStations(double lat, double lon){
+        Observable<List<Station>> obs = service.findNearestLightRailStations(lat+","+lon).map(locationToStationMapper());
+        return obs;
     }
 }

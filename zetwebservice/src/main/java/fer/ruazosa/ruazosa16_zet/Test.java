@@ -48,7 +48,7 @@ public class Test {
                                 }
                             });*/
 
-                            //Kod za učitavanje podataka o stanicama
+                            //Kod za ispisivanje podataka o stanicama
                             for(Station s: line.getStations()){
                                 System.out.println(s);
                             }
