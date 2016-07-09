@@ -10,6 +10,6 @@ import rx.Observable;
 public interface PlacesInterface {
     public static final String endpoint = "https://maps.googleapis.com/maps/api/place/nearbysearch/";
 
-    @GET("json?key=AIzaSyBAC1J2zOfyanzlNa1bXXCPL8Y36mYymYE&radius=5&type=transit_station")
+    @GET("json?key=AIzaSyBAC1J2zOfyanzlNa1bXXCPL8Y36mYymYE&radius=10&type=transit_station")
     Observable<Location> reverseGeocodeCoordinates(@Query("location") String latLon);
 }

@@ -49,11 +49,13 @@ public class PlacesService {
         service.reverseGeocodeCoordinates(lat+","+lon).subscribe(new Action1<Location>() {
             @Override
             public void call(Location location) {
-                Result result = location.getResults().get(0);
-                Station s = new Station(result.getName());
-                s.setLatitude(result.getGeometry().getLocation().getLat());
-                s.setLongitude(result.getGeometry().getLocation().getLng());
-                set.add(s);
+                try {
+                    Result result = location.getResults().get(0);
+                    Station s = new Station(result.getName());
+                    s.setLatitude(result.getGeometry().getLocation().getLat());
+                    s.setLongitude(result.getGeometry().getLocation().getLng());
+                    set.add(s);
+                } catch(IndexOutOfBoundsException ex){}
             }
         });
     }

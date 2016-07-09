@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import fer.ruazosa.ruazosa16_zet.model.Line;
+import fer.ruazosa.ruazosa16_zet.model.Station;
 import fer.ruazosa.ruazosa16_zet.model.Trip;
 import rx.functions.Action1;
 
@@ -22,14 +23,36 @@ public class Test {
                     }
                     System.out.println("Enter the number of the line you wish to open.");
                     int index = in.nextInt()-1;
-                    System.out.println("Opening trips for line " + lines.get(index) + "...");
+                    System.out.println("Loading data for line " + lines.get(index) + "...");
 
                     ZetWebService.getInstance().loadLine(lines.get(index)).subscribe(new Action1<Line>() {
                         @Override
                         public void call(Line line) {
+                            try {
+                                Thread.sleep(10000);
+                            } catch (Exception ex){}
+                            /*
+                            //Kod za učitavanje podataka o Trip-ovima
                             for(int i=1; i<=line.getTrips().size(); i++){
                                 System.out.println(i + ". " + line.getTrips().get(i-1));
                             }
+                            System.out.println("Enter the number of the trip you wish to open.");
+                            int index = in.nextInt()-1;
+                            System.out.println("Opening details for trip " + line.getTrips().get(index));
+                            ZetWebService.getInstance().loadTrip(line.getTrips().get(index)).subscribe(new Action1<Trip>() {
+                                @Override
+                                public void call(Trip trip) {
+                                    for(int i=1; i<=trip.getTimeTable().size(); i++){
+                                        System.out.println(i + ". " + trip.getTimeTable().get(i-1));
+                                    }
+                                }
+                            });*/
+
+                            //Kod za učitavanje podataka o stanicama
+                            for(Station s: line.getStations()){
+                                System.out.println(s);
+                            }
+                            System.out.println("Done.");
                         }
                     });
                 }
