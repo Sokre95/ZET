@@ -176,7 +176,8 @@ public class ZetWebService {
 
     //NEW METHODS
     public Observable<Line> loadLine(final Line l){
-        if ((l.getTrips() != null && l.getTrips().size() != 0)) {
+        if ((l.getTrips(0) != null && l.getTrips(0).size() != 0)
+                || (l.getTrips(1) != null && l.getTrips(1).size() != 0)) {
             return Observable.create(new Observable.OnSubscribe<Line>() {
                 @Override
                 public void call(Subscriber<? super Line> subscriber) {
@@ -187,8 +188,8 @@ public class ZetWebService {
         Observable<Line> observeLine = service.getRouteSchedule(l.getId()).map(new Func1<Document, Line>() {
             @Override
             public Line call(Document document) {
-                l.setTrips(DocumentParser.parseSchedule(l, document, 0));
-                l.getTrips().addAll(DocumentParser.parseSchedule(l, document, 1));
+                l.setTrips(DocumentParser.parseSchedule(l, document, 0),0);
+                l.setTrips(DocumentParser.parseSchedule(l, document, 1),1);
                 l.setStations(DocumentParser.parseStations(document));
                 return l;
             }

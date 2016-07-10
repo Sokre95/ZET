@@ -12,7 +12,8 @@ public class Line implements Serializable {
     private String name;
 
     private Set<Station> stations = new HashSet<>();
-    private List<Trip> trips = new ArrayList<>();
+    private List<Trip> trips0 = new ArrayList<>();
+    private List<Trip> trips1 = new ArrayList<>();
 
     public Line(int lineNumber) {
         this.id = lineNumber;
@@ -43,12 +44,16 @@ public class Line implements Serializable {
         this.stations = stations;
     }
 
-    public List<Trip> getTrips() {
-        return trips;
+    public List<Trip> getTrips(int dir) {
+        return dir==0?trips0:trips1;
     }
 
-    public void setTrips(List<Trip> trips) {
-        this.trips = trips;
+    public void setTrips(List<Trip> trips, int dir) {
+        if(dir==0){
+            trips0 = trips;
+        } else {
+            trips1 = trips;
+        }
     }
 
     @Override
