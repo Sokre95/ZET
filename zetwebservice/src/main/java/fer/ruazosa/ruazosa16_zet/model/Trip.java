@@ -1,30 +1,72 @@
 package fer.ruazosa.ruazosa16_zet.model;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import fer.ruazosa.ruazosa16_zet.ZetWebService;
+import jdk.nashorn.internal.runtime.ParserException;
 
 public class Trip implements Serializable {
+    private Line line;
+    private String id;
+    private int direction;
 
-    String departureTime;
-    String startingPoint;
-    String destionation;
+    private List<StationTimePair> timeTable = new ArrayList<>();
+    private Station startingPoint;
+    private Station destination;
+    private Date departureTime;
 
-    public Trip(String departureTime, String startingPoint, String destionation) {
-        this.departureTime = departureTime;
-        this.startingPoint = startingPoint;
-        this.destionation = destionation;
+    public Trip(Line line,String id, int direction) {
+        this.line = line;
+        this.id = id;
+        this.direction = direction;
     }
 
-    public String getDepartureTime() {
-
+    public Line getLine() {
+        return line;
+    }
+    public int getDirection() {
+        return direction;
+    }
+    public void setDepartureTime(Date departureTime) {
+        this.departureTime = departureTime;
+    }
+    public Date getDepartureTime() {
         return departureTime;
     }
-
-    public String getStartingPoint() {
+    public void setDepartureTimeWithString(String time){
+        try {
+            departureTime = ZetWebService.DATE_FORMAT.parse(time);
+        } catch(ParseException ex){
+            ex.printStackTrace();
+        }
+    }
+    public String departureTimeAsString(){
+        return ZetWebService.DATE_FORMAT.format(departureTime);
+    }
+    public String getId() {
+        return id;
+    }
+    public void setStartingPoint(Station startingPoint) {
+        this.startingPoint = startingPoint;
+    }
+    public Station getStartingPoint() {
         return startingPoint;
     }
-
-    public String getDestionation() {
-        return destionation;
+    public void setDestination(Station destination) {
+        this.destination = destination;
+    }
+    public Station getDestination() {
+        return destination;
+    }
+    public List<StationTimePair> getTimeTable() {
+        return timeTable;
+    }
+    public void setTimeTable(List<StationTimePair> timeTable) {
+        this.timeTable = timeTable;
     }
 
     @Override
@@ -34,17 +76,50 @@ public class Trip implements Serializable {
 
         Trip trip = (Trip) o;
 
-        if (!departureTime.equals(trip.departureTime)) return false;
-        if (!startingPoint.equals(trip.startingPoint)) return false;
-        return destionation.equals(trip.destionation);
-
+        if (!departureTime.equals(trip.getDepartureTime())) return false;
+        if (!startingPoint.equals(trip.getStartingPoint())) return false;
+        return destination.equals(trip.getDestination());
     }
 
     @Override
     public int hashCode() {
-        int result = departureTime.hashCode();
-        result = 31 * result + startingPoint.hashCode();
-        result = 31 * result + destionation.hashCode();
-        return result;
+        return id.hashCode();
     }
+
+    @Override
+    public String toString() {
+        return ZetWebService.DATE_FORMAT.format(departureTime) +" " + startingPoint + " " + destination;
+    }
+
+    public static class StationTimePair{
+        private Station s;
+        private Date time;
+
+        public StationTimePair(Station s, Date time){
+            this.s = s;
+            this.time = time;
+        }
+        public StationTimePair(){
+
+        }
+        public Station getS() {
+            return s;
+        }
+        public void setS(Station s) {
+            this.s = s;
+        }
+        public Date getTime() {
+            return time;
+        }
+        public void setTime(Date time) {
+            this.time = time;
+        }
+
+        @Override
+        public String toString() {
+            return ZetWebService.DATE_FORMAT.format(time) + "-" + s.getName();
+        }
+    }
+
+
 }

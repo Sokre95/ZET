@@ -1,56 +1,29 @@
 package fer.ruazosa.ruazosa16_zet.activities;
 
-import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.Icon;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.graphics.drawable.VectorDrawableCompat;
-import android.support.v4.graphics.drawable.DrawableCompat;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.view.menu.ActionMenuItem;
 import android.support.v7.view.menu.ActionMenuItemView;
-import android.support.v7.view.menu.MenuView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.hannesdorfmann.mosby.mvp.lce.MvpLceActivity;
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.LceViewState;
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.MvpLceViewStateActivity;
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.data.SerializeableLceViewState;
 
-import java.io.IOException;
-import java.lang.reflect.Array;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import fer.ruazosa.ruazosa16_zet.LineView;
 import fer.ruazosa.ruazosa16_zet.R;
 import fer.ruazosa.ruazosa16_zet.TripView;
 import fer.ruazosa.ruazosa16_zet.ZetWebService;
@@ -113,12 +86,6 @@ public class DetailsActivity extends MvpLceViewStateActivity<SwipeRefreshLayout,
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        getMenuInflater().inflate(R.menu.activity_details_menu, menu);
-        return true;
     }
 
     @Override
@@ -192,8 +159,10 @@ public class DetailsActivity extends MvpLceViewStateActivity<SwipeRefreshLayout,
     @Override
     public void loadData(boolean pullToRefresh) {
         int i = Integer.valueOf(lineNumber);
+        Line l = new Line(i);
+        l.setName(lineName);
         presenter.subscribe(ZetWebService.getInstance().
-                getRouteSchedule(i, routeDirection), pullToRefresh);
+                getRouteSchedule(l, routeDirection), pullToRefresh);
     }
 
     @Override
@@ -222,6 +191,15 @@ public class DetailsActivity extends MvpLceViewStateActivity<SwipeRefreshLayout,
     @Override
     public ArrayList<Trip> getData() {
         return tripAdapter.getTrips();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.activity_details_menu, menu);
+        if (getSharedPreferences(FAVOURITES,Context.MODE_PRIVATE).contains(lineNumber)){
+            menu.findItem(R.id.favorites_button).setIcon(R.drawable.ic_favorites);
+        }
+        return true;
     }
 
 }
