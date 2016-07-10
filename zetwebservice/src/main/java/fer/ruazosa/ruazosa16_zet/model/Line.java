@@ -11,11 +11,17 @@ public class Line implements Serializable {
     private int id;
     private String name;
 
-    private Set<Station> stations = new HashSet<>();
-    private List<Trip> trips = new ArrayList<>();
+    private List<Station> stations = new ArrayList<>();
+    private List<Trip> trips0 = new ArrayList<>();
+    private List<Trip> trips1 = new ArrayList<>();
 
     public Line(int lineNumber) {
         this.id = lineNumber;
+    }
+
+    public Line(int lineNumber, String name) {
+        this.id = lineNumber;
+        this.name = name;
     }
 
     public int getId() {
@@ -25,21 +31,29 @@ public class Line implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
+
     public String getName() {
         return name;
     }
 
-    public Set<Station> getStations() {
+    public List<Station> getStations() {
         return stations;
     }
-    public void setStations(Set<Station> stations) {
+
+    public void setStations(List<Station> stations) {
         this.stations = stations;
     }
-    public List<Trip> getTrips() {
-        return trips;
+
+    public List<Trip> getTrips(int dir) {
+        return dir==0?trips0:trips1;
     }
-    public void setTrips(List<Trip> trips) {
-        this.trips = trips;
+
+    public void setTrips(List<Trip> trips, int dir) {
+        if(dir==0){
+            trips0 = trips;
+        } else {
+            trips1 = trips;
+        }
     }
 
     @Override
@@ -49,7 +63,7 @@ public class Line implements Serializable {
 
         Line line = (Line) o;
 
-        if (id==line.getId()) return false;
+        if (id == line.getId()) return false;
         return name.equals(line.name);
 
     }

@@ -23,6 +23,7 @@ import retrofit2.Converter;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import rx.Observable;
+import rx.Subscriber;
 import rx.functions.Func0;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
@@ -174,15 +175,22 @@ public class ZetWebService {
 
 
     //NEW METHODS
+
     public Observable<Line> loadLine(final Line l){
-        if(l.getTrips() == null || l.getTrips().size() != 0){
-            return Observable.empty();
+        if ((l.getTrips(0) != null && l.getTrips(0).size() != 0)
+                && (l.getTrips(1) != null && l.getTrips(1).size() != 0)) {
+            return Observable.create(new Observable.OnSubscribe<Line>() {
+                @Override
+                public void call(Subscriber<? super Line> subscriber) {
+                    subscriber.onNext(l);
+                }
+            });
         }
         Observable<Line> observeLine = service.getRouteSchedule(l.getId()).map(new Func1<Document, Line>() {
             @Override
             public Line call(Document document) {
-                l.setTrips(DocumentParser.parseSchedule(l, document, 0));
-                l.getTrips().addAll(DocumentParser.parseSchedule(l, document, 1));
+                l.setTrips(DocumentParser.parseSchedule(l, document, 0),0);
+                l.setTrips(DocumentParser.parseSchedule(l, document, 1),1);
                 l.setStations(DocumentParser.parseStations(document));
                 return l;
             }
@@ -192,7 +200,12 @@ public class ZetWebService {
 
     public Observable<Trip> loadTrip(final Trip t){
         if(t.getTimeTable() != null && t.getTimeTable().size() > 0){
-            return Observable.empty();
+            return Observable.create(new Observable.OnSubscribe<Trip>() {
+                @Override
+                public void call(Subscriber<? super Trip> subscriber) {
+                    subscriber.onNext(t);
+                }
+            });
         }
         Observable<Trip> observeTrip = service.getTripObs(t.getLine().getId(), t.getId(), t.getDirection())
                 .map(new Func1<Document, Trip>() {
