@@ -26,6 +26,7 @@ public class DocumentParser {
         Elements tags = document.getElementsByAttributeValueContaining("href", "route_id=");
         for (Element e : tags) {
             String tagText = e.text();
+            tagText = tagText.replaceAll("\\p{Pd}", "-");
             tagText = tagText.replaceAll("&" + "nbsp;", " ");
             tagText = tagText.replaceAll(String.valueOf((char) 160), " ");
             String[] route = tagText.split(" +", 2);
