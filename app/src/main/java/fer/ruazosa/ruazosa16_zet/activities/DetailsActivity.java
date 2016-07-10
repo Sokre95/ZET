@@ -32,6 +32,7 @@ import fer.ruazosa.ruazosa16_zet.model.Line;
 import fer.ruazosa.ruazosa16_zet.model.Trip;
 import fer.ruazosa.ruazosa16_zet.presenters.MvpLceRxPresenter;
 import fer.ruazosa.ruazosa16_zet.presenters.TripPresenter;
+import rx.functions.Action1;
 
 public class DetailsActivity extends MvpLceViewStateActivity<SwipeRefreshLayout, ArrayList<Trip>,
         TripView, MvpLceRxPresenter<TripView, ArrayList<Trip>>>
@@ -41,6 +42,10 @@ public class DetailsActivity extends MvpLceViewStateActivity<SwipeRefreshLayout,
     private Spinner spinner;
     private String lineNumber;
     private int routeDirection = 0;
+
+    public static Line line;
+    private int lineNumberInt;
+    private ZetWebService zetWebService;
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -79,6 +84,16 @@ public class DetailsActivity extends MvpLceViewStateActivity<SwipeRefreshLayout,
 
         getSupportActionBar().setTitle(lineNumber);
 
+        lineNumberInt = Integer.parseInt(lineNumber);
+
+        zetWebService = ZetWebService.getInstance();
+        line = new Line(lineNumberInt);
+        zetWebService.loadLine(line).subscribe(new Action1<Line>() {
+            @Override
+            public void call(Line line) {
+            }
+        });
+
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         tripAdapter = new TripAdapter(this, lineNumber, routeDirection);
         recyclerView.setAdapter(tripAdapter);
@@ -93,6 +108,7 @@ public class DetailsActivity extends MvpLceViewStateActivity<SwipeRefreshLayout,
         switch (item.getItemId()) {
             case R.id.map_button :
                 Intent i = new Intent(this, MapActivity.class);
+                i.putExtra("LINE",line);
                 startActivity(i);
                 break;
             case R.id.favorites_button :
