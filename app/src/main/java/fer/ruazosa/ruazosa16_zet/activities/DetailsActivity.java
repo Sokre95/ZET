@@ -20,6 +20,8 @@ import com.hannesdorfmann.mosby.mvp.viewstate.lce.LceViewState;
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.MvpLceViewStateActivity;
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.data.SerializeableLceViewState;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 
 import butterknife.BindView;
@@ -42,6 +44,8 @@ public class DetailsActivity extends MvpLceViewStateActivity<SwipeRefreshLayout,
     private String lineNumber;
     private int routeDirection = 0;
 
+    @BindView(R.id.errorView)
+    TextView errorView;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.list)
@@ -147,7 +151,7 @@ public class DetailsActivity extends MvpLceViewStateActivity<SwipeRefreshLayout,
 
     @Override
     protected String getErrorMessage(Throwable e, boolean pullToRefresh) {
-        return null;
+        return "Error while loading route details!";
     }
 
     @Override

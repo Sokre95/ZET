@@ -73,7 +73,7 @@ public abstract class LineFragment extends MvpLceViewStateFragment<SwipeRefreshL
 
     @Override
     protected String getErrorMessage(Throwable e, boolean pullToRefresh) {
-        return LinesErrorMessage.get(e, pullToRefresh, getContext());
+        return "Error while loading routes!";
     }
 
     @Override

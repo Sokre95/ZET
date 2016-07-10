@@ -71,6 +71,7 @@ public abstract class MvpLceRxPresenter <V extends MvpLceView<M>, M>
         }
         unsubscribe();
     }
+
     protected void onNext(M data) {
         if (isViewAttached()) {
             getView().setData(data);
