@@ -18,7 +18,7 @@ public class Line implements Serializable {
         this.id = lineNumber;
     }
 
-    public Line(int lineNumber, String name){
+    public Line(int lineNumber, String name) {
         this.id = lineNumber;
         this.name = name;
     }
@@ -30,6 +30,7 @@ public class Line implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
+
     public String getName() {
         return name;
     }
@@ -37,12 +38,15 @@ public class Line implements Serializable {
     public Set<Station> getStations() {
         return stations;
     }
+
     public void setStations(Set<Station> stations) {
         this.stations = stations;
     }
+
     public List<Trip> getTrips() {
         return trips;
     }
+
     public void setTrips(List<Trip> trips) {
         this.trips = trips;
     }
@@ -54,7 +58,7 @@ public class Line implements Serializable {
 
         Line line = (Line) o;
 
-        if (id==line.getId()) return false;
+        if (id == line.getId()) return false;
         return name.equals(line.name);
 
     }

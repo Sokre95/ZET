@@ -41,7 +41,7 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.TrasaViewHol
 
     @Override
     public void onBindViewHolder(TrasaViewHolder holder, int position) {
-        holder.broj_linije.setText(lines.get(position).getId()+"");
+        holder.broj_linije.setText(String.valueOf(lines.get(position).getId()));
         holder.naziv_linije.setText(lines.get(position).getName());
     }
 
