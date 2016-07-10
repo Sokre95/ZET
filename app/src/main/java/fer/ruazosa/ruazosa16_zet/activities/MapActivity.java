@@ -66,7 +66,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
 
         PolylineOptions polylineOptions = new PolylineOptions();
         polylineOptions.width(5).color(Color.BLUE);
-        for(Station station : stationList.subList(0, stationList.size()/2)){
+        for(Station station : stationList.subList(0, stationList.size())){
             polylineOptions.add(new LatLng(station.getLatitude(),station.getLongitude()));
         }
         mMap.addPolyline(polylineOptions);

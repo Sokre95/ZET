@@ -125,7 +125,7 @@ public class DocumentParser {
     }
 
     public static List<Station> parseStations(Document document){
-        String coordinatesLink = document.getElementsByClass("leftMenu").get(0).children().get(1).attr("src");
+        String coordinatesLink = document.getElementsByClass("leftMenu").get(0).children().get(1).attr("src").split("markers")[0];
         List<Station> res = new ArrayList<>();
 
         Matcher m = Pattern.compile("\\|(\\d+\\.\\d+),(\\d+\\.\\d+)").matcher(coordinatesLink);
