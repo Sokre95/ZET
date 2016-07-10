@@ -11,7 +11,8 @@ import rx.Observable;
 public interface PlacesInterface {
     public static final String endpoint = "https://maps.googleapis.com/maps/api/place/nearbysearch/";
 
-    public static final String MAPS_KEY = "AIzaSyBAC1J2zOfyanzlNa1bXXCPL8Y36mYymYE";
+    public static final String MAPS_KEY = "AIzaSyDuFGBmHyGQ5kyDC7xdTcHQlOTBmRvB0mU";
+            // "AIzaSyCkpTfBc2wgayv__NnrnLNzYawTfX65ov0";
 
     @GET("json?rankby=distance&type=transit_station&key="+MAPS_KEY)
     Observable<Location> reverseGeocodeCoordinates(@Query("location") String latLon);

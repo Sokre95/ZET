@@ -8,8 +8,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -131,16 +133,22 @@ public class DocumentParser {
         Matcher m = Pattern.compile("\\|(\\d+\\.\\d+),(\\d+\\.\\d+)").matcher(coordinatesLink);
         PlacesService places = PlacesService.getInstance();
         int num = 1;
+        List<double[]> coordinates = new ArrayList<>();
         while(m.find()){
             String[] c = m.group().substring(1).split(",");
             //places.addStationWithCoordinates
             //        (Double.parseDouble(c[0]), Double.parseDouble(c[1]), res);
-            //Station s = places.syncFindStation(Double.parseDouble(c[0]), Double.parseDouble(c[1]));
-            Station s = new Station((num++)+"");
-            s.setLatitude(Double.parseDouble(c[0]));
-            s.setLongitude(Double.parseDouble(c[1]));
-            res.add(s);
+            coordinates.add(new double[]{Double.parseDouble(c[0]), Double.parseDouble(c[1])});
+            //Station s = new Station((num++)+"");
+            //s.setLatitude(Double.parseDouble(c[0]));
+            //s.setLongitude(Double.parseDouble(c[1]));
         }
+        Map<Integer, Station> stations = new HashMap<>();
+        places.syncFindStation(coordinates, stations);
+        for(int i=0; i<coordinates.size(); i++){
+            res.add(stations.get(i));
+        }
+
         return res;
     }
 }

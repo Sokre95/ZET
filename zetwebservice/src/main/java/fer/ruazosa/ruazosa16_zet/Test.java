@@ -28,9 +28,6 @@ public class Test {
                     ZetWebService.getInstance().loadLine(lines.get(index)).subscribe(new Action1<Line>() {
                         @Override
                         public void call(Line line) {
-                            try {
-                                Thread.sleep(5000);
-                            } catch (Exception ex){}
                             /*
                             //Kod za učitavanje podataka o Trip-ovima
                             for(int i=1; i<=line.getTrips().size(); i++){
