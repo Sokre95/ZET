@@ -175,9 +175,10 @@ public class ZetWebService {
 
 
     //NEW METHODS
+
     public Observable<Line> loadLine(final Line l){
         if ((l.getTrips(0) != null && l.getTrips(0).size() != 0)
-                || (l.getTrips(1) != null && l.getTrips(1).size() != 0)) {
+                && (l.getTrips(1) != null && l.getTrips(1).size() != 0)) {
             return Observable.create(new Observable.OnSubscribe<Line>() {
                 @Override
                 public void call(Subscriber<? super Line> subscriber) {

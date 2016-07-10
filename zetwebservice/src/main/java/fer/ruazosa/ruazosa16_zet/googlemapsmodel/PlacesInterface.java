@@ -1,5 +1,6 @@
 package fer.ruazosa.ruazosa16_zet.googlemapsmodel;
 
+import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 import rx.Observable;
@@ -20,4 +21,7 @@ public interface PlacesInterface {
 
     @GET("json?type=light_rail_station&key="+MAPS_KEY)
     Observable<Location> findNearestLightRailStations(@Query("location") String userLocation);
+
+    @GET("json?type=transit_station&rankby=distance&key="+MAPS_KEY)
+    Call<Location> nearestTransitStation(@Query("location") String location);
 }

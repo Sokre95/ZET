@@ -29,7 +29,7 @@ public class Test {
                         @Override
                         public void call(Line line) {
                             try {
-                                Thread.sleep(10000);
+                                Thread.sleep(5000);
                             } catch (Exception ex){}
                             /*
                             //Kod za učitavanje podataka o Trip-ovima

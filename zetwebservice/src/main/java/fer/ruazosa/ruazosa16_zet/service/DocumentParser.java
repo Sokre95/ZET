@@ -124,16 +124,22 @@ public class DocumentParser {
         return res;
     }
 
-    public static Set<Station> parseStations(Document document){
+    public static List<Station> parseStations(Document document){
         String coordinatesLink = document.getElementsByClass("leftMenu").get(0).children().get(1).attr("src");
-        Set<Station> res = new HashSet<>();
+        List<Station> res = new ArrayList<>();
 
         Matcher m = Pattern.compile("\\|(\\d+\\.\\d+),(\\d+\\.\\d+)").matcher(coordinatesLink);
         PlacesService places = PlacesService.getInstance();
+        int num = 1;
         while(m.find()){
             String[] c = m.group().substring(1).split(",");
-            places.addStationWithCoordinates
-                    (Double.parseDouble(c[0]), Double.parseDouble(c[1]), res);
+            //places.addStationWithCoordinates
+            //        (Double.parseDouble(c[0]), Double.parseDouble(c[1]), res);
+            //Station s = places.syncFindStation(Double.parseDouble(c[0]), Double.parseDouble(c[1]));
+            Station s = new Station((num++)+"");
+            s.setLatitude(Double.parseDouble(c[0]));
+            s.setLongitude(Double.parseDouble(c[1]));
+            res.add(s);
         }
         return res;
     }

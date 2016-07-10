@@ -11,7 +11,7 @@ public class Line implements Serializable {
     private int id;
     private String name;
 
-    private Set<Station> stations = new HashSet<>();
+    private List<Station> stations = new ArrayList<>();
     private List<Trip> trips0 = new ArrayList<>();
     private List<Trip> trips1 = new ArrayList<>();
 
@@ -36,11 +36,11 @@ public class Line implements Serializable {
         return name;
     }
 
-    public Set<Station> getStations() {
+    public List<Station> getStations() {
         return stations;
     }
 
-    public void setStations(Set<Station> stations) {
+    public void setStations(List<Station> stations) {
         this.stations = stations;
     }
 

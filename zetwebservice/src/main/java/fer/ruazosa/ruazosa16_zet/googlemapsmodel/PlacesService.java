@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Set;
 
 import fer.ruazosa.ruazosa16_zet.model.Station;
+import fer.ruazosa.ruazosa16_zet.model.Trip;
 import fer.ruazosa.ruazosa16_zet.service.DocumentConverter;
 import fer.ruazosa.ruazosa16_zet.service.ZETService;
 import okhttp3.ResponseBody;
@@ -49,7 +50,7 @@ public class PlacesService {
         service = r.create(PlacesInterface.class);
     }
 
-    public void addStationWithCoordinates(double lat, double lon, final Set<Station> set){
+    public void addStationWithCoordinates(double lat, double lon, final List<Station> set){
         service.reverseGeocodeCoordinates(lat+","+lon).subscribe(new Action1<Location>() {
             @Override
             public void call(Location location) {
@@ -93,5 +94,25 @@ public class PlacesService {
     public Observable<List<Station>> findNearestLightRailStations(double lat, double lon){
         Observable<List<Station>> obs = service.findNearestLightRailStations(lat+","+lon).map(locationToStationMapper());
         return obs;
+    }
+
+    public Station syncFindStation(double lat, double lon){
+        Retrofit r = new Retrofit.Builder()
+                .baseUrl(PlacesInterface.endpoint)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        PlacesInterface svc = r.create(PlacesInterface.class);
+        try {
+            Result res = svc.nearestTransitStation(lat + "," + lon).execute().body().getResults().get(0);
+            Station s = new Station(res.getName());
+            s.setLatitude(res.getGeometry().getLocation().getLat());
+            s.setLongitude(res.getGeometry().getLocation().getLng());
+            return s;
+        } catch(Exception ex){
+            Station s = new Station("");
+            s.setLatitude(-1);
+            s.setLongitude(-1);
+            return s;
+        }
     }
 }
