@@ -292,6 +292,7 @@ public class DetailsActivity extends MvpLceViewStateActivity<SwipeRefreshLayout,
         dates.add("Sutra");
 
         selectedDate = df.format(c.getTime());
+        c.add(Calendar.DAY_OF_YEAR, 1);
 
         for(int i = 0; i < 3; i++) {
             c.add(Calendar.DAY_OF_YEAR, 1);
