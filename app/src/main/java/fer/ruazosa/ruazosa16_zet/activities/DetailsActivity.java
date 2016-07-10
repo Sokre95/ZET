@@ -4,7 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.view.menu.ActionMenuItemView;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,6 +14,9 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,7 +27,11 @@ import com.hannesdorfmann.mosby.mvp.viewstate.lce.data.SerializeableLceViewState
 
 import org.w3c.dom.Text;
 
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -34,15 +43,25 @@ import fer.ruazosa.ruazosa16_zet.model.Line;
 import fer.ruazosa.ruazosa16_zet.model.Trip;
 import fer.ruazosa.ruazosa16_zet.presenters.MvpLceRxPresenter;
 import fer.ruazosa.ruazosa16_zet.presenters.TripPresenter;
+import rx.functions.Action1;
 
 public class DetailsActivity extends MvpLceViewStateActivity<SwipeRefreshLayout, ArrayList<Trip>,
         TripView, MvpLceRxPresenter<TripView, ArrayList<Trip>>>
         implements TripView, SwipeRefreshLayout.OnRefreshListener {
 
     private static final String FAVOURITES = "FAVOURITES";
-    private Spinner spinner;
     private String lineNumber;
     private int routeDirection = 0;
+
+    public static Line line;
+    private int lineNumberInt;
+    private ZetWebService zetWebService;
+
+    private Spinner spinner;
+    private SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");
+    private SimpleDateFormat formatForSpinner = new SimpleDateFormat("dd.MM.yy");
+
+    private String selectedDate;
 
     @BindView(R.id.errorView)
     TextView errorView;
@@ -60,10 +79,21 @@ public class DetailsActivity extends MvpLceViewStateActivity<SwipeRefreshLayout,
     private String trenutniSmjer;
     ActionMenuItemView favbutton;
 
+    private ArrayList<String> dates = new ArrayList<String>();
+    private Calendar c = Calendar.getInstance();
+
+    boolean savedInstance = false;
+    int spinnerPosition = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
+
+        if(savedInstanceState != null) {
+            spinnerPosition = savedInstanceState.getInt("DATE");
+            savedInstance = true;
+        }
 
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
@@ -83,13 +113,68 @@ public class DetailsActivity extends MvpLceViewStateActivity<SwipeRefreshLayout,
 
         getSupportActionBar().setTitle(lineNumber);
 
+        lineNumberInt = Integer.parseInt(lineNumber);
+
+        zetWebService = ZetWebService.getInstance();
+        line = new Line(lineNumberInt);
+        zetWebService.loadLine(line).subscribe(new Action1<Line>() {
+            @Override
+            public void call(Line line) {
+            }
+        });
+
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         tripAdapter = new TripAdapter(this, lineNumber, routeDirection);
         recyclerView.setAdapter(tripAdapter);
         contentView.setOnRefreshListener(this);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+    }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.activity_details_menu, menu);
+        if (getSharedPreferences(FAVOURITES,Context.MODE_PRIVATE).contains(lineNumber)){
+            menu.findItem(R.id.favorites_button).setIcon(R.drawable.ic_favorites);
+        }
+
+        setDates();
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>
+                (this, R.layout.my_spinner_dropdown_item, dates);
+
+        MenuItem item = menu.findItem(R.id.spinner);
+        spinner = (Spinner) MenuItemCompat.getActionView(item);
+        spinner.setAdapter(adapter);
+
+        if(savedInstance) {
+            spinner.setSelection(spinnerPosition);
+        }
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Calendar c = Calendar.getInstance();
+                c.add(Calendar.DAY_OF_YEAR, position);
+                selectedDate = df.format(c.getTime());
+                if(!savedInstance) {
+                    loadByDate();
+                } else {
+                    savedInstance = false;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
+        return true;
+    }
+
+    private void loadByDate() {
+        loadData(false);
+        tripAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -97,6 +182,7 @@ public class DetailsActivity extends MvpLceViewStateActivity<SwipeRefreshLayout,
         switch (item.getItemId()) {
             case R.id.map_button :
                 Intent i = new Intent(this, MapActivity.class);
+                i.putExtra("LINE",line);
                 startActivity(i);
                 break;
             case R.id.favorites_button :
@@ -165,8 +251,12 @@ public class DetailsActivity extends MvpLceViewStateActivity<SwipeRefreshLayout,
         int i = Integer.valueOf(lineNumber);
         Line l = new Line(i);
         l.setName(lineName);
-        presenter.subscribe(ZetWebService.getInstance().
-                getRouteSchedule(l, routeDirection), pullToRefresh);
+        try {
+            presenter.subscribe(ZetWebService.getInstance().
+                    getRouteScheduleByDate(l, routeDirection, selectedDate), pullToRefresh);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -197,13 +287,22 @@ public class DetailsActivity extends MvpLceViewStateActivity<SwipeRefreshLayout,
         return tripAdapter.getTrips();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        getMenuInflater().inflate(R.menu.activity_details_menu, menu);
-        if (getSharedPreferences(FAVOURITES,Context.MODE_PRIVATE).contains(lineNumber)){
-            menu.findItem(R.id.favorites_button).setIcon(R.drawable.ic_favorites);
+    private void setDates() {
+        dates.add("Danas");
+        dates.add("Sutra");
+
+        selectedDate = df.format(c.getTime());
+
+        for(int i = 0; i < 3; i++) {
+            c.add(Calendar.DAY_OF_YEAR, 1);
+            String formattedDate = formatForSpinner.format(c.getTime());
+            dates.add(formattedDate);
         }
-        return true;
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("DATE", spinner.getSelectedItemPosition());
+    }
 }
