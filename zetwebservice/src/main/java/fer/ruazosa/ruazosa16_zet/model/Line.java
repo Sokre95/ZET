@@ -18,6 +18,11 @@ public class Line implements Serializable {
         this.id = lineNumber;
     }
 
+    public Line(int lineNumber, String name){
+        this.id = lineNumber;
+        this.name = name;
+    }
+
     public int getId() {
         return id;
     }

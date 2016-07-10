@@ -1,6 +1,6 @@
 package fer.ruazosa.ruazosa16_zet.home;
 
-
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,20 +10,28 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.List;
+import java.util.ArrayList;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import fer.ruazosa.ruazosa16_zet.adapters.DisplayAdapter;
 import fer.ruazosa.ruazosa16_zet.R;
+import fer.ruazosa.ruazosa16_zet.adapters.RouteAdapter;
+import fer.ruazosa.ruazosa16_zet.model.Line;
 
 public class FavouritesFragment extends Fragment {
 
-    @BindView(R.id.list) RecyclerView recyclerView;
+    private static final String FAVOURITES = "FAVOURITES";
+
+    ArrayList<Line> favouriteLines = new ArrayList<>();
+
+    RouteAdapter favouritesAdapter;
+
+    @BindView(R.id.list)
+    RecyclerView recyclerView;
 
     public FavouritesFragment() {
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -34,10 +42,26 @@ public class FavouritesFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        //List<InfoDisplay> displays = ExampleData.getFavouritesInfo();
-        //ButterKnife.bind(this, view);
-        //recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
-        //DisplayAdapter displayAdapter = new DisplayAdapter(displays);
-        //recyclerView.setAdapter(displayAdapter);
+        ButterKnife.bind(this, view);
+
+        updateFavourites();
+        recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
+        favouritesAdapter = new RouteAdapter(favouriteLines, getContext());
+        recyclerView.setAdapter(favouritesAdapter);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateFavourites();
+        favouritesAdapter.notifyDataSetChanged();
+    }
+
+    private void updateFavourites(){
+        favouriteLines.clear();
+        Map<String, String> favouriteLinesMap = (Map<String, String>) this.getActivity().getSharedPreferences(FAVOURITES, Context.MODE_PRIVATE).getAll();
+        for (String lineId : favouriteLinesMap.keySet()) {
+            favouriteLines.add(new Line(Integer.parseInt(lineId), favouriteLinesMap.get(lineId)));
+        }
     }
 }
