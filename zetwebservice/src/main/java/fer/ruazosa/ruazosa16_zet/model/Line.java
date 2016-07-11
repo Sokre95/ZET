@@ -21,7 +21,7 @@ public class Line implements Serializable {
 
     public Line(int lineNumber, String name) {
         this.id = lineNumber;
-        this.name = name;
+        this.name = name.toUpperCase();
     }
 
     public int getId() {
@@ -29,7 +29,7 @@ public class Line implements Serializable {
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.name = name.toUpperCase();
     }
 
     public String getName() {
