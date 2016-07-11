@@ -70,6 +70,8 @@ public class RouteDetailsActivity extends MvpLceViewStateActivity<SwipeRefreshLa
         departureTime = bundle.getString(DEPARTURE_TIME);
         directionName = bundle.getString(DIRECTION_NAME);
 
+        contentView.setOnRefreshListener(this);
+
         getSupportActionBar().setTitle(lineNumber + " Smjer : " + directionName);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
