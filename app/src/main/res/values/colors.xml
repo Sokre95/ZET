@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#446aff</color>
+    <color name="colorPrimary">#478af4</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FFFFFF</color>
     <color name="tabTextColor">#c5c5c5</color>
     <color name="trasaNameColor">#808080</color>
     <color name="dividerColor">#e3e3e3</color>
+    <color name="errorColor">#626382</color>
 </resources>

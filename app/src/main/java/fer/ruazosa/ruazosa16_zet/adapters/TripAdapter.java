@@ -25,25 +25,31 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripHolder> {
     private static final String DEPARTURE_TIME = "Departure time";
     private static final String LINE_NUMBER = "Line number";
     private static final String DIRECTION = "Direction";
+    private static final String DIRECTION_NAME = "Direction name";
 
     private String lineNumber;
     private int direction;
+    private String directionName;
+
+    TripHolder viewHolder;
 
     public TripAdapter(Context c) {
         this.c = c;
     }
 
-    public TripAdapter(Context c, String lineNumber, int direction) {
+    public TripAdapter(Context c, String lineNumber, int direction, String directionName) {
         this.c = c;
         this.lineNumber = lineNumber;
         this.direction = direction;
+        this.directionName = directionName;
     }
 
-    public TripAdapter(ArrayList<Trip> trips, Context c, String lineNumber, int direction) {
+    public TripAdapter(ArrayList<Trip> trips, Context c, String lineNumber, int direction, String directionName) {
         this.trips = trips;
         this.c = c;
         this.lineNumber = lineNumber;
         this.direction = direction;
+        this.directionName = directionName;
     }
 
     public void setTrips(ArrayList<Trip> trips) {
@@ -54,7 +60,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripHolder> {
     public TripHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemLayoutView = LayoutInflater.from(parent.getContext()).inflate(
                 R.layout.card_layout_trip, parent, false);
-        TripHolder viewHolder = new TripHolder(itemLayoutView, c, lineNumber, direction);
+        viewHolder = new TripHolder(itemLayoutView, c, lineNumber, direction, directionName);
         return viewHolder;
     }
 
@@ -63,6 +69,16 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripHolder> {
         holder.startingPoint.setText(trips.get(position).getStartingPoint().getName());
         holder.destination.setText(trips.get(position).getDestination().getName());
         holder.departureTime.setText(trips.get(position).departureTimeAsString());
+    }
+
+    public void setDirection(int direction) {
+        this.direction = direction;
+        viewHolder.setDirection(direction);
+    }
+
+    public void setDirectionName(String directionName) {
+        this.directionName = directionName;
+        viewHolder.setDirectionName(directionName);
     }
 
     @Override
@@ -79,6 +95,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripHolder> {
         private Context c;
         private String lineNumber;
         private int direction;
+        private String directionName;
 
         @BindView(R.id.starting_point)
         TextView startingPoint;
@@ -87,13 +104,22 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripHolder> {
         @BindView(R.id.departure_time)
         TextView departureTime;
 
-        public TripHolder(View view, Context c, String lineNumber, int direction) {
+        public TripHolder(View view, Context c, String lineNumber, int direction, String directionName) {
             super(view);
             this.direction = direction;
             this.lineNumber = lineNumber;
+            this.directionName = directionName;
             view.setOnClickListener(this);
             this.c = c;
             ButterKnife.bind(this, view);
+        }
+
+        public void setDirection(int direction) {
+            this.direction = direction;
+        }
+
+        public void setDirectionName(String directionName) {
+            this.directionName = directionName;
         }
 
         @Override
@@ -102,6 +128,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripHolder> {
             bundle.putString(DEPARTURE_TIME, departureTime.getText().toString());
             bundle.putString(LINE_NUMBER, lineNumber);
             bundle.putInt(DIRECTION, direction);
+            bundle.putString(DIRECTION_NAME, directionName);
 
             Intent i =  new Intent(c, RouteDetailsActivity.class);
             i.putExtra("DATA", bundle);

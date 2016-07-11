@@ -59,6 +59,7 @@ public class RouteDetailsAdapter extends
         public RouteDetailsHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
-        }    }
+        }
+    }
 
 }

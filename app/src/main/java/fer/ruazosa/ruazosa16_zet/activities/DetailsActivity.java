@@ -113,18 +113,8 @@ public class DetailsActivity extends MvpLceViewStateActivity<SwipeRefreshLayout,
 
         getSupportActionBar().setTitle(lineNumber);
 
-        lineNumberInt = Integer.parseInt(lineNumber);
-
-        zetWebService = ZetWebService.getInstance();
-        line = new Line(lineNumberInt);
-        zetWebService.loadLine(line).subscribe(new Action1<Line>() {
-            @Override
-            public void call(Line line) {
-            }
-        });
-
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        tripAdapter = new TripAdapter(this, lineNumber, routeDirection);
+        tripAdapter = new TripAdapter(this, lineNumber, routeDirection, trenutniSmjer);
         recyclerView.setAdapter(tripAdapter);
         contentView.setOnRefreshListener(this);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -224,6 +214,8 @@ public class DetailsActivity extends MvpLceViewStateActivity<SwipeRefreshLayout,
         else routeDirection = 0;
         if(trenutniSmjer.equals(smjer1)) trenutniSmjer = smjer2;
         else trenutniSmjer = smjer1;
+        tripAdapter.setDirectionName(trenutniSmjer);
+        tripAdapter.setDirection(routeDirection);
         loadData(false);
         directionName.setText("Smjer : " + trenutniSmjer);
         tripAdapter.notifyDataSetChanged();
@@ -237,7 +229,8 @@ public class DetailsActivity extends MvpLceViewStateActivity<SwipeRefreshLayout,
 
     @Override
     protected String getErrorMessage(Throwable e, boolean pullToRefresh) {
-        return "Error while loading route details!";
+        return "Greška prilikom dohvata podataka o detaljima linije. "+
+                "Provjerite svoju internetsku vezu i pritisnite ovaj tekst za ponovno osvježavanje";
     }
 
     @Override

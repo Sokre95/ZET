@@ -37,6 +37,7 @@ public class RouteDetailsActivity extends MvpLceViewStateActivity<SwipeRefreshLa
     private static final String DEPARTURE_TIME = "Departure time";
     private static final String LINE_NUMBER = "Line number";
     private static final String DIRECTION = "Direction";
+    private static final String DIRECTION_NAME = "Direction name";
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -46,6 +47,7 @@ public class RouteDetailsActivity extends MvpLceViewStateActivity<SwipeRefreshLa
     private int direction;
     private String lineNumber;
     private String departureTime;
+    private String directionName;
 
     private RouteDetailsAdapter routeDetailsAdapter;
 
@@ -64,10 +66,11 @@ public class RouteDetailsActivity extends MvpLceViewStateActivity<SwipeRefreshLa
         Bundle bundle = i.getBundleExtra("DATA");
 
         direction = bundle.getInt(DIRECTION);
-        lineNumber = bundle.getString(LINE_NUMBER);
+        lineNumber = bundle.getString(LINE_NUMBER).trim();
         departureTime = bundle.getString(DEPARTURE_TIME);
+        directionName = bundle.getString(DIRECTION_NAME);
 
-        getSupportActionBar().setTitle(lineNumber);
+        getSupportActionBar().setTitle(lineNumber + " Smjer : " + directionName);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
     }
@@ -106,16 +109,11 @@ public class RouteDetailsActivity extends MvpLceViewStateActivity<SwipeRefreshLa
     public void loadData(boolean pullToRefresh) {
         try {
             presenter.subscribe(ZetWebService.getInstance().
-                    getTripStationsTimes(Integer.parseInt(lineNumber.trim()),
+                    getTripStationsTimes(Integer.parseInt(lineNumber),
                             direction, departureTime), pullToRefresh);
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    @Override
-    public void onRefresh() {
-        loadData(true);
     }
 
     @Override
@@ -136,4 +134,8 @@ public class RouteDetailsActivity extends MvpLceViewStateActivity<SwipeRefreshLa
         return new SerializeableLceViewState<ArrayList<String>, RouteDetailsView>();
     }
 
+    @Override
+    public void onRefresh() {
+        loadData(true);
+    }
 }

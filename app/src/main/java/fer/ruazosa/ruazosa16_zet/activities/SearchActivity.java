@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,6 +38,17 @@ public class SearchActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         handleEvent(getIntent());
+        getSupportActionBar().setTitle("Rezultati pretrage");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == android.R.id.home) {
+            finish();
+        }
+        return true;
     }
 
     private void handleEvent(Intent searchIntent) {
@@ -44,7 +56,6 @@ public class SearchActivity extends AppCompatActivity {
             Bundle bundle = searchIntent.getBundleExtra("Bundle");
             query = bundle.getString("QUERY").toUpperCase();
             data = (ArrayList<Line>) bundle.getSerializable("DATA");
-            Toast.makeText(getApplicationContext(), query, Toast.LENGTH_LONG).show();
             findElements();
             displayData();
         }

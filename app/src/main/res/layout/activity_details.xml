@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -16,6 +17,15 @@
             layout="@layout/toolbar_layout">
         </include>
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/direction_name"
+            android:textSize="25sp"
+            android:textColor="@color/colorAccent"
+            android:gravity="center"
+            android:background="@color/colorPrimary"/>
+
         <ProgressBar
             android:id="@+id/loadingView"
             android:layout_width="wrap_content"
@@ -23,12 +33,6 @@
             android:layout_gravity="center"
             android:indeterminate="true"
             />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/direction_name"
-            android:textSize="20sp"/>
 
         <android.support.v4.widget.SwipeRefreshLayout
             android:layout_width="match_parent"
@@ -47,9 +51,9 @@
             android:id="@+id/errorView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
+            android:textSize="15sp"
             android:layout_gravity="center"
-            android:textColor="@color/colorPrimary"/>
+            android:textColor="@color/errorColor"/>
 
     </LinearLayout>
 

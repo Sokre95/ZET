@@ -85,11 +85,11 @@ public class MainActivity extends AppCompatActivity {
                         setHomeView();
                         break;
                     case R.id.bus_item:
-                        getSupportActionBar().setTitle("Bus");
+                        getSupportActionBar().setTitle("Autobus");
                         setBusView();
                         break;
                     case R.id.tram_item:
-                        getSupportActionBar().setTitle("Tram");
+                        getSupportActionBar().setTitle("Tramvaj");
                         setTramView();
                         break;
                     default:
@@ -116,8 +116,8 @@ public class MainActivity extends AppCompatActivity {
     private void setBusView() {
         getSupportActionBar().setTitle("Bus");
         viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
-        viewPagerAdapter.addFragments(new BusDnevni(), "DAILY BUS");
-        viewPagerAdapter.addFragments(new BusNocni(), "NIGHT BUS");
+        viewPagerAdapter.addFragments(new BusDnevni(), "DNEVNI");
+        viewPagerAdapter.addFragments(new BusNocni(), "NOĆNI");
         viewPager.setAdapter(viewPagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
         instance = BUS;
@@ -126,8 +126,8 @@ public class MainActivity extends AppCompatActivity {
     private void setTramView() {
         getSupportActionBar().setTitle("Tram");
         viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
-        viewPagerAdapter.addFragments(new TramDnevni(), "DAILY TRAM");
-        viewPagerAdapter.addFragments(new TramNocni(), "NIGHT TRAM");
+        viewPagerAdapter.addFragments(new TramDnevni(), "DNEVNI");
+        viewPagerAdapter.addFragments(new TramNocni(), "NOĆNI");
         viewPager.setAdapter(viewPagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
         instance = TRAM;
