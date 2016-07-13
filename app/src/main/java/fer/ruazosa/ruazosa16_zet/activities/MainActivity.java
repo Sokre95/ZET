@@ -106,8 +106,8 @@ public class MainActivity extends AppCompatActivity {
     private void setHomeView() {
         getSupportActionBar().setTitle("Home");
         viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
-        viewPagerAdapter.addFragments(new CloseFragment(), "CLOSE");
         viewPagerAdapter.addFragments(new FavouritesFragment(), "FAVORITES");
+        viewPagerAdapter.addFragments(new CloseFragment(), "CLOSE");
         viewPager.setAdapter(viewPagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
         instance = HOME;
