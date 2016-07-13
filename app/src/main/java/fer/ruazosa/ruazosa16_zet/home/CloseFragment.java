@@ -4,7 +4,6 @@ package fer.ruazosa.ruazosa16_zet.home;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -12,34 +11,23 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ThreadFactory;
 
-import butterknife.BindView;
 import fer.ruazosa.ruazosa16_zet.R;
-import fer.ruazosa.ruazosa16_zet.ZetWebService;
-import fer.ruazosa.ruazosa16_zet.activities.MainActivity;
 import fer.ruazosa.ruazosa16_zet.googlemapsmodel.PlacesService;
-import fer.ruazosa.ruazosa16_zet.model.Line;
 import fer.ruazosa.ruazosa16_zet.model.Station;
-import fer.ruazosa.ruazosa16_zet.service.ZETService;
 import rx.functions.Action1;
 
 
@@ -135,18 +123,18 @@ public class CloseFragment extends Fragment implements LocationListener, OnMapRe
         });
         */
 
-        LatLng user_position = new LatLng(location.getLatitude(),location.getLongitude());
+        LatLng user_position = new LatLng(location.getLatitude(), location.getLongitude());
         googleMap.addMarker(new MarkerOptions().position(user_position).title("Tvoja pozicija").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(user_position, 12.6f ));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(user_position, 12.6f));
 
-        PlacesService.getInstance().findNearestStations(location.getLatitude(),location.getLongitude()).subscribe(new Action1<List<Station>>() {
+        PlacesService.getInstance().findNearestStations(location.getLatitude(), location.getLongitude()).subscribe(new Action1<List<Station>>() {
             @Override
             public void call(final List<Station> stations) {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        for (Station station:stations) {
-                            LatLng station_postion = new LatLng(station.getLatitude(),station.getLongitude());
+                        for (Station station : stations) {
+                            LatLng station_postion = new LatLng(station.getLatitude(), station.getLongitude());
                             googleMap.addMarker(new MarkerOptions().position(station_postion).title(station.getName()));
                         }
                     }
