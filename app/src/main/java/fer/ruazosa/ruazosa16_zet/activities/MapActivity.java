@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -17,14 +18,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fer.ruazosa.ruazosa16_zet.R;
+import fer.ruazosa.ruazosa16_zet.ZetWebService;
 import fer.ruazosa.ruazosa16_zet.model.Line;
 import fer.ruazosa.ruazosa16_zet.model.Station;
+import rx.functions.Action1;
 
 public class MapActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private Line line;
+    private ZetWebService zetWebService;
+    private int lineNumberInt;
+    private String lineNumberString;
     private List<Station> stationList = new ArrayList<>();
+    private MapActivity context;
+    private final LatLng ZAGREB = new LatLng(45.815399,15.966568);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,16 +44,43 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         mapFragment.getMapAsync(this);
 
         Intent i = getIntent();
-        Bundle bundle = i.getBundleExtra("DATA");
-        line = (Line) bundle.getSerializable("LINE");
+        context = this;
 
-        stationList = line.getStations();
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            lineNumberString = extras.getString("LINE");
+        }
 
+        lineNumberInt = Integer.parseInt(lineNumberString);
+        line = new Line(lineNumberInt);
+
+        zetWebService = zetWebService.getInstance();
+
+        zetWebService.loadLine(line).subscribe(new Action1<Line>() {
+            @Override
+
+            public void call(Line line) {
+                stationList = line.getStations();
+                runOnUiThread(new Runnable() {
+                    public void run() {
+                        putRouteOnMap();
+                    }
+                });
+            }
+        });
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+
         mMap = googleMap;
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(ZAGREB,10));
+
+        Toast.makeText(this,"LOADING DATA...This can take a few seconds depending on your Internet connection",Toast.LENGTH_LONG).show();
+
+    }
+
+    public void putRouteOnMap() {
 
         PolylineOptions polylineOptions = new PolylineOptions();
         polylineOptions.width(5).color(Color.BLUE);
@@ -56,6 +91,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         }
         mMap.addPolyline(polylineOptions);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(stationList.get(stationList.size()/2).getLatitude(),stationList.get(stationList.size()/2).getLongitude()),12));
-
     }
+
 }

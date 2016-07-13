@@ -27,9 +27,9 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripHolder> {
     private static final String DIRECTION = "Direction";
     private static final String DIRECTION_NAME = "Direction name";
 
-    private String lineNumber;
-    private int direction;
-    private String directionName;
+    String lineNumber;
+    int direction;
+    String directionName;
 
     TripHolder viewHolder;
 
@@ -60,7 +60,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripHolder> {
     public TripHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemLayoutView = LayoutInflater.from(parent.getContext()).inflate(
                 R.layout.card_layout_trip, parent, false);
-        viewHolder = new TripHolder(itemLayoutView, c, lineNumber, direction, directionName);
+        viewHolder = new TripHolder(itemLayoutView, c, this);
         return viewHolder;
     }
 
@@ -73,12 +73,10 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripHolder> {
 
     public void setDirection(int direction) {
         this.direction = direction;
-        viewHolder.setDirection(direction);
     }
 
     public void setDirectionName(String directionName) {
         this.directionName = directionName;
-        viewHolder.setDirectionName(directionName);
     }
 
     @Override
@@ -93,9 +91,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripHolder> {
     public static class TripHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private Context c;
-        private String lineNumber;
-        private int direction;
-        private String directionName;
+        private TripAdapter t;
 
         @BindView(R.id.starting_point)
         TextView startingPoint;
@@ -104,31 +100,21 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripHolder> {
         @BindView(R.id.departure_time)
         TextView departureTime;
 
-        public TripHolder(View view, Context c, String lineNumber, int direction, String directionName) {
+        public TripHolder(View view, Context c, TripAdapter t) {
             super(view);
-            this.direction = direction;
-            this.lineNumber = lineNumber;
-            this.directionName = directionName;
             view.setOnClickListener(this);
             this.c = c;
+            this.t = t;
             ButterKnife.bind(this, view);
-        }
-
-        public void setDirection(int direction) {
-            this.direction = direction;
-        }
-
-        public void setDirectionName(String directionName) {
-            this.directionName = directionName;
         }
 
         @Override
         public void onClick(View v) {
             Bundle bundle = new Bundle();
             bundle.putString(DEPARTURE_TIME, departureTime.getText().toString());
-            bundle.putString(LINE_NUMBER, lineNumber);
-            bundle.putInt(DIRECTION, direction);
-            bundle.putString(DIRECTION_NAME, directionName);
+            bundle.putString(LINE_NUMBER, t.lineNumber);
+            bundle.putInt(DIRECTION, t.direction);
+            bundle.putString(DIRECTION_NAME, t.directionName);
 
             Intent i =  new Intent(c, RouteDetailsActivity.class);
             i.putExtra("DATA", bundle);
