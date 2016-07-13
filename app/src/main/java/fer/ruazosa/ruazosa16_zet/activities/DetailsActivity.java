@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -25,13 +24,10 @@ import com.hannesdorfmann.mosby.mvp.viewstate.lce.LceViewState;
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.MvpLceViewStateActivity;
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.data.SerializeableLceViewState;
 
-import org.w3c.dom.Text;
-
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -43,7 +39,6 @@ import fer.ruazosa.ruazosa16_zet.model.Line;
 import fer.ruazosa.ruazosa16_zet.model.Trip;
 import fer.ruazosa.ruazosa16_zet.presenters.MvpLceRxPresenter;
 import fer.ruazosa.ruazosa16_zet.presenters.TripPresenter;
-import rx.functions.Action1;
 
 public class DetailsActivity extends MvpLceViewStateActivity<SwipeRefreshLayout, ArrayList<Trip>,
         TripView, MvpLceRxPresenter<TripView, ArrayList<Trip>>>
@@ -172,7 +167,7 @@ public class DetailsActivity extends MvpLceViewStateActivity<SwipeRefreshLayout,
         switch (item.getItemId()) {
             case R.id.map_button :
                 Intent i = new Intent(this, MapActivity.class);
-                i.putExtra("LINE",line);
+                i.putExtra("LINE",lineNumber);
                 startActivity(i);
                 break;
             case R.id.favorites_button :
