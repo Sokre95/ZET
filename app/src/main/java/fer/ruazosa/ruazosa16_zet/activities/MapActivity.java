@@ -63,7 +63,18 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                 stationList = line.getStations();
                 runOnUiThread(new Runnable() {
                     public void run() {
-                        putRouteOnMap();
+                        if(stationList.size()==0){
+                            Toast.makeText(context,"Nesposobni ZET, nisu sposobni ni pružat podatke za sve linije jednako, prestrašno!",Toast.LENGTH_LONG).show();
+                            try {
+                                Thread.sleep(1000);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                            context.finish();
+                        }
+                        else {
+                            putRouteOnMap();
+                        }
                     }
                 });
             }
@@ -76,7 +87,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         mMap = googleMap;
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(ZAGREB,10));
 
-        Toast.makeText(this,"LOADING DATA...This can take a few seconds depending on your Internet connection",Toast.LENGTH_LONG).show();
+        Toast.makeText(this,"DOHVAĆANJE PODATAKA...potrebno vrijeme za dohvat podataka može biti i više sekundi ovisno o Vašoj Internet vezi",Toast.LENGTH_LONG).show();
 
     }
 
