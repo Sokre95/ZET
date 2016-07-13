@@ -172,7 +172,7 @@ public class DetailsActivity extends MvpLceViewStateActivity<SwipeRefreshLayout,
         switch (item.getItemId()) {
             case R.id.map_button :
                 Intent i = new Intent(this, MapActivity.class);
-                i.putExtra("LINE",line);
+                i.putExtra("DATA", bundle);
                 startActivity(i);
                 break;
             case R.id.favorites_button :
@@ -246,7 +246,7 @@ public class DetailsActivity extends MvpLceViewStateActivity<SwipeRefreshLayout,
         l.setName(lineName);
         try {
             presenter.subscribe(ZetWebService.getInstance().
-                    getRouteScheduleByDate(l, routeDirection, selectedDate), pullToRefresh);
+                    getRouteScheduleByDate(line, routeDirection, selectedDate), pullToRefresh);
         } catch (IOException e) {
             e.printStackTrace();
         }

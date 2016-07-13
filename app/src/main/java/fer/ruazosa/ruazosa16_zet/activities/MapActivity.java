@@ -1,5 +1,6 @@
 package fer.ruazosa.ruazosa16_zet.activities;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -22,7 +23,7 @@ import fer.ruazosa.ruazosa16_zet.model.Station;
 public class MapActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-    private Line line = DetailsActivity.line;
+    private Line line;
     private List<Station> stationList = new ArrayList<>();
 
     @Override
@@ -33,6 +34,10 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         final SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        Intent i = getIntent();
+        Bundle bundle = i.getBundleExtra("DATA");
+        line = (Line) bundle.getSerializable("LINE");
 
         stationList = line.getStations();
 
