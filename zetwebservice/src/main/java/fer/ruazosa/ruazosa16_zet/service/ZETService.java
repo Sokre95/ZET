@@ -21,6 +21,9 @@ public interface ZETService {
     @GET("/default.aspx")
     Observable<Document> getRoutes(@Query("id") int id);
 
+    @GET("/default.aspx")
+    Call<Document> getRoutes2(@Query("id") int id);
+
     @GET("/default.aspx?id=" + BASE_LINEVIEW_ID)
     Observable<Document> getRouteSchedule(@Query("route_id") int routeId);
 
