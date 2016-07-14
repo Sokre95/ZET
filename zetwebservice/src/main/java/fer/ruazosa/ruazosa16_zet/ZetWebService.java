@@ -8,9 +8,12 @@ import java.lang.reflect.Type;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
+import fer.ruazosa.ruazosa16_zet.googlemapsmodel.PlacesService;
 import fer.ruazosa.ruazosa16_zet.model.Line;
 import fer.ruazosa.ruazosa16_zet.model.Station;
 import fer.ruazosa.ruazosa16_zet.model.Trip;
@@ -143,8 +146,8 @@ public class ZetWebService {
      * @param tripTime      time string in hh:mm:ss format
      */
     public Observable<ArrayList<String>> getTripStationsTimes
-    (final int routeId, final int tripDirection, final String tripTime) throws IOException {
-        Observable<ArrayList<String>> stationTimes = service.getRouteSchedule(routeId).map(new Func1<Document, ArrayList<String>>() {
+    (final int routeId, final int tripDirection, final String tripTime, final String date) throws IOException {
+        Observable<ArrayList<String>> stationTimes = service.getRouteScheduleForDate(routeId,date).map(new Func1<Document, ArrayList<String>>() {
             @Override
             public ArrayList<String> call(Document document) {
                 String tripId = DocumentParser.getTripIdForScheduleAndTime(document, tripDirection, tripTime);
@@ -216,5 +219,33 @@ public class ZetWebService {
             }
         });
         return observeTrip;
+    }
+
+    public Observable<Map<Station, List<Line>>> getNearestStationsWithLines(double lat, double lon){
+        final Map<Station,List<Line>> map = new HashMap<>();
+        Observable<Map<Station,List<Line>>> obs = PlacesService.getInstance().findNearestStations(lat,lon).map(new Func1<List<Station>, Map<Station,List<Line>>>() {
+            @Override
+            public Map<Station, List<Line>> call(List<Station> stations) {
+                List<Line> allLines = new ArrayList<Line>();
+                try {
+                    allLines.addAll(DocumentParser.parseRoutes(service.getRoutes2(ZETService.BUS_LINES_DAY_ID).execute().body()));
+                    allLines.addAll(DocumentParser.parseRoutes(service.getRoutes2(ZETService.BUS_LINES_NIGHT_ID).execute().body()));
+                    allLines.addAll(DocumentParser.parseRoutes(service.getRoutes2(ZETService.TRAM_LINES_DAY_ID).execute().body()));
+                    allLines.addAll(DocumentParser.parseRoutes(service.getRoutes2(ZETService.TRAM_LINES_NIGHT_ID).execute().body()));
+                    for (Line line: allLines) {
+                        List<Station> lineStations = DocumentParser.parseStations(service.getLineStations(line.getId()));
+                        for (Station station : stations) {
+                            if (lineStations.contains(station)){
+                                map.get(station).add(line);
+                            }
+                        }
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                return map;
+            }
+        });
+        return obs;
     }
 }

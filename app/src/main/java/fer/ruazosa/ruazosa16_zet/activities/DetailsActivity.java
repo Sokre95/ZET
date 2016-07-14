@@ -142,6 +142,7 @@ public class DetailsActivity extends MvpLceViewStateActivity<SwipeRefreshLayout,
                 Calendar c = Calendar.getInstance();
                 c.add(Calendar.DAY_OF_YEAR, position);
                 selectedDate = df.format(c.getTime());
+                tripAdapter.setDate(selectedDate);
                 if(!savedInstance) {
                     loadByDate();
                 } else {
@@ -208,6 +209,13 @@ public class DetailsActivity extends MvpLceViewStateActivity<SwipeRefreshLayout,
         if (routeDirection == 0) routeDirection = 1;
         else routeDirection = 0;
         tripAdapter.setDirection(routeDirection);
+
+        //if (routeDirection == 0) {
+          //  routeDirection = 1;
+        //}
+        //else {
+          //  routeDirection = 0;
+        //}
         if(trenutniSmjer.equals(smjer1)) trenutniSmjer = smjer2;
         else trenutniSmjer = smjer1;
         tripAdapter.setDirectionName(trenutniSmjer);
@@ -231,6 +239,7 @@ public class DetailsActivity extends MvpLceViewStateActivity<SwipeRefreshLayout,
     @Override
     public void setData(ArrayList<Trip> data) {
         tripAdapter.setTrips(data);
+        tripAdapter.setDate(selectedDate);
         contentView.setRefreshing(false);
     }
 
