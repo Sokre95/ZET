@@ -105,9 +105,6 @@ public class CloseFragment extends Fragment implements LocationListener, OnMapRe
 
     @Override
     public void onLocationChanged(Location location) {
-        if (closeMap != null) {
-            updateMap();
-        }
     }
 
     @Override
