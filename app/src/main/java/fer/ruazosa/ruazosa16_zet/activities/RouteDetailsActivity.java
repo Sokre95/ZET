@@ -38,6 +38,7 @@ public class RouteDetailsActivity extends MvpLceViewStateActivity<SwipeRefreshLa
     private static final String LINE_NUMBER = "Line number";
     private static final String DIRECTION = "Direction";
     private static final String DIRECTION_NAME = "Direction name";
+    private static final String DATE = "Date";
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -48,6 +49,7 @@ public class RouteDetailsActivity extends MvpLceViewStateActivity<SwipeRefreshLa
     private String lineNumber;
     private String departureTime;
     private String directionName;
+    private String date;
 
     private RouteDetailsAdapter routeDetailsAdapter;
 
@@ -69,6 +71,7 @@ public class RouteDetailsActivity extends MvpLceViewStateActivity<SwipeRefreshLa
         lineNumber = bundle.getString(LINE_NUMBER).trim();
         departureTime = bundle.getString(DEPARTURE_TIME);
         directionName = bundle.getString(DIRECTION_NAME);
+        date = bundle.getString(DATE);
 
         contentView.setOnRefreshListener(this);
 
@@ -112,7 +115,7 @@ public class RouteDetailsActivity extends MvpLceViewStateActivity<SwipeRefreshLa
         try {
             presenter.subscribe(ZetWebService.getInstance().
                     getTripStationsTimes(Integer.parseInt(lineNumber),
-                            direction, departureTime), pullToRefresh);
+                            direction, departureTime, date), pullToRefresh);
         } catch (IOException e) {
             e.printStackTrace();
         }

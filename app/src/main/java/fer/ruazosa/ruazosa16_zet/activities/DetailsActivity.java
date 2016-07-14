@@ -205,8 +205,12 @@ public class DetailsActivity extends MvpLceViewStateActivity<SwipeRefreshLayout,
     }
 
     private void changeDirection() {
-        if (routeDirection == 0) routeDirection = 1;
-        else routeDirection = 0;
+        if (routeDirection == 0) {
+            routeDirection = 1;
+        }
+        else {
+            routeDirection = 0;
+        }
         if(trenutniSmjer.equals(smjer1)) trenutniSmjer = smjer2;
         else trenutniSmjer = smjer1;
         tripAdapter.setDirectionName(trenutniSmjer);
@@ -231,6 +235,7 @@ public class DetailsActivity extends MvpLceViewStateActivity<SwipeRefreshLayout,
     @Override
     public void setData(ArrayList<Trip> data) {
         tripAdapter.setTrips(data);
+        tripAdapter.setDate(selectedDate);
         contentView.setRefreshing(false);
     }
 

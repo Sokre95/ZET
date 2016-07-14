@@ -26,10 +26,12 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripHolder> {
     private static final String LINE_NUMBER = "Line number";
     private static final String DIRECTION = "Direction";
     private static final String DIRECTION_NAME = "Direction name";
+    private static final String DATE = "Date";
 
     private String lineNumber;
-    private int direction;
+    private static int direction;
     private String directionName;
+    private static String date;
 
     TripHolder viewHolder;
 
@@ -50,6 +52,10 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripHolder> {
         this.lineNumber = lineNumber;
         this.direction = direction;
         this.directionName = directionName;
+    }
+
+    public void setDate(String date) {
+        TripAdapter.date = date;
     }
 
     public void setTrips(ArrayList<Trip> trips) {
@@ -92,9 +98,10 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripHolder> {
 
     public static class TripHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
+
         private Context c;
         private String lineNumber;
-        private int direction;
+        private int direction1;
         private String directionName;
 
         @BindView(R.id.starting_point)
@@ -106,7 +113,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripHolder> {
 
         public TripHolder(View view, Context c, String lineNumber, int direction, String directionName) {
             super(view);
-            this.direction = direction;
+            this.direction1 = direction;
             this.lineNumber = lineNumber;
             this.directionName = directionName;
             view.setOnClickListener(this);
@@ -115,7 +122,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripHolder> {
         }
 
         public void setDirection(int direction) {
-            this.direction = direction;
+            this.direction1 = direction;
         }
 
         public void setDirectionName(String directionName) {
@@ -129,11 +136,12 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripHolder> {
             bundle.putString(LINE_NUMBER, lineNumber);
             bundle.putInt(DIRECTION, direction);
             bundle.putString(DIRECTION_NAME, directionName);
-
+            bundle.putString(DATE, date);
             Intent i =  new Intent(c, RouteDetailsActivity.class);
             i.putExtra("DATA", bundle);
             this.c.startActivity(i);
         }
+
     }
 
 }

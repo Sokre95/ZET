@@ -146,8 +146,8 @@ public class ZetWebService {
      * @param tripTime      time string in hh:mm:ss format
      */
     public Observable<ArrayList<String>> getTripStationsTimes
-    (final int routeId, final int tripDirection, final String tripTime) throws IOException {
-        Observable<ArrayList<String>> stationTimes = service.getRouteSchedule(routeId).map(new Func1<Document, ArrayList<String>>() {
+    (final int routeId, final int tripDirection, final String tripTime, final String date) throws IOException {
+        Observable<ArrayList<String>> stationTimes = service.getRouteScheduleForDate(routeId,date).map(new Func1<Document, ArrayList<String>>() {
             @Override
             public ArrayList<String> call(Document document) {
                 String tripId = DocumentParser.getTripIdForScheduleAndTime(document, tripDirection, tripTime);
