@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -42,9 +43,9 @@ public class CloseFragment extends Fragment implements LocationListener, OnMapRe
 
     private SupportMapFragment supportMapFragment;
     private LocationManager locationManager;
-    private Location location;
+    private boolean cameraPositioned = false;
 
-    private final long MIN_TIME_BETWEEN_UPDATES = 0;
+    private final long MIN_TIME_BETWEEN_UPDATES = 10000;
     private final float MIN_DISTANCE_BETWEEN_UPDATES = 10;
 
     public CloseFragment() {
@@ -80,7 +81,7 @@ public class CloseFragment extends Fragment implements LocationListener, OnMapRe
     public void onResume() {
         super.onResume();
         if (closeMap != null) {
-            //updateMap();
+            updateMap(null);
         }
     }
 
@@ -105,6 +106,9 @@ public class CloseFragment extends Fragment implements LocationListener, OnMapRe
 
     @Override
     public void onLocationChanged(Location location) {
+        if (closeMap != null) {
+            updateMap(location);
+        }
     }
 
     @Override
@@ -125,46 +129,59 @@ public class CloseFragment extends Fragment implements LocationListener, OnMapRe
     @Override
     public void onMapReady(final GoogleMap googleMap) {
         closeMap = googleMap;
+        closeMap.setMyLocationEnabled(true);
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
         if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             noGpsMessage();
-        } else {
-            //updateMap();
+        }
+        else{
+            updateMap(null);
         }
     }
 
-    private void updateMap() {
+    private void updateMap(Location location) {
         if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-            //noGpsMessage();
+            noGpsMessage();
         } else {
-            if (ActivityCompat.checkSelfPermission(getContext(),
-                    Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                    ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION)
-                            != PackageManager.PERMISSION_GRANTED) {
-                return;
-            }
-            location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            LatLng user_position = new LatLng(location.getLatitude(), location.getLongitude());
-            PlacesService.getInstance().findNearestStations(user_position.latitude, user_position.longitude).subscribe(new Action1<List<Station>>() {
-                @Override
-                public void call(final List<Station> stations) {
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            for (Station station : stations) {
-                                LatLng station_postion = new LatLng(station.getLatitude(), station.getLongitude());
-                                MarkerOptions marker = new MarkerOptions().position(station_postion).title(station.getName()).icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_bus));
-                                closeMap.addMarker(marker);
-                                //Log.d("marker", marker.getTitle());
-                            }
-                        }
-                    });
+            if (location == null) {
+                if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    // TODO: Consider calling
+                    //    ActivityCompat#requestPermissions
+                    // here to request the missing permissions, and then overriding
+                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                    //                                          int[] grantResults)
+                    // to handle the case where the user grants the permission. See the documentation
+                    // for ActivityCompat#requestPermissions for more details.
+                    return;
                 }
-            });
-            closeMap.moveCamera(CameraUpdateFactory.newLatLngZoom(user_position, 12));
-            closeMap.setMyLocationEnabled(true);
+                location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            }
+            if (location != null) {
+                LatLng user_position = new LatLng(location.getLatitude(), location.getLongitude());
+                if (cameraPositioned == false) {
+                    closeMap.moveCamera(CameraUpdateFactory.newLatLngZoom(user_position, 12));
+                    cameraPositioned = true;
+                }
+
+                PlacesService.getInstance().findNearestStations(user_position.latitude, user_position.longitude).subscribe(new Action1<List<Station>>() {
+                    @Override
+                    public void call(final List<Station> stations) {
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                for (Station station : stations) {
+                                    LatLng station_postion = new LatLng(station.getLatitude(), station.getLongitude());
+                                    MarkerOptions marker = new MarkerOptions().position(station_postion).title(station.getName()).icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_bus));
+                                    closeMap.addMarker(marker);
+                                    //cdLog.d("marker", marker.getTitle());
+                                }
+                            }
+                        });
+                    }
+                });
+            }
         }
     }
 }
