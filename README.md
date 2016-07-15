@@ -1,1 +1,1 @@
-Application that makes it easier to use Zagreb city public transport
+Android application that makes it easier to use Zagreb city public transportation
