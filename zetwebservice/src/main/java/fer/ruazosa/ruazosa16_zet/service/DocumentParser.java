@@ -143,12 +143,19 @@ public class DocumentParser {
             //s.setLatitude(Double.parseDouble(c[0]));
             //s.setLongitude(Double.parseDouble(c[1]));
         }
+        /*
         Map<Integer, Station> stations = new HashMap<>();
         places.syncFindStation(coordinates, stations);
         for(int i=0; i<coordinates.size(); i++){
             res.add(stations.get(i));
         }
-
+        */
+        for (int i = 0; i < coordinates.size(); i++) {
+            Station s = new Station("");
+            s.setLatitude(coordinates.get(i)[0]);
+            s.setLongitude(coordinates.get(i)[1]);
+            res.add(s);
+        }
         return res;
     }
 }

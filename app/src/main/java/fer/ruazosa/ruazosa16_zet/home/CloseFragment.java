@@ -34,6 +34,7 @@ import java.util.List;
 import fer.ruazosa.ruazosa16_zet.R;
 import fer.ruazosa.ruazosa16_zet.googlemapsmodel.PlacesService;
 import fer.ruazosa.ruazosa16_zet.model.Station;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 
 
@@ -164,23 +165,19 @@ public class CloseFragment extends Fragment implements LocationListener, OnMapRe
                     closeMap.moveCamera(CameraUpdateFactory.newLatLngZoom(user_position, 12));
                     cameraPositioned = true;
                 }
-
-                PlacesService.getInstance().findNearestStations(user_position.latitude, user_position.longitude).subscribe(new Action1<List<Station>>() {
+                /*
+                PlacesService.getInstance().findNearestStations(user_position.latitude, user_position.longitude).subscribeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<List<Station>>() {
                     @Override
                     public void call(final List<Station> stations) {
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                for (Station station : stations) {
-                                    LatLng station_postion = new LatLng(station.getLatitude(), station.getLongitude());
-                                    MarkerOptions marker = new MarkerOptions().position(station_postion).title(station.getName()).icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_bus));
-                                    closeMap.addMarker(marker);
-                                    //cdLog.d("marker", marker.getTitle());
-                                }
-                            }
-                        });
+                        for (Station station : stations) {
+                            LatLng station_postion = new LatLng(station.getLatitude(), station.getLongitude());
+                            MarkerOptions marker = new MarkerOptions().position(station_postion).title(station.getName()).icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_bus));
+                            closeMap.addMarker(marker);
+                            //cdLog.d("marker", marker.getTitle());
+                        }
                     }
                 });
+                */
             }
         }
     }
