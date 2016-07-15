@@ -84,7 +84,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 runOnUiThread(new Runnable() {
                     public void run() {
                         if (stationList.size() == 0) {
-                            Toast.makeText(context, "Nesposobni ZET, nisu sposobni ni pružat podatke za sve linije jednako, prestrašno!", Toast.LENGTH_LONG).show();
+                            //Toast.makeText(context, "Nesposobni ZET, nisu sposobni ni pružat podatke za sve linije jednako, prestrašno!", Toast.LENGTH_LONG).show();
                             try {
                                 Thread.sleep(1000);
                             } catch (InterruptedException e) {
@@ -124,7 +124,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             return;
         }
         mMap.setMyLocationEnabled(true);
-        Toast.makeText(this,"DOHVAĆANJE PODATAKA...potrebno vrijeme za dohvat podataka može biti i više sekundi ovisno o Vašoj Internet vezi",Toast.LENGTH_LONG).show();
+        //Toast.makeText(this,"DOHVAĆANJE PODATAKA...potrebno vrijeme za dohvat podataka može biti i više sekundi ovisno o Vašoj Internet vezi",Toast.LENGTH_LONG).show();
 
     }
 
