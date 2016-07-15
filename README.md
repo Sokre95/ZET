@@ -2,7 +2,8 @@ Android application that makes it easier to use Zagreb city public transportatio
 
 
 
-![alt text](https://github.com/Sokre95/ZET/blob/master/bus.png)
-![alt text](https://github.com/Sokre95/ZET/blob/master/close.png)
-![alt text](https://github.com/Sokre95/ZET/blob/master/details.png)
-![alt text](https://github.com/Sokre95/ZET/blob/master/map.png)
+<img src="https://github.com/Sokre95/ZET/blob/master/bus.png" width="48">
+<img src="https://github.com/Sokre95/ZET/blob/master/close.png" width="48">
+<img src="https://github.com/Sokre95/ZET/blob/master/details.png" width="48">
+<img src="https://github.com/Sokre95/ZET/blob/master/map.png" width="48">
+
